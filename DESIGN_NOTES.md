@@ -1,44 +1,30 @@
-# Portfolio research notes
+# Portfolio mapping notes
 
-## Goal
+## Current direction
 
-The site must create recruiter curiosity and keep each claim easy to explain.
-It must not publish false projects or metrics.
+This pass follows the supplied `seemron.github.io-main.zip` as closely as the
+current framework allows. It uses the same restrained structure: a light
+navigation bar, one narrow content column, ordinary system type, a compact
+profile row, small section headings, and simple resume entries.
 
-## Competing directions
+Each menu item opens its own page. The current routes are Home, Projects,
+Topics, Blog, and About.
 
-| Direction | Curiosity | Credibility | Interview clarity | Memory | Decision |
-|---|---:|---:|---:|---:|---|
-| Evidence Ledger | 4 | 5 | 5 | 4 | Keep as the site structure |
-| Signal Observatory | 5 | 4 | 4 | 5 | Keep as one small interaction |
-| AI Reliability Lab | 5 | 5 | 5 | 5 | Keep as the first project |
-| Decision Replay | 3 | 5 | 4 | 3 | Use inside future case studies |
-| Dataset Cabinet | 5 | 3 | 3 | 5 | Delay until three datasets exist |
+## Removed direction
 
-## Selected direction
+The Evidence Ledger concept has been retired. The large hero slogan, colored
+bands, evidence cards, signal illustration, orange job-search block, field-note
+cards, and anchor-based one-page navigation are intentionally gone.
 
-The Evidence Ledger gives recruiters a fast scan and a clear proof path.
-The Signal Observatory adds one memorable interaction without decorative motion.
-The AI Reliability Lab becomes the first full case study after real artifacts exist.
+## Content boundaries
 
-## Rejected choices
+- The homepage uses only confirmed profile, tool, and internship information.
+- Projects remain empty until the project choices are agreed.
+- Blog posts are first drafts based on confirmed interests and experience.
+- No email address, phone number, project result, or performance figure is
+  invented.
 
-- A chat interface hides proof and adds little trust.
-- A generic dashboard gives weak personal identity.
-- A map story gives weak support for the target role.
-- Many small experiments can hide depth.
-- The reference ZIP has useful structure, but its Bootstrap style has little visual identity.
+## Next step
 
-## First project
-
-Evidence ETL will convert public food reports into cited, typed rows.
-The error atlas will show field accuracy, citation support, cost, and review rate.
-The current site labels this project as in development.
-
-## Sources
-
-- [LinkedIn Future of Recruiting 2025](https://www.linkedin.com/business/talent/blog/talent-acquisition/future-of-recruiting-2025)
-- [GitHub Octoverse 2025](https://github.blog/news-insights/octoverse/octoverse-a-new-developer-joins-github-every-second-as-ai-leads-typescript-to-1/)
-- [Stack Overflow Developer Survey 2025](https://survey.stackoverflow.co/2025/ai)
-- [OpenAI eval guidance](https://openai.com/index/evals-drive-next-chapter-of-ai/)
-- [Anthropic agent guidance](https://www.anthropic.com/engineering/building-effective-agents)
+Review this mapping before changing colors, illustration, wording, or adding
+projects. Future edits should be made one section at a time.

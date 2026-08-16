@@ -1,44 +1,17 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import "./globals.css";
+
+export const dynamic = "force-static";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://levi09750.github.io/"),
-  title: "Manisha Subedi | Data Analyst",
+  title: {
+    default: "Manisha Subedi",
+    template: "%s | Manisha Subedi",
+  },
   description:
-    "Manisha Subedi connects research discipline, data analysis, and clear decisions.",
-  keywords: [
-    "Manisha Subedi",
-    "data analyst",
-    "SQL",
-    "Python",
-    "Power BI",
-    "Tableau",
-    "Lisbon",
-  ],
-  authors: [{ name: "Manisha Subedi" }],
-  openGraph: {
-    title: "Manisha Subedi | From lab evidence to clear decisions",
-    description:
-      "A data analyst with a chemical engineering and food science background.",
-    type: "website",
-    locale: "en_US",
-    images: [
-      {
-        url: "https://levi09750.github.io/og.png",
-        width: 1731,
-        height: 909,
-        alt: "Manisha Subedi, Data Analyst. From lab evidence to clear decisions.",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Manisha Subedi | Data Analyst",
-    description: "From lab evidence to clear decisions.",
-    images: [
-      "https://levi09750.github.io/og.png",
-    ],
-  },
+    "The portfolio of Manisha Subedi, a data analyst based near Lisbon, Portugal.",
 };
 
 export default function RootLayout({
@@ -48,7 +21,27 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <header className="site-header">
+          <div className="site-header-inner">
+            <Link className="site-name" href="/">
+              Manisha Subedi
+            </Link>
+            <nav className="site-nav" aria-label="Main navigation">
+              <a href="/projects/">Projects</a>
+              <a href="/topics/">Topics</a>
+              <a href="/blog/">Blog</a>
+              <a href="/about/">About</a>
+            </nav>
+          </div>
+        </header>
+
+        {children}
+
+        <footer className="site-footer">
+          <p>© 2026 Manisha Subedi</p>
+        </footer>
+      </body>
     </html>
   );
 }
