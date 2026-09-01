@@ -1,76 +1,36 @@
 ---
 title: An agent, a warehouse, and one duplicated file
 date: 2026-09-03
-summary: One question, one silent fault, and the three cheap checks that separate a careful agent from a confident one.
-readTime: 6 min read
+summary: Watch an AI agent answer one question, step by step, and find the fault in the data on the way.
+readTime: 5 min read
 ---
 
 import AgentLoop from "../../components/AgentLoop.astro";
 
-An AI agent is a loop. It looks at something, it does something, and it
-examines the result. Then it repeats. A careful analyst works the same way.
-The difference is that a model has no doubt by default. The loop must supply
-the doubt.
+People talk about AI agents as magic. An agent is a loop. It looks at
+something, it does something, and it examines the result. Then it repeats.
+This post shows one loop from start to end. The warehouse is small, the fault
+is real, and every step is drawn.
 
-This post follows one loop from question to answer. The warehouse is small.
-The fault is the most common silent fault in data work: a file that was
-loaded twice. Every type test passes. Every not-null test passes. The number
-is wrong by a factor of two.
+The question is simple. What was the revenue in August? The warehouse has
+three tables and one problem. The August order file was loaded twice.
 
 Scroll through the seven steps. The scene at the top changes with each one.
 
 <AgentLoop />
 
-## Three checks that cost one query each
+## The step that matters
 
-The fourth step is where a careless agent stops and a careful one continues.
-The checks below are cheap. Each one is a single query, and each one catches
-a fault that type tests and not-null tests do not.
+Every step in the loop is ordinary. The value is in the fourth step. Without
+a check, the agent returns 84,000 with full confidence, and the number goes
+into a presentation. With the check, the agent finds the fault and reports
+it.
 
-**Row count against history.** `SELECT month, COUNT(*) FROM orders GROUP BY
-month`. A month with double or half the usual rows is wrong before anyone
-reads the revenue. This catches duplicate loads and missing partitions.
+Two lessons come from this. First, an agent needs a way to examine its own
+result. A row count, a comparison with last month, a known total. Second,
+an agent needs permission to change data, and it must say what it changed.
+An agent that fixes data in silence is worse than one that only reports.
 
-**Count against distinct count.** `SELECT COUNT(*), COUNT(DISTINCT order_id)
-FROM orders WHERE month = '2026-08'`. For a table with one row per order, the
-two numbers must be equal. This is the direct test for duplicates.
-
-**Sum against a known total.** The payment provider, the finance ledger, or
-last month's approved report. This catches unit errors, currency errors, and
-filters that drop rows in silence.
-
-None of these checks needs a model. An agent gets value from them only if the
-loop makes it run them before it answers.
-
-## Where the fix belongs
-
-The agent found the fault. Three fixes are possible.
-
-1. **Add `DISTINCT` to the query.** Fast, and wrong. The next query on the
-   same table has the same problem, and nobody knows.
-2. **Delete the second copy of the rows.** The number is correct today. The
-   next load of the same file makes it wrong again.
-3. **Make the load idempotent.** Record the hash of each file. If the hash is
-   already in the files table, refuse the load. The fault cannot return.
-
-Only the third fix removes the cause. It is also the one an agent must not
-apply on its own. It changes a pipeline that other people use. The correct
-move is to report it, with evidence, and let a person approve it.
-
-## What a good answer contains
-
-The number is the smallest part. A good answer, from an agent or from an
-analyst, has four parts:
-
-- the number, 42,000;
-- the query that produced it, so anyone can run it again;
-- the fault it found, with the query that proves it;
-- what it did not examine.
-
-The last item matters most for agents. A model that reports only what it
-examined sounds less confident. It is also the only kind you can trust with
-the next question.
-
-The steps on this page are written by hand. No model runs on this site. In a
-real system the loop is the same. It is slower, it takes wrong turns, and the
-fourth step is skipped more often than anyone admits.
+The steps on this page are written by hand. No model runs on this site. The
+loop is the same in a real system, only slower and with more mistakes on the
+way.
