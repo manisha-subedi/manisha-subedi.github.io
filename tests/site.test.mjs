@@ -46,6 +46,14 @@ test("writing index, posts, projects", async () => {
   assert.match(await page("projects/index.html"), /in development/);
 });
 
+test("simpson post has two figures, 40 dots each, and a table", async () => {
+  const html = await page("blog/simpsons-paradox-drawn/index.html");
+  assert.equal(html.match(/data-simpson="/g).length, 2);
+  assert.equal(html.match(/class="city"/g).length, 80);
+  assert.match(html, /<summary[^>]*>Data table<\/summary>/);
+  assert.match(html, /data-role="dir"[^>]*>down</);
+});
+
 test("no leftovers", async () => {
   for (const p of [
     "index.html",

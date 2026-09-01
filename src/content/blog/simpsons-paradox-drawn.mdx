@@ -1,0 +1,54 @@
+---
+title: Simpson's paradox, drawn
+date: 2026-09-02
+summary: Each group shows a trend up. All groups together show a trend down. Both are true.
+readTime: 4 min read
+---
+
+import SimpsonScatter from "../../components/SimpsonScatter.astro";
+
+A chart of 40 cities shows one clear trend. Cities that spend more on
+marketing grow less. The line points down. Then you divide the cities into
+two groups, big and small. In each group, the line points up. Nothing in the
+data changed. Only the grouping changed.
+
+<SimpsonScatter
+  mode="toggle"
+  caption="Simulated data. Each dot is one city. Use the checkbox to color the dots by city size."
+/>
+
+This is Simpson's paradox. A trend in the full data can reverse when you
+divide the data into groups. The paradox is not an error in the math. Both
+lines are correct. They answer different questions.
+
+## Why the line turns
+
+The two groups differ on both axes. Big cities spend more per person, and they
+grow less. Small cities spend less, and they grow more. When all cities are on
+one chart, the line mostly compares big cities with small cities. It does not
+compare spend with growth.
+
+In each group, the cities have a similar size. The size effect is gone. What
+is left is the effect of spend, and that effect is positive.
+
+<SimpsonScatter
+  mode="gap"
+  caption="Move the slider to make the two groups more similar. When the groups overlap, the line for all cities agrees with the group lines."
+/>
+
+The reversal needs a third variable. That variable must move with the x-axis
+and with the y-axis at the same time. City size does both. If the groups have
+the same spend and the same growth, the paradox cannot occur.
+
+## What to do with a trend
+
+Before you trust a trend, ask what else is different between the dots. Then
+divide the data by that variable. If the direction stays the same, the trend
+is stronger. If the direction changes, the variable is part of the answer.
+Put it in the report. Do not delete it.
+
+Common hidden variables are customer segment, device type, country, season,
+and store size.
+
+The data on this page is simulated. The pattern is real. It appears in
+medical trials, admissions data, and sales reports.

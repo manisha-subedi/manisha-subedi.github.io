@@ -1,0 +1,375 @@
+---
+import { cities, lines, sx, sy, X_MAX, Y_MAX } from "../lib/simpson";
+
+interface Props {
+  mode: "toggle" | "gap";
+  caption: string;
+}
+
+const { mode, caption } = Astro.props;
+const data = cities(1);
+const L = lines(data);
+const colored = mode === "gap";
+const xTicks = [0, 25, 50, 75, 100];
+const yTicks = [0, 2, 4, 6];
+const label = (c: { big: boolean }) => (c.big ? "Big city" : "Small city");
+---
+
+<figure class:list={["simpson", { "is-colored": colored }]} data-simpson={mode}>
+  <div class="controls">
+    {
+      mode === "toggle" ? (
+        <label>
+          <input type="checkbox" data-role="color" /> Color the dots by city size
+        </label>
+      ) : (
+        <label>
+          Gap between the two groups
+          <input type="range" min="0" max="100" value="100" data-role="gap" />
+        </label>
+      )
+    }
+    <p class="readout">
+      All cities together: trend <strong data-role="dir">{L.allSlope < 0 ? "down" : "up"}</strong>
+    </p>
+  </div>
+
+  <svg
+    viewBox="0 0 640 400"
+    role="img"
+    aria-label="Scatter plot of marketing spend per person against sales growth for 40 simulated cities"
+  >
+    <g class="grid">
+      {yTicks.map((t) => <line x1={sx(0)} x2={sx(X_MAX)} y1={sy(t)} y2={sy(t)} />)}
+    </g>
+    <g class="axis">
+      {yTicks.map((t) => (
+        <text x={sx(0) - 8} y={sy(t) + 4} text-anchor="end">{t}</text>
+      ))}
+      {xTicks.map((t) => (
+        <text x={sx(t)} y={sy(0) + 18} text-anchor="middle">{t}</text>
+      ))}
+      <text x={sx(0)} y="16">Sales growth (%)</text>
+      <text x={sx(50)} y="394" text-anchor="middle">Marketing spend per person (€)</text>
+    </g>
+
+    <line class="line line-all" data-line="all" x1={L.all.x1} y1={L.all.y1} x2={L.all.x2} y2={L.all.y2} />
+    <line class="line line-small" data-line="small" x1={L.small.x1} y1={L.small.y1} x2={L.small.x2} y2={L.small.y2} />
+    <line class="line line-big" data-line="big" x1={L.big.x1} y1={L.big.y1} x2={L.big.x2} y2={L.big.y2} />
+
+    <g data-cities>
+      {data.map((c) => (
+        <g
+          class="city"
+          data-group={c.big ? "big" : "small"}
+          data-x={c.x.toFixed(0)}
+          data-y={c.y.toFixed(1)}
+          transform={`translate(${sx(c.x).toFixed(1)} ${sy(c.y).toFixed(1)})`}
+        >
+          <circle class="hit" r="12" />
+          <circle class="dot" r="4" />
+        </g>
+      ))}
+    </g>
+
+    {
+      mode === "toggle" && (
+        <g class="labels">
+          <text class="lbl" x={L.small.x2} y={L.small.y2 - 12} text-anchor="end">Small cities</text>
+          <text class="lbl" x={L.big.x2} y={L.big.y2 - 12} text-anchor="end">Big cities</text>
+        </g>
+      )
+    }
+  </svg>
+
+  <ul class="legend">
+    <li><span class="key key-small"></span>Small cities</li>
+    <li><span class="key key-big"></span>Big cities</li>
+    <li><span class="key key-all"></span>All cities together</li>
+  </ul>
+
+  <div class="tip" hidden></div>
+
+  <details>
+    <summary>Data table</summary>
+    <table>
+      <thead>
+        <tr><th>City</th><th>Spend (€)</th><th>Growth (%)</th></tr>
+      </thead>
+      <tbody>
+        {data.map((c) => (
+          <tr>
+            <td>{label(c)}</td>
+            <td data-cell="x">{c.x.toFixed(0)}</td>
+            <td data-cell="y">{c.y.toFixed(1)}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </details>
+
+  <figcaption>{caption}</figcaption>
+</figure>
+
+<style>
+  .simpson {
+    position: relative;
+    margin: 28px 0;
+  }
+
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 24px;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+  }
+
+  .controls label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .readout {
+    margin: 0;
+    color: var(--muted);
+  }
+
+  svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .grid line {
+    stroke: #e1e0d9;
+    stroke-width: 1;
+  }
+
+  .axis text {
+    fill: #898781;
+    font-size: 12px;
+  }
+
+  .line {
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    transition: opacity 0.2s;
+  }
+
+  .line-all {
+    stroke: #52514e;
+  }
+
+  .line-small {
+    stroke: #2a78d6;
+  }
+
+  .line-big {
+    stroke: #eb6834;
+  }
+
+  .line-small,
+  .line-big,
+  .lbl {
+    opacity: 0;
+  }
+
+  .is-colored .line-small,
+  .is-colored .line-big,
+  .is-colored .lbl {
+    opacity: 1;
+  }
+
+  .is-colored .line-all {
+    opacity: 0.35;
+  }
+
+  .lbl {
+    fill: #52514e;
+    font-size: 12px;
+    paint-order: stroke;
+    stroke: #fff;
+    stroke-width: 4px;
+    transition: opacity 0.2s;
+  }
+
+  .dot {
+    fill: #898781;
+    stroke: #fff;
+    stroke-width: 2;
+    transition: fill 0.2s;
+  }
+
+  .is-colored [data-group="small"] .dot {
+    fill: #2a78d6;
+  }
+
+  .is-colored [data-group="big"] .dot {
+    fill: #eb6834;
+  }
+
+  .hit {
+    fill: transparent;
+  }
+
+  .city:hover .dot {
+    stroke: #212529;
+  }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 20px;
+    margin: 6px 0 0;
+    padding: 0;
+    list-style: none;
+    color: #495057;
+    font-size: 0.85rem;
+    visibility: hidden;
+  }
+
+  .is-colored .legend {
+    visibility: visible;
+  }
+
+  .key {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin-right: 6px;
+    border-radius: 50%;
+    vertical-align: -1px;
+  }
+
+  .key-small {
+    background: #2a78d6;
+  }
+
+  .key-big {
+    background: #eb6834;
+  }
+
+  .key-all {
+    width: 18px;
+    height: 2px;
+    border-radius: 0;
+    background: #52514e;
+    vertical-align: 4px;
+  }
+
+  .tip {
+    position: absolute;
+    padding: 4px 8px;
+    border-radius: 4px;
+    background: #212529;
+    color: #fff;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  details {
+    margin-top: 10px;
+    font-size: 0.85rem;
+  }
+
+  summary {
+    color: var(--muted);
+    cursor: pointer;
+  }
+
+  table {
+    margin-top: 8px;
+    border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+  }
+
+  th,
+  td {
+    padding: 2px 14px 2px 0;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+    font-weight: normal;
+  }
+
+  th {
+    color: var(--muted);
+  }
+
+  figcaption {
+    margin-top: 8px;
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .line,
+    .lbl,
+    .dot {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import { cities, lines, sx, sy } from "../lib/simpson";
+
+  function setup(fig: HTMLElement) {
+    const svg = fig.querySelector("svg")!;
+    const tip = fig.querySelector<HTMLElement>(".tip")!;
+    const dir = fig.querySelector<HTMLElement>("[data-role=dir]")!;
+
+    // checkbox: color on, color off
+    const color = fig.querySelector<HTMLInputElement>("[data-role=color]");
+    color?.addEventListener("change", () => {
+      fig.classList.toggle("is-colored", color.checked);
+    });
+
+    // slider: move the big group and refit all three lines
+    const gap = fig.querySelector<HTMLInputElement>("[data-role=gap]");
+    const groups = fig.querySelectorAll<SVGGElement>(".city");
+    const rows = fig.querySelectorAll<HTMLTableRowElement>("tbody tr");
+    gap?.addEventListener("input", () => {
+      const data = cities(Number(gap.value) / 100);
+      data.forEach((c, i) => {
+        const g = groups[i];
+        g.setAttribute("transform", `translate(${sx(c.x).toFixed(1)} ${sy(c.y).toFixed(1)})`);
+        g.dataset.x = c.x.toFixed(0);
+        g.dataset.y = c.y.toFixed(1);
+        rows[i].querySelector("[data-cell=x]")!.textContent = c.x.toFixed(0);
+        rows[i].querySelector("[data-cell=y]")!.textContent = c.y.toFixed(1);
+      });
+      const L = lines(data);
+      for (const key of ["all", "small", "big"] as const) {
+        const el = fig.querySelector(`[data-line=${key}]`)!;
+        const s = L[key];
+        el.setAttribute("x1", String(s.x1));
+        el.setAttribute("y1", String(s.y1));
+        el.setAttribute("x2", String(s.x2));
+        el.setAttribute("y2", String(s.y2));
+      }
+      dir.textContent = L.allSlope < 0 ? "down" : "up";
+    });
+
+    // tooltip on hover, text only
+    svg.addEventListener("pointerover", (e) => {
+      const g = (e.target as Element).closest<HTMLElement>(".city");
+      if (!g) return;
+      const kind = g.dataset.group === "big" ? "Big city" : "Small city";
+      tip.textContent = `${kind}: €${g.dataset.x} per person, ${g.dataset.y}% growth`;
+      const r = fig.getBoundingClientRect();
+      tip.style.left = `${e.clientX - r.left + 14}px`;
+      tip.style.top = `${e.clientY - r.top - 30}px`;
+      tip.hidden = false;
+    });
+    svg.addEventListener("pointerout", (e) => {
+      if ((e.target as Element).closest(".city")) tip.hidden = true;
+    });
+  }
+
+  document.querySelectorAll<HTMLElement>("[data-simpson]").forEach(setup);
+</script>
