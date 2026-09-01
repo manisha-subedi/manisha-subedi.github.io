@@ -1,14 +1,13 @@
 # Manisha Subedi portfolio
 
-This repository contains Manisha Subedi's public data analyst portfolio.
-The first release connects her research experience to dependable data work.
+Manisha Subedi's public data analyst portfolio. Built with Astro and MDX,
+published to GitHub Pages at `https://levi09750.github.io/`.
 
 ## Content rules
 
-- Use only facts that Manisha approved.
+- Use only facts that Manisha approved. Placeholders are marked "(placeholder)".
 - Label planned projects as in development.
 - Add a result only when a source supports it.
-- Keep each project easy to explain in five minutes.
 
 ## Local development
 
@@ -17,7 +16,7 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:3000/`.
+Open `http://localhost:4321/`.
 
 ## Tests
 
@@ -27,5 +26,11 @@ npm test
 
 ## Publication
 
-GitHub Actions publishes the static site after each push to `main`.
-The public address is `https://levi09750.github.io/`.
+GitHub Actions builds and publishes `dist/` after each push to `main`.
+
+## Where things live
+
+- `src/data/site.ts`: profile, experience, education, projects.
+- `src/content/blog/*.mdx`: posts. Frontmatter: `title`, `date`, `summary`, `readTime`.
+- `src/styles/global.css`: all styling.
+- `docs/superpowers/specs/`: design notes.

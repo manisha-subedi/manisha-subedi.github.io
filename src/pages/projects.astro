@@ -1,0 +1,19 @@
+---
+import Base from "../layouts/Base.astro";
+import { projects } from "../data/site";
+---
+
+<Base title="Projects" description="Data projects by Manisha Subedi.">
+  <h1 class="small-page-title">Projects</h1>
+  {
+    projects.map((p) => (
+      <article class="entry">
+        <div class="entry-heading">
+          <h3>{p.title}</h3>
+          <p class="entry-date">{p.status}</p>
+        </div>
+        <p>{p.text}</p>
+      </article>
+    ))
+  }
+</Base>

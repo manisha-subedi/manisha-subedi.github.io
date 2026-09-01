@@ -1,0 +1,56 @@
+---
+import Base from "../layouts/Base.astro";
+import PostList from "../components/PostList.astro";
+import { getPosts } from "../data/posts";
+import { site, projects } from "../data/site";
+
+const posts = await getPosts();
+---
+
+<Base>
+  <section class="profile" aria-labelledby="profile-name">
+    <img
+      class="profile-photo"
+      src="/manisha-subedi.jpg"
+      alt="Manisha Subedi"
+      width="180"
+      height="180"
+    />
+    <div class="profile-details">
+      <h1 id="profile-name">{site.name}</h1>
+      <p class="profile-role">{site.role}</p>
+      <p class="profile-location">{site.location}</p>
+      <p class="profile-links">
+        <a class="profile-link" href={site.linkedin} target="_blank" rel="noreferrer">
+          LinkedIn
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <section class="intro" aria-label="Introduction">
+    <p>
+      I work as a data engineer at Company A (placeholder). I build the
+      pipelines that load, check, and model the data behind reports and
+      analysis. Before this I was a data engineering intern at Bengen and a
+      junior data analyst intern at Company C (placeholder).
+    </p>
+    <p>
+      Here I write short, illustrated notes on the ideas that make analysis go
+      right or wrong: averages, joins, comparisons, and what a chart leaves
+      out.
+    </p>
+  </section>
+
+  <section class="content-section">
+    <h2>Writing</h2>
+    <PostList posts={posts} />
+  </section>
+
+  <section class="content-section">
+    <h2>Projects</h2>
+    <p>
+      The first project is in development: <a href="/projects/">{projects[0].title}</a>
+    </p>
+  </section>
+</Base>

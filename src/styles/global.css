@@ -36,6 +36,12 @@ a:hover {
   text-decoration: underline;
 }
 
+p {
+  margin: 0 0 1rem;
+}
+
+/* header */
+
 .site-header {
   border-bottom: 1px solid #e6e8ea;
   background: var(--nav-bg);
@@ -74,10 +80,13 @@ a:hover {
   font-size: 0.96rem;
 }
 
-.site-nav a:hover {
+.site-nav a:hover,
+.site-nav a[aria-current="page"] {
   color: rgba(0, 0, 0, 0.85);
   text-decoration: none;
 }
+
+/* page */
 
 .page-content {
   width: min(100% - 32px, 730px);
@@ -106,10 +115,8 @@ a:hover {
   object-fit: cover;
 }
 
-.profile-details h1,
-.page-title {
+.profile-details h1 {
   margin: 0 0 7px;
-  color: #212529;
   font-size: 1.6rem;
   font-weight: 700;
   line-height: 1.2;
@@ -118,7 +125,6 @@ a:hover {
 .profile-role {
   margin: 0 0 2px;
   color: #555;
-  font-size: 1rem;
 }
 
 .profile-location {
@@ -153,11 +159,6 @@ a:hover {
   margin-bottom: 34px;
 }
 
-p {
-  margin-top: 0;
-  margin-bottom: 1rem;
-}
-
 .intro p,
 .content-section > p,
 .post-body p,
@@ -166,7 +167,7 @@ p {
 }
 
 .content-section {
-  margin-top: 16px;
+  margin-top: 24px;
 }
 
 .content-section h2,
@@ -177,147 +178,73 @@ p {
   line-height: 1.4;
 }
 
-.content-section ul {
-  margin: 0;
-  padding-left: 22px;
-}
-
-.content-section li {
-  margin-bottom: 4px;
-}
-
-.resume-entry {
-  margin: 0 0 18px;
-  padding-left: 14px;
-  border-left: 2px solid #ddd;
-}
-
-.resume-entry-heading {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 20px;
-}
-
-.resume-entry h3 {
-  margin: 0;
-  font-size: 0.98rem;
-  font-weight: 600;
-}
-
-.resume-entry-heading p,
-.resume-entry > p {
-  margin-bottom: 7px;
-}
-
-.resume-entry-heading p,
-.resume-entry > p {
-  color: #555;
-  font-size: 0.9rem;
-}
-
-.resume-entry-heading > div > p {
-  color: #495057;
-}
-
-.resume-date {
-  flex: 0 0 auto;
-  color: var(--muted);
-  font-size: 0.88rem;
-  white-space: nowrap;
-}
-
-.site-footer {
-  width: 100%;
-  margin: 0;
-  padding: 22px 16px;
-  border-top: 1px solid #eceeef;
-  background: var(--nav-bg);
-  color: var(--muted);
-  font-size: 0.82rem;
-  text-align: center;
-}
-
-.site-footer p {
-  width: min(100%, 730px);
-  margin: 0;
-  margin-inline: auto;
-}
-
-.page-intro {
-  max-width: 650px;
-  margin: 0 0 30px;
-  color: #495057;
-}
-
 .small-page-title {
   margin: 0 0 16px;
   font-size: 1rem;
   font-weight: 700;
 }
 
-.visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
+/* experience, education, projects */
+
+.entry {
+  margin: 0 0 20px;
 }
 
-.topic-list details {
-  margin-bottom: 7px;
-  padding: 10px 12px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+.entry-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
 }
 
-.topic-list summary {
-  cursor: pointer;
+.entry h3 {
+  margin: 0;
+  font-size: 0.98rem;
   font-weight: 600;
-  list-style: none;
 }
 
-.topic-list summary::-webkit-details-marker {
-  display: none;
+.entry-company {
+  margin: 0 0 6px;
+  color: #495057;
+  font-size: 0.9rem;
 }
 
-.topic-list summary::before {
-  display: inline-block;
-  margin-right: 8px;
-  color: #777;
-  content: "▸";
+.entry-date {
+  flex: 0 0 auto;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+  white-space: nowrap;
 }
 
-.topic-list details[open] summary::before {
-  transform: rotate(90deg);
+.entry > p {
+  margin: 0;
+  color: #555;
+  font-size: 0.9rem;
 }
 
-.topic-list details p {
-  margin: 12px 0 4px 20px;
-}
+/* writing */
 
-.blog-list {
+.post-list {
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.blog-list li {
-  margin-bottom: 10px;
+.post-list li {
+  margin-bottom: 14px;
 }
 
-.blog-list time {
+.post-list time {
   margin-left: 9px;
   color: var(--muted);
   font-size: 0.9rem;
 }
 
-.blog-page {
-  width: min(100% - 48px, 900px);
+.post-summary {
+  margin: 2px 0 0;
+  color: #555;
+  font-size: 0.9rem;
 }
 
 .post-header {
@@ -326,7 +253,7 @@ p {
 
 .post-header h1 {
   margin: 0 0 8px;
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 500;
   line-height: 1.25;
 }
@@ -343,6 +270,24 @@ p {
 .back-link {
   display: inline-block;
   margin-top: 24px;
+}
+
+/* footer */
+
+.site-footer {
+  width: 100%;
+  margin: 0;
+  padding: 22px 16px;
+  border-top: 1px solid #eceeef;
+  background: var(--nav-bg);
+  color: var(--muted);
+  font-size: 0.82rem;
+  text-align: center;
+}
+
+.site-footer p {
+  width: min(100%, 730px);
+  margin: 0 auto;
 }
 
 @media (max-width: 620px) {
@@ -376,7 +321,7 @@ p {
     height: 160px;
   }
 
-  .resume-entry-heading {
+  .entry-heading {
     flex-direction: column;
     gap: 2px;
   }

@@ -1,0 +1,24 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { monthYear } from "../data/posts";
+
+interface Props {
+  posts: CollectionEntry<"blog">[];
+}
+
+const { posts } = Astro.props;
+---
+
+<ul class="post-list">
+  {
+    posts.map((p) => (
+      <li>
+        <a href={`/blog/${p.id}/`}>{p.data.title}</a>
+        <time datetime={p.data.date.toISOString().slice(0, 7)}>
+          {monthYear(p.data.date)}
+        </time>
+        <p class="post-summary">{p.data.summary}</p>
+      </li>
+    ))
+  }
+</ul>

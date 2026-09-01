@@ -1,0 +1,53 @@
+---
+import Base from "../layouts/Base.astro";
+import { experience, education } from "../data/site";
+---
+
+<Base title="About" description="About Manisha Subedi.">
+  <h1 class="small-page-title">About</h1>
+  <div class="about-copy">
+    <p>
+      I live in Amadora, near Lisbon. I studied chemical engineering, and I am
+      now studying food science and technology at FCT NOVA.
+    </p>
+    <p>
+      I am looking for an entry-level data analyst role where I can keep
+      learning and work on real business problems.
+    </p>
+  </div>
+
+  <section class="content-section">
+    <h2>Experience</h2>
+    {
+      experience.map((e) => (
+        <article class="entry">
+          <div class="entry-heading">
+            <div>
+              <h3>{e.role}</h3>
+              <p class="entry-company">{e.company}</p>
+            </div>
+            <p class="entry-date">{e.dates}</p>
+          </div>
+          <p>{e.text}</p>
+        </article>
+      ))
+    }
+  </section>
+
+  <section class="content-section">
+    <h2>Education</h2>
+    {
+      education.map((e) => (
+        <article class="entry">
+          <div class="entry-heading">
+            <div>
+              <h3>{e.degree}</h3>
+              <p class="entry-company">{e.school}</p>
+            </div>
+            <p class="entry-date">{e.dates}</p>
+          </div>
+        </article>
+      ))
+    }
+  </section>
+</Base>
