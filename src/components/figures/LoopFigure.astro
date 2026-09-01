@@ -1,0 +1,114 @@
+---
+// a script is a line. an agent is a loop. a small dot rides the loop so the eye follows it.
+---
+
+<figure>
+  <svg viewBox="0 0 640 300" role="img" aria-label="Left: a script goes question, SQL, number in a straight line. Right: an agent goes look, act, check, and on failure learns and acts again, up to three tries, then answers or stops.">
+    <defs>
+      <marker id="arrowhead" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0 0 L8 4 L0 8 Z" fill="#898781"></path>
+      </marker>
+    </defs>
+    <text x="90" y="24" text-anchor="middle" class="label">a script</text>
+    <g class="box" transform="translate(30 44)"><rect width="120" height="32" rx="6"></rect><text x="60" y="21" text-anchor="middle">question</text></g>
+    <path class="arrow" d="M90 76 V100"></path>
+    <g class="box" transform="translate(30 104)"><rect width="120" height="32" rx="6"></rect><text x="60" y="21" text-anchor="middle">SQL</text></g>
+    <path class="arrow" d="M90 136 V160"></path>
+    <g class="box" transform="translate(30 164)"><rect width="120" height="32" rx="6"></rect><text x="60" y="21" text-anchor="middle">number</text></g>
+    <text x="90" y="226" text-anchor="middle" class="note">right or wrong,</text>
+    <text x="90" y="242" text-anchor="middle" class="note">it prints</text>
+
+    <line x1="210" x2="210" y1="30" y2="280" class="divider"></line>
+
+    <text x="410" y="24" text-anchor="middle" class="label">an agent</text>
+    <g class="box" transform="translate(300 44)"><rect width="110" height="32" rx="6"></rect><text x="55" y="21" text-anchor="middle">look</text></g>
+    <path class="arrow" d="M355 76 V104"></path>
+    <g class="box" transform="translate(300 108)"><rect width="110" height="32" rx="6"></rect><text x="55" y="21" text-anchor="middle">act</text></g>
+    <path class="arrow" d="M355 140 V168"></path>
+    <g class="box" transform="translate(300 172)"><rect width="110" height="32" rx="6"></rect><text x="55" y="21" text-anchor="middle">check</text></g>
+
+    <path class="arrow" d="M410 188 H478"></path>
+    <text x="444" y="182" text-anchor="middle" class="note">pass</text>
+    <g class="box answer" transform="translate(482 172)"><rect width="110" height="32" rx="6"></rect><text x="55" y="21" text-anchor="middle">answer</text></g>
+
+    <path class="arrow" d="M355 204 V232"></path>
+    <text x="372" y="222" class="note">fail</text>
+    <g class="box" transform="translate(300 236)"><rect width="110" height="32" rx="6"></rect><text x="55" y="21" text-anchor="middle">learn</text></g>
+
+    <path class="arrow" d="M300 252 H270 V124 H296"></path>
+    <text x="262" y="192" text-anchor="end" class="note">again,</text>
+    <text x="262" y="206" text-anchor="end" class="note">3 tries</text>
+
+    <path class="arrow" d="M410 252 H478"></path>
+    <text x="444" y="246" text-anchor="middle" class="note">after 3</text>
+    <g class="box stop" transform="translate(482 236)"><rect width="110" height="32" rx="6"></rect><text x="55" y="21" text-anchor="middle">stop, say why</text></g>
+
+    <circle class="dot" r="4"></circle>
+  </svg>
+  <figcaption>A script is a line. An agent is a loop with a check in it and a limit on how many times it goes around.</figcaption>
+</figure>
+
+<style>
+  .label {
+    font-size: 12px;
+    fill: #898781;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .box rect {
+    fill: #fff;
+    stroke: #c3c2b7;
+    stroke-width: 1;
+  }
+
+  .box text {
+    font-size: 13px;
+    fill: #212529;
+  }
+
+  .box.answer rect {
+    stroke: #212529;
+  }
+
+  .box.stop rect {
+    stroke-dasharray: 4 3;
+  }
+
+  .arrow {
+    fill: none;
+    stroke: #898781;
+    stroke-width: 1.5;
+    marker-end: url(#arrowhead);
+  }
+
+  .divider {
+    stroke: #e1e0d9;
+    stroke-width: 1;
+  }
+
+  .note {
+    font-size: 11px;
+    fill: #898781;
+  }
+
+  /* the dot rides the loop: act -> check -> learn -> back to act */
+  .dot {
+    fill: #2a78d6;
+    offset-path: path("M355 140 V252 H270 V124 H355 Z");
+    animation: ride 7s linear infinite;
+  }
+
+  @keyframes ride {
+    to {
+      offset-distance: 100%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dot {
+      animation: none;
+      offset-distance: 0%;
+    }
+  }
+</style>

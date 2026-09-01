@@ -400,3 +400,47 @@ p {
     transition: none;
   }
 }
+
+/* code */
+
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.9em;
+  background: #f1f3f5;
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+
+pre {
+  margin: 0 0 1.1rem;
+  padding: 12px 14px;
+  border: 1px solid #e6e8ea;
+  border-radius: 6px;
+  overflow-x: auto;
+  font-size: 0.85rem;
+  line-height: 1.55;
+}
+
+pre code {
+  padding: 0;
+  background: none;
+  font-size: inherit;
+}
+
+/* figures inside posts */
+
+.post-body figure {
+  margin: 24px 0 28px;
+}
+
+.post-body figure svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.post-body figcaption {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}

@@ -5,4 +5,7 @@ export default defineConfig({
   site: "https://levi09750.github.io",
   trailingSlash: "always",
   integrations: [mdx()],
+  markdown: {
+    shikiConfig: { theme: "github-light" },
+  },
 });

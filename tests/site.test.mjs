@@ -31,19 +31,19 @@ test("about lists experience and education", async () => {
   }
 });
 
-test("writing index, posts, projects", async () => {
+test("writing index and projects", async () => {
   const index = await page("blog/index.html");
-  assert.match(index, /Before lab data reaches a spreadsheet/);
-  assert.match(index, /Before opening Power BI/);
-  assert.match(
-    await page("blog/what-hplc-taught-me/index.html"),
-    /Keep the context nearby/,
-  );
-  assert.match(
-    await page("blog/a-dashboard-is-not-the-analysis/index.html"),
-    /A quick check/,
-  );
+  assert.match(index, /Simpson/);
+  assert.match(index, /You could have invented the data agent/);
+  assert.doesNotMatch(index, /Before opening Power BI|Before lab data/);
   assert.match(await page("projects/index.html"), /in development/);
+});
+
+test("data agent post has code and two figures", async () => {
+  const html = await page("blog/you-could-have-invented-the-data-agent/index.html");
+  assert.match(html, /data_agent/);
+  assert.ok(html.match(/<pre/g).length >= 4, "four code blocks");
+  assert.equal(html.match(/<figure/g).length, 2);
 });
 
 test("simpson post has two figures, 40 dots each, and a table", async () => {

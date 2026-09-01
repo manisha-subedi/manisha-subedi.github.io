@@ -1,0 +1,43 @@
+---
+// what the cheapest check sees: rows versus distinct ids, for the week with the duplicated file
+---
+
+<figure>
+  <svg viewBox="0 0 640 170" role="img" aria-label="Two bars: 2,480 rows against 1,240 distinct order ids for the same week. They are not equal.">
+    <text x="60" y="30" class="label">rows</text>
+    <rect class="bar" x="60" y="40" width="372" height="22" rx="3"></rect>
+    <text x="440" y="56" class="value">2,480</text>
+
+    <text x="60" y="94" class="label">distinct order_id</text>
+    <rect class="bar ok" x="60" y="104" width="186" height="22" rx="3"></rect>
+    <text x="254" y="120" class="value">1,240</text>
+
+    <text x="60" y="156" class="note">In a clean orders table these two bars are the same length. Here every order is in twice.</text>
+  </svg>
+</figure>
+
+<style>
+  .label {
+    font-size: 12px;
+    fill: #898781;
+  }
+
+  .bar {
+    fill: #c3c2b7;
+  }
+
+  .bar.ok {
+    fill: #2a78d6;
+  }
+
+  .value {
+    font-size: 13px;
+    fill: #212529;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .note {
+    font-size: 11.5px;
+    fill: #52514e;
+  }
+</style>
