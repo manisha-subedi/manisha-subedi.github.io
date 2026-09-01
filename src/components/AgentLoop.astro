@@ -375,14 +375,15 @@ const on = (from: number, until?: number) => ({
       steps.forEach((s) => s.classList.toggle("is-active", Number(s.dataset.step) === n));
     }
 
-    // the active step is the first one still visible under the sticky scene
+    // the active step is the first one whose text is still visible under the sticky scene
     const sceneWrap = root.querySelector<HTMLElement>(".scene-wrap")!;
+    const texts = steps.map((s) => s.querySelector("p")!);
     function onScroll() {
-      const edge = sceneWrap.getBoundingClientRect().bottom + 8;
+      const edge = sceneWrap.getBoundingClientRect().bottom;
       let n = steps.length;
-      for (const s of steps) {
-        if (s.getBoundingClientRect().bottom > edge) {
-          n = Number(s.dataset.step);
+      for (let i = 0; i < steps.length; i++) {
+        if (texts[i].getBoundingClientRect().bottom > edge + 12) {
+          n = i + 1;
           break;
         }
       }
