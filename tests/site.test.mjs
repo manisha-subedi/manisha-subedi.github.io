@@ -62,6 +62,14 @@ test("agent post has the scene and seven steps", async () => {
   assert.match(html, /42,000/);
 });
 
+test("row journey post has the scene and eight stops", async () => {
+  const html = await page("blog/one-row-to-power-bi/index.html");
+  assert.match(html, /data-row-journey/);
+  assert.equal(html.match(/class="step[^"]*" data-step="/g).length, 8);
+  assert.match(html, /23:30:12Z/);
+  assert.match(html, /42,000/);
+});
+
 test("no leftovers", async () => {
   for (const p of [
     "index.html",

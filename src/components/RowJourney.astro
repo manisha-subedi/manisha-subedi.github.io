@@ -1,0 +1,265 @@
+---
+// one order row travels eight stops from checkout to a power bi tile.
+// one card per stop; the chip on the rail is the row itself.
+const stops = ["Checkout", "Database", "Export", "Landing", "Raw table", "Clean table", "Monthly", "Power BI"];
+const steps = [
+  "00:30 on September 1, in Lisbon. A customer pays 120 euros. The checkout app makes one order.",
+  "The app writes one row to its database. The amount is stored in cents: 12000. The time keeps its offset: 00:30 +01:00.",
+  "At 02:00 a nightly job exports the day. It converts times to UTC. 00:30 in Lisbon is 23:30 the day before. The row now says August 31.",
+  "The row lands in a CSV file in cloud storage. It is text now. 12000 is a string. The date is a string. The types are gone.",
+  "A loader copies the file into a raw table, as is. Two columns are added: the file the row came from and the time it was loaded.",
+  "A clean step gives the types back. Cents become 120.00. The month comes from the UTC time: August. A join with the customer table adds the country: PT.",
+  "A monthly table sums the clean rows. The row disappears into one line: August, PT, 1,240 orders, 42,000. It is one of the 1,240.",
+  "Power BI reads the monthly table and shows a tile. Revenue, August: 42,000. A September purchase is inside that number, and nobody decided that.",
+];
+const X = (k: number) => 60 + (k - 1) * 74;
+const on = (from: number, until?: number) => ({ "data-from": from, "data-until": until });
+
+// key/value cards for stops 1 to 6. chg marks a value that changed at this stop.
+type Field = [string, string, boolean?];
+const cards: { title: string; fields: Field[] }[] = [
+  {
+    title: "Checkout app",
+    fields: [
+      ["order", "#5011"],
+      ["amount", "120.00 €"],
+      ["time", "00:30, September 1 (Lisbon)"],
+      ["payment", "card, approved"],
+    ],
+  },
+  {
+    title: "Database · table orders",
+    fields: [
+      ["order_id", "5011"],
+      ["amount_cents", "12000", true],
+      ["created_at", "2026-09-01 00:30:12 +01:00", true],
+      ["status", "paid"],
+    ],
+  },
+  {
+    title: "Nightly export · 02:00",
+    fields: [
+      ["file", "orders_2026-08-31.csv", true],
+      ["order_id", "5011"],
+      ["amount_cents", "12000"],
+      ["created_at", "2026-08-31T23:30:12Z", true],
+      ["status", "paid"],
+    ],
+  },
+  {
+    title: "Cloud storage · one line of text",
+    fields: [
+      ["header", "order_id,amount_cents,created_at,status"],
+      ["line 4,812", "5011,12000,2026-08-31T23:30:12Z,paid", true],
+      ["types", "none", true],
+    ],
+  },
+  {
+    title: "Raw table · loaded as is",
+    fields: [
+      ["order_id", "\"5011\""],
+      ["amount_cents", "\"12000\""],
+      ["created_at", "\"2026-08-31T23:30:12Z\""],
+      ["status", "\"paid\""],
+      ["file_id", "f-0831", true],
+      ["loaded_at", "2026-09-01 03:05Z", true],
+    ],
+  },
+  {
+    title: "Clean table",
+    fields: [
+      ["order_id", "5011"],
+      ["amount", "120.00", true],
+      ["ordered_at", "2026-08-31 23:30 UTC"],
+      ["month", "2026-08", true],
+      ["status", "paid"],
+      ["country", "PT", true],
+    ],
+  },
+];
+---
+
+<div class="story" data-row-journey>
+  <div class="scene-wrap">
+    <svg
+      class="scene"
+      viewBox="0 0 640 360"
+      role="img"
+      aria-label="One order row travels through eight stops from a checkout app to a Power BI tile"
+    >
+      <line class="rail" x1={X(1)} x2={X(8)} y1="40" y2="40"></line>
+      {stops.map((s, i) => (
+        <g class:list={["stop", { now: i === 0 }]} transform={`translate(${X(i + 1)} 40)`}>
+          <circle r="6"></circle>
+          <text y="24" text-anchor="middle">{s}</text>
+        </g>
+      ))}
+      <g class="chip" style={`transform: translate(${X(1) - 11}px, 22px)`}>
+        <rect width="22" height="12" rx="3"></rect>
+      </g>
+
+      {cards.map((c, i) => (
+        <g class:list={["card", { on: i === 0 }]} transform="translate(120 92)" {...on(i + 1, i + 1)}>
+          <rect width="400" height="210" rx="6"></rect>
+          <text x="16" y="24" class="title">{c.title}</text>
+          {c.fields.map(([k, v, chg], j) => (
+            <>
+              <text x="16" y={54 + j * 24} class="key">{k}</text>
+              <text x="150" y={54 + j * 24} class:list={["mono", { chg }]}>{v}</text>
+            </>
+          ))}
+        </g>
+      ))}
+
+      <g class="card" transform="translate(120 92)" {...on(7, 7)}>
+        <rect width="400" height="210" rx="6"></rect>
+        <text x="16" y="24" class="title">Monthly table</text>
+        <text x="16" y="60" class="mono key">month      country   orders   revenue</text>
+        <text x="16" y="84" class="mono">2026-08    PT        1,240    42,000.00</text>
+        <line x1="16" x2="384" y1="96" y2="96" class="rule"></line>
+        <g transform="translate(16 118)" class="ghost">
+          <rect width="22" height="12" rx="3"></rect>
+        </g>
+        <text x="46" y="128" class="key">order 5011 is one of the 1,240</text>
+      </g>
+
+      <g class="tile" transform="translate(170 106)" {...on(8, 8)}>
+        <rect width="300" height="150" rx="6"></rect>
+        <text x="20" y="34" class="key">Revenue · August</text>
+        <text x="20" y="92" class="big">42,000</text>
+        <text x="20" y="124" class="key">PT · 1,240 orders</text>
+      </g>
+    </svg>
+  </div>
+
+  <ol class="steps">
+    {steps.map((text, i) => (
+      <li class:list={["step", { "is-active": i === 0 }]} data-step={i + 1}>
+        <span class="n">Stop {i + 1} of {steps.length}</span>
+        <p>{text}</p>
+      </li>
+    ))}
+  </ol>
+</div>
+
+<style>
+  .rail {
+    stroke: #c3c2b7;
+    stroke-width: 1;
+  }
+
+  .stop circle {
+    fill: #fff;
+    stroke: #c3c2b7;
+    stroke-width: 1.5;
+    transition: fill 0.3s, stroke 0.3s;
+  }
+
+  .stop.done circle {
+    fill: #c3c2b7;
+  }
+
+  .stop.now circle {
+    fill: #212529;
+    stroke: #212529;
+  }
+
+  .stop text {
+    font-size: 10px;
+    fill: #898781;
+    transition: fill 0.3s;
+  }
+
+  .stop.now text {
+    fill: #212529;
+  }
+
+  .chip {
+    transition: transform 0.7s ease, opacity 0.5s;
+  }
+
+  .chip rect,
+  .ghost rect {
+    fill: #2a78d6;
+  }
+
+  .chip.merged {
+    opacity: 0.35;
+  }
+
+  .chip.gone {
+    opacity: 0;
+  }
+
+  .ghost rect {
+    opacity: 0.35;
+  }
+
+  .card rect,
+  .tile rect {
+    fill: #fff;
+    stroke: #c3c2b7;
+    stroke-width: 1;
+  }
+
+  .title {
+    font-size: 12px;
+    font-weight: 600;
+    fill: #212529;
+  }
+
+  .key {
+    font-size: 11px;
+    fill: #898781;
+  }
+
+  .mono {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 11.5px;
+    fill: #212529;
+    white-space: pre;
+  }
+
+  .mono.chg {
+    fill: #2a78d6;
+  }
+
+  .rule {
+    stroke: #e1e0d9;
+    stroke-width: 1;
+  }
+
+  .big {
+    font-size: 40px;
+    font-weight: 600;
+    fill: #212529;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .chip,
+    .stop circle,
+    .stop text {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import { trackSteps } from "../lib/steps";
+
+  const X = (k: number) => 60 + (k - 1) * 74;
+
+  document.querySelectorAll<HTMLElement>("[data-row-journey]").forEach((root) => {
+    const chip = root.querySelector<SVGGElement>(".chip")!;
+    const stops = root.querySelectorAll<SVGGElement>(".stop");
+    trackSteps(root, (n) => {
+      chip.style.transform = `translate(${X(n) - 11}px, 22px)`;
+      chip.classList.toggle("merged", n === 7);
+      chip.classList.toggle("gone", n === 8);
+      stops.forEach((s, i) => {
+        s.classList.toggle("done", i + 1 < n);
+        s.classList.toggle("now", i + 1 === n);
+      });
+    });
+  });
+</script>

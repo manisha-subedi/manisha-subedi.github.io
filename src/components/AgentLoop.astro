@@ -136,65 +136,6 @@ const on = (from: number, until?: number) => ({
 </div>
 
 <style>
-  .story {
-    margin: 28px 0;
-  }
-
-  .scene-wrap {
-    position: sticky;
-    top: 0;
-    z-index: 1;
-    padding: 6px 0 10px;
-    background: #fff;
-  }
-
-  .scene {
-    display: block;
-    width: 100%;
-    height: auto;
-    font-family: inherit;
-  }
-
-  .steps {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .step {
-    min-height: 42vh;
-    padding: 12px 0;
-    color: var(--muted);
-    transition: color 0.3s;
-  }
-
-  .step.is-active {
-    color: var(--text);
-  }
-
-  .step .n {
-    display: block;
-    margin-bottom: 4px;
-    font-size: 0.8rem;
-    color: var(--muted);
-  }
-
-  .step p {
-    margin: 0;
-    font-size: 0.95rem;
-    text-align: left;
-  }
-
-  /* reveal */
-  [data-from] {
-    opacity: 0;
-    transition: opacity 0.35s;
-  }
-
-  [data-from].on {
-    opacity: 1;
-  }
-
   /* scene parts */
   .bubble rect,
   .card rect,
@@ -329,8 +270,6 @@ const on = (from: number, until?: number) => ({
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .step,
-    [data-from],
     .bar,
     .agent {
       transition: none;
@@ -343,6 +282,8 @@ const on = (from: number, until?: number) => ({
 </style>
 
 <script>
+  import { trackSteps } from "../lib/steps";
+
   // where the agent stands at each step, in scene units
   const AGENT: Record<number, [number, number]> = {
     1: [60, 176],
@@ -354,57 +295,13 @@ const on = (from: number, until?: number) => ({
     7: [60, 176],
   };
 
-  function setup(root: HTMLElement) {
-    const parts = root.querySelectorAll<SVGElement>("[data-from]");
+  document.querySelectorAll<HTMLElement>("[data-agent-loop]").forEach((root) => {
     const agent = root.querySelector<SVGGElement>(".agent")!;
     const chart = root.querySelector<SVGGElement>(".chart")!;
-    const steps = [...root.querySelectorAll<HTMLElement>(".step")];
-    let current = 0;
-
-    function setStep(n: number) {
-      if (n === current) return;
-      current = n;
-      parts.forEach((el) => {
-        const from = Number(el.dataset.from);
-        const until = el.dataset.until ? Number(el.dataset.until) : Infinity;
-        el.classList.toggle("on", n >= from && n <= until);
-      });
+    trackSteps(root, (n) => {
       const [x, y] = AGENT[n];
       agent.style.transform = `translate(${x}px, ${y}px)`;
       chart.classList.toggle("fixed", n >= 6);
-      steps.forEach((s) => s.classList.toggle("is-active", Number(s.dataset.step) === n));
-    }
-
-    // the active step is the first one whose text is still visible under the sticky scene
-    const sceneWrap = root.querySelector<HTMLElement>(".scene-wrap")!;
-    const texts = steps.map((s) => s.querySelector("p")!);
-    function onScroll() {
-      const edge = sceneWrap.getBoundingClientRect().bottom;
-      let n = steps.length;
-      for (let i = 0; i < steps.length; i++) {
-        if (texts[i].getBoundingClientRect().bottom > edge + 12) {
-          n = i + 1;
-          break;
-        }
-      }
-      setStep(n);
-    }
-
-    let ticking = false;
-    window.addEventListener(
-      "scroll",
-      () => {
-        if (ticking) return;
-        ticking = true;
-        requestAnimationFrame(() => {
-          onScroll();
-          ticking = false;
-        });
-      },
-      { passive: true },
-    );
-    onScroll();
-  }
-
-  document.querySelectorAll<HTMLElement>("[data-agent-loop]").forEach(setup);
+    });
+  });
 </script>

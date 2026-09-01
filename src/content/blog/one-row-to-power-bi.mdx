@@ -1,0 +1,29 @@
+---
+title: What happens to a number before Power BI shows it
+date: 2026-09-04
+summary: One order, eight stops, one tile. At each stop something about the row changes, and one change was never a decision.
+readTime: 4 min read
+---
+
+import RowJourney from "../../components/RowJourney.astro";
+
+A tile in Power BI says 42,000. It looks like a fact. It is the end of a
+trip. One row made that trip through eight stops, and at each stop something
+about it changed. Some of the changes were decisions. Some were defaults.
+
+This post follows one order from the checkout to the tile. Scroll through
+the eight stops. The row on the rail is the order.
+
+<RowJourney />
+
+## Walk one row back
+
+When two dashboards disagree, the cause is almost always one stop where they
+made a different choice. Local time or UTC. Cents or euros. Paid orders or
+all orders. The fastest way to find it is to take one row and walk it back,
+stop by stop, until the two paths split.
+
+The month of this order is a good example. The app says September. The
+warehouse says August. Both are correct for their own clock. The report must
+say which clock it uses. If it does not, the number is not wrong, but it is
+not a fact either.

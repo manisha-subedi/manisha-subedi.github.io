@@ -333,3 +333,70 @@ p {
     text-align: left;
   }
 }
+
+/* scroll-driven scenes (illustrated posts) */
+
+.story {
+  margin: 28px 0;
+}
+
+.scene-wrap {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 6px 0 10px;
+  background: #fff;
+}
+
+.scene {
+  display: block;
+  width: 100%;
+  height: auto;
+  font-family: inherit;
+}
+
+.steps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.step {
+  min-height: 42vh;
+  padding: 12px 0;
+  color: var(--muted);
+  transition: color 0.3s;
+}
+
+.step.is-active {
+  color: var(--text);
+}
+
+.step .n {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.step p {
+  margin: 0;
+  font-size: 0.95rem;
+  text-align: left;
+}
+
+.scene [data-from] {
+  opacity: 0;
+  transition: opacity 0.35s;
+}
+
+.scene [data-from].on {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .step,
+  .scene [data-from] {
+    transition: none;
+  }
+}
