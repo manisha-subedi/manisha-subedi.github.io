@@ -1,8 +1,8 @@
 ---
 title: Simpson's paradox, drawn
 date: 2026-09-02
-summary: Each group shows a trend up. All groups together show a trend down. Both are true.
-readTime: 4 min read
+summary: Each group shows a trend up. All groups together show a trend down. Both are true, and each answers a different question.
+readTime: 5 min read
 ---
 
 import SimpsonScatter from "../../components/SimpsonScatter.astro";
@@ -19,14 +19,16 @@ data changed. Only the grouping changed.
 
 This is Simpson's paradox. A trend in the full data can reverse when you
 divide the data into groups. The paradox is not an error in the math. Both
-lines are correct. They answer different questions.
+lines are correct. They answer different questions, and the rest of this
+post is about which question is which.
 
 ## Why the line turns
 
-The two groups differ on both axes. Big cities spend more per person, and they
-grow less. Small cities spend less, and they grow more. When all cities are on
-one chart, the line mostly compares big cities with small cities. It does not
-compare spend with growth.
+The two groups differ on both axes. Big cities spend more per person, and
+they grow less, because their markets are closer to saturation. Small cities
+spend less and grow more. When all cities are on one chart, the pooled line
+mostly compares big cities with small cities. It does not compare spend with
+growth.
 
 In each group, the cities have a similar size. The size effect is gone. What
 is left is the effect of spend, and that effect is positive.
@@ -38,17 +40,52 @@ is left is the effect of spend, and that effect is positive.
 
 The reversal needs a third variable. That variable must move with the x-axis
 and with the y-axis at the same time. City size does both. If the groups have
-the same spend and the same growth, the paradox cannot occur.
+the same spend and the same growth, the paradox cannot occur. Move the slider
+to zero and the three lines agree.
 
-## What to do with a trend
+## A real case
 
-Before you trust a trend, ask what else is different between the dots. Then
-divide the data by that variable. If the direction stays the same, the trend
-is stronger. If the direction changes, the variable is part of the answer.
-Put it in the report. Do not delete it.
+In 1973, the University of California, Berkeley admitted 44 percent of male
+applicants and 35 percent of female applicants. In most departments, women
+were admitted at the same rate as men or at a higher rate. Women applied more
+often to the departments with low admission rates. The department was the
+hidden variable. Bickel, Hammel, and O'Connell published the analysis in
+Science in 1975.
 
-Common hidden variables are customer segment, device type, country, season,
-and store size.
+The same pattern appears in medical trials, where the sicker patients get
+the stronger treatment, and in sales data, where the discounts go to the
+customers who were about to leave.
 
-The data on this page is simulated. The pattern is real. It appears in
-medical trials, admissions data, and sales reports.
+## Which line answers your question
+
+The group line answers a causal question. If one city increases its spend,
+what happens to its growth? The city does not change size, so the comparison
+must hold size fixed. The group line is the answer, and it points up.
+
+The pooled line answers a prediction question. A new city sends you its spend
+and nothing else. What growth do you expect? High spend is a sign of a big
+city, and big cities grow less. The pooled line is the answer, and it points
+down.
+
+Most business questions are causal questions. "Does marketing work?" means
+"What happens if we spend more?". It does not mean "What do high spenders
+look like?". Answer it with the group line.
+
+## How to find it before it finds you
+
+A pooled trend is safe only when the groups are similar on the x-axis. Three
+checks:
+
+1. **Plot by group before you pool.** If the group lines and the pooled line
+   disagree in direction, stop and explain why.
+2. **Compare the x-axis by group.** If big cities spend 55 to 95 and small
+   cities spend 10 to 50, the ranges do not overlap. The pooled line compares
+   groups, not spend.
+3. **Compare the group mix across arms.** If one arm of an A/B test has more
+   big cities than the other, the aggregate result is not a fair comparison.
+
+When the direction flips, report both lines and say which question each one
+answers. Do not pick the one that supports the plan.
+
+The data on this page is simulated. The pattern is real. Every dataset with a
+hidden group has the same trap.

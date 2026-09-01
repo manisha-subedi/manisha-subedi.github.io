@@ -2,13 +2,13 @@
 // scroll-driven scene: one agent, three tables, one duplicated file.
 // every element carries data-from (and optional data-until); the script turns them on per step.
 const steps = [
-  "The agent gets the question. It does not know the tables yet. It does not know about the problem.",
-  "It reads the schema. Three tables: files, orders, and customers. Each order row has an amount, a month, and the file it came from.",
-  "It writes one query and runs it. Sum the amounts for August. The warehouse returns 84,000.",
-  "A careless agent stops here. A careful one examines the number. August has 2,480 orders. The months before had about 1,200. Something is wrong.",
-  "It looks for duplicates. Each order ID appears twice. The files table shows why. The August file was loaded two times.",
-  "It removes the second copy and runs the query again. 42,000. The order count is 1,240, close to the other months.",
-  "It answers. Revenue in August was 42,000. It also reports what it found and what it changed. The report is part of the answer.",
+  "The agent gets the question: what was the revenue in August? It has read access to the warehouse and a budget of a few queries. It does not know about the fault.",
+  "It reads the schema. The orders table has an amount, a month, and a file_id. The files table records each load. The customers table is not needed for this question, and the agent notes that.",
+  "It writes the obvious query: sum the amounts for August. The warehouse returns 84,000. The schema test, the not-null test, and the type test all pass. Nothing in the tooling says stop.",
+  "It compares the number with something it did not compute. August has 2,480 orders. June and July had about 1,200 each. Revenue doubled, and so did the order count. A real jump in sales does not double the order count to the digit.",
+  "It runs the one query that proves duplicates: count all rows and count distinct order IDs. 2,480 against 1,240. Every ID appears twice. The files table shows the cause: orders_08.csv has two load records.",
+  "It has a choice. It can patch the query with DISTINCT and return 42,000. Or it can stop and report. It computes 42,000 on one row per order, but it does not touch the data. A patched query hides the fault from the next person.",
+  "It answers: 42,000, with the query that proves it, the query that found the fault, and one request. Make the load refuse a file it already loaded. The number is the smallest part of the answer.",
 ];
 const on = (from: number, until?: number) => ({
   "data-from": from,
@@ -30,12 +30,13 @@ const on = (from: number, until?: number) => ({
         <text x="12" y="20">What was the revenue</text>
         <text x="12" y="37">in August?</text>
       </g>
-      <g transform="translate(20 70)" class="bubble" {...on(7)}>
-        <rect width="200" height="90" rx="8"></rect>
+      <g transform="translate(20 60)" class="bubble" {...on(7)}>
+        <rect width="200" height="104" rx="8"></rect>
         <text x="12" y="22" class="big">42,000</text>
-        <text x="12" y="44">The August file was loaded</text>
-        <text x="12" y="60">twice. I removed the second</text>
-        <text x="12" y="76">copy and ran the query again.</text>
+        <text x="12" y="42">The August file was loaded</text>
+        <text x="12" y="58">twice. I did not change the</text>
+        <text x="12" y="74">data. Please make the load</text>
+        <text x="12" y="90">refuse a repeated file.</text>
       </g>
 
       <!-- middle: result, orders per month, query -->
@@ -72,7 +73,7 @@ const on = (from: number, until?: number) => ({
         <text x="12" y="20" class="mono">SELECT SUM(amount)</text>
         <text x="12" y="36" class="mono">FROM orders</text>
         <text x="12" y="52" class="mono">WHERE month = '2026-08'</text>
-        <text x="12" y="72" class="mono note" {...on(6)}>-- second load removed</text>
+        <text x="12" y="72" class="mono note" {...on(6)}>-- one row per order_id</text>
       </g>
 
       <path class="flow" d="M400 288 C 424 288, 416 200, 440 200" {...on(3, 3)}></path>
@@ -88,8 +89,7 @@ const on = (from: number, until?: number) => ({
         <text x="10" y="32" class="cols" {...on(2)}>file_id · name · loads</text>
         <text x="10" y="50" class="mono" {...on(5)}>f-07  orders_07.csv   1</text>
         <rect x="6" y="56" width="168" height="14" class="dup" {...on(5, 5)}></rect>
-        <text x="10" y="66" class="mono" {...on(5, 5)}>f-08  orders_08.csv   2</text>
-        <text x="10" y="66" class="mono" {...on(6)}>f-08  orders_08.csv   1</text>
+        <text x="10" y="66" class="mono" {...on(5)}>f-08  orders_08.csv   2</text>
       </g>
 
       <g transform="translate(440 112)" class="card">
@@ -99,13 +99,13 @@ const on = (from: number, until?: number) => ({
         <text x="10" y="32" class="cols" {...on(2)}>order_id · amount · month · file_id</text>
         <text x="10" y="52" class="mono" {...on(5)}>5011   120   08   f-08</text>
         <rect x="6" y="58" width="168" height="14" class="dup" {...on(5, 5)}></rect>
-        <text x="10" y="68" class="mono" {...on(5, 5)}>5011   120   08   f-08</text>
+        <text x="10" y="68" class="mono dup-row" {...on(5)}>5011   120   08   f-08</text>
         <text x="10" y="84" class="mono" {...on(5)}>5012    35   08   f-08</text>
         <rect x="6" y="90" width="168" height="14" class="dup" {...on(5, 5)}></rect>
-        <text x="10" y="100" class="mono" {...on(5, 5)}>5012    35   08   f-08</text>
+        <text x="10" y="100" class="mono dup-row" {...on(5)}>5012    35   08   f-08</text>
         <text x="10" y="116" class="mono" {...on(5)}>5013    80   08   f-08</text>
         <rect x="6" y="122" width="168" height="14" class="dup" {...on(5, 5)}></rect>
-        <text x="10" y="132" class="mono" {...on(5, 5)}>5013    80   08   f-08</text>
+        <text x="10" y="132" class="mono dup-row" {...on(5)}>5013    80   08   f-08</text>
         <text x="168" y="100" text-anchor="end" class="label warn-text" {...on(5, 5)}>×2</text>
       </g>
 
@@ -261,6 +261,10 @@ const on = (from: number, until?: number) => ({
     fill: #fbe9e7;
   }
 
+  .story.fixed .dup-row {
+    fill: #c3c2b7;
+  }
+
   .warn-text {
     fill: #d03b3b;
     font-weight: 600;
@@ -372,17 +376,19 @@ const on = (from: number, until?: number) => ({
       const [x, y] = AGENT[n];
       agent.style.transform = `translate(${x}px, ${y}px)`;
       chart.classList.toggle("fixed", n >= 6);
+      root.classList.toggle("fixed", n >= 6);
       steps.forEach((s) => s.classList.toggle("is-active", Number(s.dataset.step) === n));
     }
 
-    // the active step is the first one still visible under the sticky scene
+    // the active step is the first one whose text is still visible under the sticky scene
     const sceneWrap = root.querySelector<HTMLElement>(".scene-wrap")!;
+    const texts = steps.map((s) => s.querySelector("p")!);
     function onScroll() {
-      const edge = sceneWrap.getBoundingClientRect().bottom + 8;
+      const edge = sceneWrap.getBoundingClientRect().bottom;
       let n = steps.length;
-      for (const s of steps) {
-        if (s.getBoundingClientRect().bottom > edge) {
-          n = Number(s.dataset.step);
+      for (let i = 0; i < steps.length; i++) {
+        if (texts[i].getBoundingClientRect().bottom > edge + 12) {
+          n = i + 1;
           break;
         }
       }
