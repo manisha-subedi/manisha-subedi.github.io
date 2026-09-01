@@ -46,6 +46,13 @@ test("data agent post has code and two figures", async () => {
   assert.equal(html.match(/<figure/g).length, 2);
 });
 
+test("average post has six questions, code, and two figures", async () => {
+  const html = await page("blog/yet-another-explanation-for-the-average-customer/index.html");
+  assert.equal(html.match(/<strong>Q\d\./g).length, 6);
+  assert.match(html, /without_whale/);
+  assert.equal(html.match(/<figure/g).length, 2);
+});
+
 test("simpson post has two figures, 40 dots each, and a table", async () => {
   const html = await page("blog/simpsons-paradox-drawn/index.html");
   assert.equal(html.match(/data-simpson="/g).length, 2);

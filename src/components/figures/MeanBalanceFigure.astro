@@ -1,0 +1,70 @@
+---
+// the mean is the balance point of the number line. 29 people at 10 and one at 1,000 balance at 43.
+const X = (v: number) => 60 + v * 0.54;
+const cluster = (baseY: number) =>
+  Array.from({ length: 29 }, (_, i) => ({
+    x: X(10) + ((i % 5) - 2) * 6,
+    y: baseY - 6 - Math.floor(i / 5) * 7,
+  }));
+const rowA = cluster(90);
+const rowB = cluster(210);
+---
+
+<figure>
+  <svg viewBox="0 0 640 260" role="img" aria-label="Two number lines from 0 to 1,000. On the first, 29 dots sit at 10 and one dot at 1,000, and the balance point, the mean, is at 43. On the second, without the dot at 1,000, the balance point is at 10.">
+    <text x="60" y="30" class="label">with the wholesale buyer</text>
+    <line x1={X(0)} x2={X(1000)} y1="90" y2="90" class="axis"></line>
+    <text x={X(0)} y="106" class="tick" text-anchor="middle">0</text>
+    <text x={X(1000)} y="106" class="tick" text-anchor="middle">1,000</text>
+    {rowA.map((p) => <circle cx={p.x} cy={p.y} r="2.6" class="dot"></circle>)}
+    <circle cx={X(1000)} cy="84" r="3.5" class="dot whale"></circle>
+    <text x={X(1000)} y="72" class="tick" text-anchor="middle">1 customer</text>
+    <text x={X(10)} y="44" class="tick" text-anchor="middle">29 customers</text>
+    <path d={`M${X(43)} 91 L${X(43) - 6} 102 L${X(43) + 6} 102 Z`} class="fulcrum"></path>
+    <text x={X(43)} y="118" class="value" text-anchor="middle">mean 43</text>
+
+    <text x="60" y="150" class="label">without the wholesale buyer</text>
+    <line x1={X(0)} x2={X(1000)} y1="210" y2="210" class="axis"></line>
+    <text x={X(0)} y="226" class="tick" text-anchor="middle">0</text>
+    <text x={X(1000)} y="226" class="tick" text-anchor="middle">1,000</text>
+    {rowB.map((p) => <circle cx={p.x} cy={p.y} r="2.6" class="dot"></circle>)}
+    <path d={`M${X(10)} 211 L${X(10) - 6} 222 L${X(10) + 6} 222 Z`} class="fulcrum"></path>
+    <text x={X(10)} y="238" class="value" text-anchor="middle">mean 10</text>
+  </svg>
+  <figcaption>The mean is where the line balances. One customer far to the right moves the balance point, even though nobody else moved.</figcaption>
+</figure>
+
+<style>
+  .label {
+    font-size: 12px;
+    fill: #898781;
+  }
+
+  .axis {
+    stroke: #c3c2b7;
+    stroke-width: 1;
+  }
+
+  .tick {
+    font-size: 10px;
+    fill: #898781;
+  }
+
+  .dot {
+    fill: #898781;
+  }
+
+  .dot.whale {
+    fill: #2a78d6;
+  }
+
+  .fulcrum {
+    fill: #212529;
+  }
+
+  .value {
+    font-size: 12px;
+    fill: #212529;
+    font-weight: 600;
+  }
+</style>

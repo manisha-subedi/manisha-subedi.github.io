@@ -1,0 +1,48 @@
+---
+// line up 30 customers by spend. the median is the one in the middle. the whale at the end does not move it.
+const boxes = Array.from({ length: 30 }, (_, i) => ({ x: 60 + i * 17, whale: i === 29, mid: i === 14 || i === 15 }));
+---
+
+<figure>
+  <svg viewBox="0 0 640 110" role="img" aria-label="Thirty small squares in a row, sorted by spend. The two in the middle are marked. The last square, the 1,000 euro customer, is blue and at the far end.">
+    <text x="60" y="26" class="label">30 customers, lined up from smallest to biggest spend</text>
+    {boxes.map((b) => (
+      <rect x={b.x} y="40" width="12" height="12" rx="2" class:list={["box", { whale: b.whale, mid: b.mid }]}></rect>
+    ))}
+    <text x="66" y="68" class="tick" text-anchor="middle">10</text>
+    <text x={60 + 29 * 17 + 6} y="68" class="tick" text-anchor="middle">1,000</text>
+    <path d={`M${60 + 14 * 17 + 6} 56 V72 M${60 + 15 * 17 + 6} 56 V72`} class="mark"></path>
+    <text x={60 + 14 * 17 + 15} y="90" class="value" text-anchor="middle">the middle two: 10 and 10, so the median is 10</text>
+  </svg>
+  <figcaption>The median only cares about who is in the middle of the line. Remove the last square and the middle barely moves.</figcaption>
+</figure>
+
+<style>
+  .label,
+  .tick {
+    font-size: 11px;
+    fill: #898781;
+  }
+
+  .box {
+    fill: #c3c2b7;
+  }
+
+  .box.whale {
+    fill: #2a78d6;
+  }
+
+  .box.mid {
+    fill: #212529;
+  }
+
+  .mark {
+    stroke: #212529;
+    stroke-width: 1;
+  }
+
+  .value {
+    font-size: 12px;
+    fill: #212529;
+  }
+</style>

@@ -1,0 +1,89 @@
+---
+title: Yet another explanation for the average customer
+date: 2026-09-06
+summary: Six questions about 30 customers, and by the end you will not trust an average without looking behind it.
+readTime: 4 min read
+---
+
+import MeanBalanceFigure from "../../components/figures/MeanBalanceFigure.astro";
+import MedianLineFigure from "../../components/figures/MedianLineFigure.astro";
+
+Everybody knows that the average can mislead. But when you try to explain
+it to someone, it turns into a lecture about distributions and tails and they
+stop listening. So here is the way I do it: as a series of small questions,
+with numbers you can do in your head.
+
+Imagine you run a small online shop. Last month you had 30 customers. 29 of
+them bought something for 10 euros. One of them, a wholesale buyer, bought
+for 1,000 euros.
+
+**Q1. What is the total revenue?**
+
+29 times 10 is 290, plus 1,000. So 1,290 euros. Easy.
+
+**Q2. Divide the total by the number of customers. What does the "average
+customer" spend?**
+
+1,290 divided by 30 is 43 euros.
+
+**Q3. How many of the 30 customers spent around 43 euros?**
+
+Zero. 29 of them spent less than half of that. One spent 23 times more. The
+average customer spends 43 euros and does not exist.
+
+**Q4. Next month the wholesale buyer does not come back. The other 29 do
+exactly what they did before. What is the average now?**
+
+290 divided by 29 is 10 euros. The average dropped by 77 percent, and not a
+single customer changed their behaviour. Only one left.
+
+<MeanBalanceFigure />
+
+**Q5. Line up the 30 customers from smallest spend to biggest, and look at
+the one in the middle. What did they spend?**
+
+10 euros. With 30 people the middle is between number 15 and number 16, and
+both spent 10. Now take the wholesale buyer out of the line and look at the
+middle again. Still 10. This middle number is the median, and it does not
+care how big the biggest customer is.
+
+<MedianLineFigure />
+
+**Q6. Your manager wants one number for the slide. Which one do you give?**
+
+It depends on the question behind the slide. "How much money do we make per
+customer?" is a finance question, and 43 is the honest answer, because it is
+the total spread out evenly. "What does a customer usually spend?" is a
+different question, and the honest answer is 10. If you have to pick one
+sentence, pick this one: "A typical customer spends 10 euros, one customer
+spent 1,000, and revenue was 1,290." Three numbers, no surprise later.
+
+## The same thing in code
+
+```python
+spend = [10] * 29 + [1000]
+
+mean = sum(spend) / len(spend)            # 43.0
+median = sorted(spend)[len(spend) // 2]   # 10
+
+without_whale = spend[:-1]
+sum(without_whale) / len(without_whale)   # 10.0
+sorted(without_whale)[len(without_whale) // 2]   # 10
+```
+
+## Where this bites you
+
+This is not a story about shops. It is a story about anything that has no
+ceiling. Salaries, where one director pulls the average up. Session length,
+where one person left a tab open overnight. Delivery time, where one parcel
+got lost for three weeks. File sizes, order values, page load times. When the
+biggest value can be a hundred times the typical one, the average follows the
+biggest value, and the median stays with the crowd.
+
+The habit that saves you is simple. Whenever you compute an average, compute
+the median next to it. If the two are close, fine, the average is telling the
+truth. If they are far apart, look at the top five values before you put the
+average on a slide. One of them is probably the whole story.
+
+So, the average customer spends 43 euros and does not exist. The median
+customer spends 10 euros and is real. Introduce your manager to the real one.
