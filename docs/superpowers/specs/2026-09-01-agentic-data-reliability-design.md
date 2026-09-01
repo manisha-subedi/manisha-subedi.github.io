@@ -728,10 +728,11 @@ The `Manisha Subedi` brand already links to `/` on every route. The later site
 change adds a visible hover and keyboard-focus affordance and tests the link
 from nested blog routes.
 
-LinkedIn and CV buttons are added only after receiving Manisha's direct
-LinkedIn URL and either an approved CV PDF or approval to create a CV from
-confirmed facts. The repository currently contains neither asset; Seemron's
-resume content is never reused.
+Manisha's confirmed LinkedIn URL is
+`https://pt.linkedin.com/in/manisubedi`; the homepage profile links directly to
+it. A CV button is added after an approved Manisha PDF is generated from
+confirmed facts using the supplied layout template. Seemron's resume content
+is never reused.
 
 ## 18. Verification strategy for the later implementation
 

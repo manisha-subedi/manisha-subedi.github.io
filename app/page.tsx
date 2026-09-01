@@ -17,6 +17,17 @@ export default function Home() {
           <h1 id="profile-name">Manisha Subedi</h1>
           <p className="profile-role">Data Analyst</p>
           <p className="profile-location">Amadora, Lisbon, Portugal</p>
+          <p className="profile-links">
+            <a
+              className="profile-link"
+              href="https://pt.linkedin.com/in/manisubedi"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Manisha Subedi on LinkedIn (opens in a new tab)"
+            >
+              LinkedIn
+            </a>
+          </p>
         </div>
       </section>
 

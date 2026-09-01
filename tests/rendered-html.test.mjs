@@ -39,6 +39,12 @@ test("renders the quiet reference-mapped homepage", async () => {
   assert.match(html, /href="\/topics\/"/);
   assert.match(html, /href="\/blog\/"/);
   assert.match(html, /href="\/about\/"/);
+  assert.match(
+    html,
+    /href="https:\/\/pt\.linkedin\.com\/in\/manisubedi"/,
+  );
+  assert.match(html, />LinkedIn<\/a>/);
+  assert.doesNotMatch(html, /linkedin\.com\/search|manisubedi,/i);
   assert.doesNotMatch(
     html,
     /Evidence ledger|From lab evidence|I seek a junior data analyst role|Evidence ETL|Field notes/i,
