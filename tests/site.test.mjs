@@ -54,6 +54,14 @@ test("simpson post has two figures, 40 dots each, and a table", async () => {
   assert.match(html, /data-role="dir"[^>]*>down</);
 });
 
+test("agent post has the scene and seven steps", async () => {
+  const html = await page("blog/an-agent-and-one-duplicated-file/index.html");
+  assert.match(html, /data-agent-loop/);
+  assert.equal(html.match(/class="step[^"]*" data-step="/g).length, 7);
+  assert.match(html, /84,000/);
+  assert.match(html, /42,000/);
+});
+
 test("no leftovers", async () => {
   for (const p of [
     "index.html",

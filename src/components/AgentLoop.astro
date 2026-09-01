@@ -1,0 +1,409 @@
+---
+// scroll-driven scene: one agent, three tables, one duplicated file.
+// every element carries data-from (and optional data-until); the script turns them on per step.
+const steps = [
+  "The agent gets the question. It does not know the tables yet. It does not know about the problem.",
+  "It reads the schema. Three tables: files, orders, and customers. Each order row has an amount, a month, and the file it came from.",
+  "It writes one query and runs it. Sum the amounts for August. The warehouse returns 84,000.",
+  "A careless agent stops here. A careful one examines the number. August has 2,480 orders. The months before had about 1,200. Something is wrong.",
+  "It looks for duplicates. Each order ID appears twice. The files table shows why. The August file was loaded two times.",
+  "It removes the second copy and runs the query again. 42,000. The order count is 1,240, close to the other months.",
+  "It answers. Revenue in August was 42,000. It also reports what it found and what it changed. The report is part of the answer.",
+];
+const on = (from: number, until?: number) => ({
+  "data-from": from,
+  "data-until": until,
+});
+---
+
+<div class="story" data-agent-loop>
+  <div class="scene-wrap">
+    <svg
+      class="scene"
+      viewBox="0 0 640 360"
+      role="img"
+      aria-label="An agent moves between a question, a query, a result, and three warehouse tables while it finds a duplicated file"
+    >
+      <!-- left: question and answer -->
+      <g transform="translate(20 96)" class="bubble on" {...on(1, 6)}>
+        <rect width="190" height="48" rx="8"></rect>
+        <text x="12" y="20">What was the revenue</text>
+        <text x="12" y="37">in August?</text>
+      </g>
+      <g transform="translate(20 70)" class="bubble" {...on(7)}>
+        <rect width="200" height="90" rx="8"></rect>
+        <text x="12" y="22" class="big">42,000</text>
+        <text x="12" y="44">The August file was loaded</text>
+        <text x="12" y="60">twice. I removed the second</text>
+        <text x="12" y="76">copy and ran the query again.</text>
+      </g>
+
+      <!-- middle: result, orders per month, query -->
+      <g transform="translate(240 36)" class="panel result">
+        <rect width="160" height="70" rx="6"></rect>
+        <text x="12" y="18" class="label">revenue, August</text>
+        <text x="12" y="54" class="number" {...on(3, 5)}>84,000</text>
+        <text x="12" y="54" class="number" {...on(6)}>42,000</text>
+        <g transform="translate(144 16)" class="badge warn" {...on(4, 5)}>
+          <circle r="11"></circle>
+          <text y="4" text-anchor="middle">?</text>
+        </g>
+        <g transform="translate(144 16)" class="badge ok" {...on(6)}>
+          <circle r="11"></circle>
+          <text y="4" text-anchor="middle">✓</text>
+        </g>
+      </g>
+
+      <g transform="translate(240 122)" class="chart" {...on(4)}>
+        <text x="0" y="10" class="label">orders per month</text>
+        <rect class="bar" x="16" y="64" width="32" height="36"></rect>
+        <rect class="bar" x="66" y="63" width="32" height="37"></rect>
+        <rect class="bar aug" x="116" y="24" width="32" height="76"></rect>
+        <line x1="0" x2="160" y1="100" y2="100" class="baseline"></line>
+        <text x="32" y="113" text-anchor="middle" class="label">Jun</text>
+        <text x="82" y="113" text-anchor="middle" class="label">Jul</text>
+        <text x="132" y="113" text-anchor="middle" class="label">Aug</text>
+        <text x="132" y="18" text-anchor="middle" class="value" {...on(4, 5)}>2,480</text>
+        <text x="132" y="56" text-anchor="middle" class="value" {...on(6)}>1,240</text>
+      </g>
+
+      <g transform="translate(240 246)" class="panel sql" {...on(3)}>
+        <rect width="160" height="84" rx="6"></rect>
+        <text x="12" y="20" class="mono">SELECT SUM(amount)</text>
+        <text x="12" y="36" class="mono">FROM orders</text>
+        <text x="12" y="52" class="mono">WHERE month = '2026-08'</text>
+        <text x="12" y="72" class="mono note" {...on(6)}>-- second load removed</text>
+      </g>
+
+      <path class="flow" d="M400 288 C 424 288, 416 200, 440 200" {...on(3, 3)}></path>
+      <path class="flow" d="M440 150 C 416 150, 424 80, 400 80" {...on(3, 3)}></path>
+      <path class="flow" d="M400 288 C 424 288, 416 200, 440 200" {...on(6, 6)}></path>
+      <path class="flow" d="M440 150 C 416 150, 424 80, 400 80" {...on(6, 6)}></path>
+
+      <!-- right: three tables -->
+      <g transform="translate(440 30)" class="card">
+        <rect width="180" height="72" rx="6"></rect>
+        <rect width="180" height="72" rx="6" class="focus" {...on(2, 2)}></rect>
+        <text x="10" y="18" class="title">files</text>
+        <text x="10" y="32" class="cols" {...on(2)}>file_id · name · loads</text>
+        <text x="10" y="50" class="mono" {...on(5)}>f-07  orders_07.csv   1</text>
+        <rect x="6" y="56" width="168" height="14" class="dup" {...on(5, 5)}></rect>
+        <text x="10" y="66" class="mono" {...on(5, 5)}>f-08  orders_08.csv   2</text>
+        <text x="10" y="66" class="mono" {...on(6)}>f-08  orders_08.csv   1</text>
+      </g>
+
+      <g transform="translate(440 112)" class="card">
+        <rect width="180" height="136" rx="6"></rect>
+        <rect width="180" height="136" rx="6" class="focus" {...on(2, 2)}></rect>
+        <text x="10" y="18" class="title">orders</text>
+        <text x="10" y="32" class="cols" {...on(2)}>order_id · amount · month · file_id</text>
+        <text x="10" y="52" class="mono" {...on(5)}>5011   120   08   f-08</text>
+        <rect x="6" y="58" width="168" height="14" class="dup" {...on(5, 5)}></rect>
+        <text x="10" y="68" class="mono" {...on(5, 5)}>5011   120   08   f-08</text>
+        <text x="10" y="84" class="mono" {...on(5)}>5012    35   08   f-08</text>
+        <rect x="6" y="90" width="168" height="14" class="dup" {...on(5, 5)}></rect>
+        <text x="10" y="100" class="mono" {...on(5, 5)}>5012    35   08   f-08</text>
+        <text x="10" y="116" class="mono" {...on(5)}>5013    80   08   f-08</text>
+        <rect x="6" y="122" width="168" height="14" class="dup" {...on(5, 5)}></rect>
+        <text x="10" y="132" class="mono" {...on(5, 5)}>5013    80   08   f-08</text>
+        <text x="168" y="100" text-anchor="end" class="label warn-text" {...on(5, 5)}>×2</text>
+      </g>
+
+      <g transform="translate(440 258)" class="card">
+        <rect width="180" height="72" rx="6"></rect>
+        <rect width="180" height="72" rx="6" class="focus" {...on(2, 2)}></rect>
+        <text x="10" y="18" class="title">customers</text>
+        <text x="10" y="32" class="cols" {...on(2)}>customer_id · name · country</text>
+      </g>
+
+      <!-- the agent -->
+      <g class="agent" style="transform: translate(60px, 176px)">
+        <rect width="30" height="30" rx="7"></rect>
+        <circle cx="10" cy="13" r="2.5"></circle>
+        <circle cx="20" cy="13" r="2.5"></circle>
+      </g>
+    </svg>
+  </div>
+
+  <ol class="steps">
+    {steps.map((text, i) => (
+      <li class:list={["step", { "is-active": i === 0 }]} data-step={i + 1}>
+        <span class="n">Step {i + 1} of {steps.length}</span>
+        <p>{text}</p>
+      </li>
+    ))}
+  </ol>
+</div>
+
+<style>
+  .story {
+    margin: 28px 0;
+  }
+
+  .scene-wrap {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    padding: 6px 0 10px;
+    background: #fff;
+  }
+
+  .scene {
+    display: block;
+    width: 100%;
+    height: auto;
+    font-family: inherit;
+  }
+
+  .steps {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .step {
+    min-height: 42vh;
+    padding: 12px 0;
+    color: var(--muted);
+    transition: color 0.3s;
+  }
+
+  .step.is-active {
+    color: var(--text);
+  }
+
+  .step .n {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+  .step p {
+    margin: 0;
+    font-size: 0.95rem;
+    text-align: left;
+  }
+
+  /* reveal */
+  [data-from] {
+    opacity: 0;
+    transition: opacity 0.35s;
+  }
+
+  [data-from].on {
+    opacity: 1;
+  }
+
+  /* scene parts */
+  .bubble rect,
+  .card rect,
+  .panel rect {
+    fill: #fff;
+    stroke: #c3c2b7;
+    stroke-width: 1;
+  }
+
+  .panel rect {
+    fill: #fcfcfb;
+  }
+
+  .bubble text {
+    font-size: 12px;
+    fill: #212529;
+  }
+
+  .bubble .big {
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .title {
+    font-size: 12px;
+    font-weight: 600;
+    fill: #212529;
+  }
+
+  .cols,
+  .label {
+    font-size: 10px;
+    fill: #898781;
+  }
+
+  .mono {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 10.5px;
+    fill: #212529;
+    white-space: pre;
+  }
+
+  .mono.note {
+    fill: #898781;
+  }
+
+  .number {
+    font-size: 26px;
+    font-weight: 600;
+    fill: #212529;
+  }
+
+  .value {
+    font-size: 10px;
+    fill: #52514e;
+  }
+
+  .card .focus {
+    fill: none;
+    stroke: #212529;
+  }
+
+  .dup {
+    fill: #fbe9e7;
+  }
+
+  .warn-text {
+    fill: #d03b3b;
+    font-weight: 600;
+  }
+
+  .badge text {
+    font-size: 13px;
+    font-weight: 600;
+    fill: #fff;
+  }
+
+  .badge.warn circle {
+    fill: #d03b3b;
+  }
+
+  .badge.ok circle {
+    fill: #0ca30c;
+  }
+
+  .bar {
+    fill: #c3c2b7;
+    transition: height 0.5s, y 0.5s;
+  }
+
+  .bar.aug {
+    fill: #2a78d6;
+  }
+
+  .chart.fixed .aug {
+    y: 62px;
+    height: 38px;
+  }
+
+  .baseline {
+    stroke: #c3c2b7;
+    stroke-width: 1;
+  }
+
+  .flow {
+    fill: none;
+    stroke: #2a78d6;
+    stroke-width: 2;
+    stroke-dasharray: 6 6;
+  }
+
+  .flow.on {
+    animation: dash 0.8s linear infinite;
+  }
+
+  @keyframes dash {
+    to {
+      stroke-dashoffset: -24;
+    }
+  }
+
+  .agent {
+    transition: transform 0.7s ease;
+  }
+
+  .agent rect {
+    fill: #212529;
+  }
+
+  .agent circle {
+    fill: #fff;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .step,
+    [data-from],
+    .bar,
+    .agent {
+      transition: none;
+    }
+
+    .flow.on {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  // where the agent stands at each step, in scene units
+  const AGENT: Record<number, [number, number]> = {
+    1: [60, 176],
+    2: [403, 150],
+    3: [200, 278],
+    4: [200, 56],
+    5: [403, 150],
+    6: [200, 278],
+    7: [60, 176],
+  };
+
+  function setup(root: HTMLElement) {
+    const parts = root.querySelectorAll<SVGElement>("[data-from]");
+    const agent = root.querySelector<SVGGElement>(".agent")!;
+    const chart = root.querySelector<SVGGElement>(".chart")!;
+    const steps = [...root.querySelectorAll<HTMLElement>(".step")];
+    let current = 0;
+
+    function setStep(n: number) {
+      if (n === current) return;
+      current = n;
+      parts.forEach((el) => {
+        const from = Number(el.dataset.from);
+        const until = el.dataset.until ? Number(el.dataset.until) : Infinity;
+        el.classList.toggle("on", n >= from && n <= until);
+      });
+      const [x, y] = AGENT[n];
+      agent.style.transform = `translate(${x}px, ${y}px)`;
+      chart.classList.toggle("fixed", n >= 6);
+      steps.forEach((s) => s.classList.toggle("is-active", Number(s.dataset.step) === n));
+    }
+
+    // the active step is the first one still visible under the sticky scene
+    const sceneWrap = root.querySelector<HTMLElement>(".scene-wrap")!;
+    function onScroll() {
+      const edge = sceneWrap.getBoundingClientRect().bottom + 8;
+      let n = steps.length;
+      for (const s of steps) {
+        if (s.getBoundingClientRect().bottom > edge) {
+          n = Number(s.dataset.step);
+          break;
+        }
+      }
+      setStep(n);
+    }
+
+    let ticking = false;
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+          onScroll();
+          ticking = false;
+        });
+      },
+      { passive: true },
+    );
+    onScroll();
+  }
+
+  document.querySelectorAll<HTMLElement>("[data-agent-loop]").forEach(setup);
+</script>

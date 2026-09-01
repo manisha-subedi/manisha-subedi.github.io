@@ -1,0 +1,36 @@
+---
+title: An agent, a warehouse, and one duplicated file
+date: 2026-09-03
+summary: Watch an AI agent answer one question, step by step, and find the fault in the data on the way.
+readTime: 5 min read
+---
+
+import AgentLoop from "../../components/AgentLoop.astro";
+
+People talk about AI agents as magic. An agent is a loop. It looks at
+something, it does something, and it examines the result. Then it repeats.
+This post shows one loop from start to end. The warehouse is small, the fault
+is real, and every step is drawn.
+
+The question is simple. What was the revenue in August? The warehouse has
+three tables and one problem. The August order file was loaded twice.
+
+Scroll through the seven steps. The scene at the top changes with each one.
+
+<AgentLoop />
+
+## The step that matters
+
+Every step in the loop is ordinary. The value is in the fourth step. Without
+a check, the agent returns 84,000 with full confidence, and the number goes
+into a presentation. With the check, the agent finds the fault and reports
+it.
+
+Two lessons come from this. First, an agent needs a way to examine its own
+result. A row count, a comparison with last month, a known total. Second,
+an agent needs permission to change data, and it must say what it changed.
+An agent that fixes data in silence is worse than one that only reports.
+
+The steps on this page are written by hand. No model runs on this site. The
+loop is the same in a real system, only slower and with more mistakes on the
+way.
