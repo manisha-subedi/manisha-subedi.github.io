@@ -33,7 +33,7 @@ test("writing index and projects", async () => {
   assert.doesNotMatch(index, /Before opening Power BI|Before lab data/);
   const projects = await page("projects/index.html");
   assert.match(projects, /in development/);
-  assert.match(projects, /github\.com\/levi09750\/recount/);
+  assert.match(projects, /github\.com\/manisha-subedi\/recount/);
 });
 
 test("data agent post has code and two figures", async () => {
