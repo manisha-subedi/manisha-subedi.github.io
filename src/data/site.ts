@@ -11,7 +11,7 @@ export const projects = [
   {
     title: "recount",
     status: "v0.1",
-    url: "https://github.com/levi09750/recount",
+    url: "https://github.com/manisha-subedi/recount",
     text: "An MCP server that never hands the model a number without the checks. Point it at a folder of CSV files, ask Claude for last month's revenue, and the number comes back with the warnings attached: duplicate rows, a month that doubled, stale data.",
     example: `revenue = sum(amount) from orders where status in ('paid', 'fulfilled')
 

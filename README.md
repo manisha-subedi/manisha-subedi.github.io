@@ -1,7 +1,7 @@
 # Manisha Subedi portfolio
 
 Manisha Subedi's public data analyst portfolio. Built with Astro and MDX,
-published to GitHub Pages at `https://levi09750.github.io/`.
+published to GitHub Pages at `https://manisha-subedi.github.io/`.
 
 ## Content rules
 
