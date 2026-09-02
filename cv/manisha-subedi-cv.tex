@@ -63,10 +63,10 @@
     {Remote}{2025 -- Present}
 
 \begin{itemize}
-    \item Build and maintain data pipelines in Python and SQL that load daily files from client systems into a warehouse, with checks for duplicate rows, missing days, and late data.
-    \item Model clean tables with dbt for Power BI reports, with tests so a broken load fails before a report does.
-    \item Made loads idempotent with file hashes, so a rerun never doubles the numbers.
-    \item Work with analysts to define each metric once, in one place, so revenue means the same thing in every report.
+    \item Build and maintain Python and SQL pipelines that load daily client files into a data warehouse. Add checks for duplicate rows, missing days, and delayed data.
+    \item Use dbt to create clean tables for Power BI reports. Tests stop a failed load before it reaches a report.
+    \item Use file hashes to keep loads idempotent, so rerunning a job does not load the same file twice.
+    \item Work with analysts to keep each metric definition in one place, so revenue is calculated the same way in every report.
 \end{itemize}
 
 \vspace{4pt}
@@ -76,8 +76,8 @@
     {Lisbon, Portugal}{2025}
 
 \begin{itemize}
-    \item Wrote SQL transformations and tests for a client warehouse and tracked data quality problems from the source files to the final report.
-    \item Built a small monitor that compares each month's row count with the usual month and flags a jump.
+    \item Wrote SQL transformations and tests for a client data warehouse. Traced data quality problems from the source files to the final report.
+    \item Built a monitor that compares each month's row count with the usual monthly count and flags large increases.
 \end{itemize}
 
 \vspace{4pt}
@@ -88,7 +88,7 @@
 
 \begin{itemize}
     \item Built Power BI dashboards for weekly sales and stock reports.
-    \item Answered ad hoc questions with SQL and Excel, and kept each metric definition next to its query.
+    \item Used SQL and Excel to answer ad hoc questions. Kept each metric definition with its query.
 \end{itemize}
 
 \vspace{4pt}
@@ -98,9 +98,9 @@
     {Bragan\c{c}a, Portugal}{September 2023 -- February 2024}
 
 \begin{itemize}
-    \item Measured physicochemical properties and analysed phenolic compounds with HPLC.
-    \item Assessed antioxidant activity in vitro with the OxHLIA and TBARS assays.
-    \item Processed the experimental data and wrote the final report.
+    \item Measured physicochemical properties and analysed phenolic compounds using HPLC.
+    \item Assessed antioxidant activity in vitro using the OxHLIA and TBARS assays.
+    \item Processed the experimental data and prepared the final report.
 \end{itemize}
 
 %----------PROJECTS----------
@@ -108,24 +108,24 @@
 
 \noindent\textbf{recount} \hfill \href{https://github.com/manisha-subedi/recount}{\textcolor{linkblue}{Link to project}}
 \begin{itemize}
-    \item An MCP server for data, in Python on DuckDB. When Claude asks for a number, it runs the SQL, checks the tables, and returns the number with warnings.
-    \item Four checks in one query each: duplicate ids, a month that doubled, old data, empty columns. Metrics defined once in a YAML file.
+    \item Built an MCP server for data using Python and DuckDB. When Claude requests a number, it runs the SQL, checks the tables, and returns the result with warnings.
+    \item Checks for duplicate IDs, monthly row counts that are about twice the usual count, out-of-date data, and empty columns. Each check uses one query, and metric definitions are stored in YAML.
 \end{itemize}
 
 \vspace{4pt}
 
 \noindent\textbf{A warehouse on a laptop} \hfill \href{https://github.com/manisha-subedi/laptop-warehouse}{\textcolor{linkblue}{Link to project}}
 \begin{itemize}
-    \item Monthly files from Chicago's bike share into DuckDB, cleaned with dbt. 2.3 million real rides, 25 seconds to load.
-    \item The loader stores a hash of each file and refuses a file it already has. A dbt test fails the build if a file is double or half the usual size.
+    \item Loads monthly Chicago bike-share files into DuckDB and cleans the data with dbt. The loader processed 2.3 million real rides in 25 seconds.
+    \item Uses file hashes to identify files that have already been loaded. A dbt test fails the build when a file has twice or half the usual number of rows.
 \end{itemize}
 
 \vspace{4pt}
 
 \noindent\textbf{Late deliveries and bad reviews} \hfill \href{https://github.com/manisha-subedi/late-deliveries}{\textcolor{linkblue}{Link to project}}
 \begin{itemize}
-    \item 96,470 real orders from a Brazilian marketplace, SQL on DuckDB. Late deliveries are 7\% of orders and 37\% of one-star reviews.
-    \item Found that the cause is the promised date in some states and months, not the sellers. Three extra days on the promise cuts late orders from 6.8\% to 4.8\%.
+    \item Analysed 96,470 real orders from a Brazilian marketplace using SQL and DuckDB. Late deliveries made up 7\% of orders and 37\% of one-star reviews.
+    \item The results pointed to promised delivery dates in some states and months rather than the sellers. In the analysis, adding three days to the promised date lowered the late-order rate from 6.8\% to 4.8\%.
 \end{itemize}
 
 %----------EDUCATION----------
@@ -142,8 +142,8 @@
     {Bragan\c{c}a, Portugal}{September 2021 -- September 2024}
 
 %----------TECHNICAL SKILLS----------
-\section{Technical Skills}
+\section{Technical skills}
 
-\textbf{Skills:} SQL, Python, DuckDB, dbt, Power BI, Tableau, Excel, pandas, Git/GitHub
+SQL, Python, Databricks, DuckDB, dbt, Power BI, Tableau, Excel, pandas, Git, GitHub
 
 \end{document}
