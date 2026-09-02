@@ -49,8 +49,13 @@ const posts = await getPosts();
 
   <section class="content-section">
     <h2>Projects</h2>
-    <p>
-      The first project is in development: <a href="/projects/">{projects[0].title}</a>
-    </p>
+    <ul class="post-list">
+      {projects.map((p) => (
+        <li>
+          <a href={p.url ?? "/projects/"}>{p.title}</a>
+          <span class="status">{p.status}</span>
+        </li>
+      ))}
+    </ul>
   </section>
 </Base>

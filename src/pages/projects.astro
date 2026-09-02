@@ -7,12 +7,18 @@ import { projects } from "../data/site";
   <h1 class="small-page-title">Projects</h1>
   {
     projects.map((p) => (
-      <article class="entry">
+      <article class="entry project">
         <div class="entry-heading">
-          <h3>{p.title}</h3>
+          <h3>{p.url ? <a href={p.url}>{p.title}</a> : p.title}</h3>
           <p class="entry-date">{p.status}</p>
         </div>
         <p>{p.text}</p>
+        {p.example && <pre class="example">{p.example}</pre>}
+        {p.install && (
+          <p class="install">
+            Try it: <code>{p.install}</code>
+          </p>
+        )}
       </article>
     ))
   }

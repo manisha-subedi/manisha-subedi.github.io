@@ -261,10 +261,25 @@ p {
   margin-bottom: 14px;
 }
 
-.post-list time {
+.post-list time,
+.post-list .status {
   margin-left: 9px;
   color: var(--muted);
   font-size: 0.9rem;
+}
+
+.project {
+  margin-bottom: 32px;
+}
+
+.project .example {
+  margin: 12px 0 8px;
+}
+
+.project .install {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #555;
 }
 
 .post-header {
