@@ -1,0 +1,108 @@
+---
+title: You could have invented the sample size formula
+date: 2026-06-14
+summary: Bouncing balls, a shaded half, and a live counter. By the end you will know why 200 users cannot tell you which button is better.
+readTime: 6 min read
+---
+
+import BallBox from "../../components/figures/BallBox.astro";
+import WobbleFigure from "../../components/figures/WobbleFigure.astro";
+
+Your team ran an A/B test. Button A got 50 percent clicks, button B got 55
+percent, with 200 users on each. Somebody says "B wins, ship it". Do you
+believe it?
+
+I don't, and I want to show you why with bouncing balls instead of
+statistics.
+
+<BallBox />
+
+Here is a box with 20 balls bouncing around. Nothing pushes them left or
+right, so the true share of balls in the shaded half is 50 percent. Watch
+the counter. It says 45, then 60, then 35. Now press "500 balls". The counter
+calms down and sits between 47 and 53.
+
+Nothing changed about the physics. The only thing that changed is how many
+balls you count. That is the whole secret of sample size, and you just saw
+it.
+
+## Idea 1: noise has a size, and you can predict it
+
+The wobble of a share shrinks as the count grows, but slowly. The rule is:
+the wobble is about the square root of p(1−p)/n, where p is the true share
+and n is the count. Sounds scary, so let's just do it. For p = 0.5, p(1−p)
+is 0.25.
+
+- 20 balls: sqrt(0.25 / 20) = 0.11. The counter wobbles by about 11 points.
+- 200 balls: sqrt(0.25 / 200) = 0.035. About 3.5 points.
+- 2,000 balls: about 1.1 points.
+
+Ten times more balls, only three times less wobble. That is the annoying
+part of the square root, and it is why sample sizes always feel too big.
+
+<WobbleFigure />
+
+## Idea 2: a test asks "is the difference bigger than the wobble?"
+
+Back to the A/B test. 200 users on each button, so each button's click share
+wobbles by about 3.5 points. The difference between two wobbly numbers
+wobbles more, by a factor of about 1.4, so about 5 points.
+
+Look at that again. B is ahead by 5 points, and 5 points is exactly the size
+of the wobble when nothing is going on. Two identical buttons will produce a
+"5 point win" for one of them about one time in six. Don't take my word for
+it, simulate it:
+
+```python
+import random
+
+def share(n, p=0.5):
+    return sum(random.random() < p for _ in range(n)) / n
+
+# 1,000 A/B tests where the two buttons are exactly the same
+wins = sum(share(200) - share(200) >= 0.05 for _ in range(1000))
+print(wins / 1000)    # about 0.16
+```
+
+One test in six says "B wins by 5" when there is nothing to win. That is
+your 55 versus 50.
+
+## Idea 3: now invent the formula
+
+You want the wobble of the difference to be clearly smaller than the effect
+you care about. Say, a third of it, so a real effect stands out and a fake
+one does not. The wobble of the difference is sqrt(2 · p(1−p) / n). Set it
+equal to d/3, solve for n, and you get:
+
+n = 18 · p(1−p) / d²
+
+For p = 0.5 and a 5 point effect, that is 18 × 0.25 / 0.0025 = 1,800 users
+per button. Not 200.
+
+```python
+def users_per_arm(p, d):
+    return 18 * p * (1 - p) / d**2
+
+users_per_arm(0.5, 0.05)   # 1800
+users_per_arm(0.5, 0.02)   # 11250, a 2 point effect is expensive
+```
+
+The textbook formula has 16 where I have 18, because statisticians chose
+their "clearly smaller" more carefully than I did. If you want the words, it
+is a 5 percent false alarm rate and 80 percent power. The shape is the same.
+You could have invented it in a box with some balls.
+
+## Where this bites you
+
+Every time a share is computed on a small count. Conversion rate by country,
+where one country had 30 visitors. Defect rate per supplier, where one
+supplier shipped 12 parts. The "best performing" ad, store, or day of the
+week. The smallest group wobbles the most, so the extreme values in a ranking
+are usually the smallest groups, not the best or the worst ones.
+
+The habit: before you compare two shares, compute the wobble,
+sqrt(p(1−p)/n), for the smaller group. If the difference is not at least two
+or three wobbles, you have a coin flip with a chart on top.
+
+And if anyone tells you B wins with 200 users, send them the box and tell
+them to press "20 balls".

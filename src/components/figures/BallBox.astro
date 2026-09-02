@@ -1,0 +1,246 @@
+---
+// bouncing balls in a box. count how many sit in the shaded left half.
+// with 20 balls the share swings, with 500 it settles. that is sampling noise, drawn.
+// adapted from github.com/acharyadarshan/bounce-ball-physics, moved from divs to a canvas.
+---
+
+<figure class="ballbox" data-ball-box>
+  <canvas class="box" width="640" height="300" aria-label="Balls bouncing in a box whose left half is shaded"></canvas>
+  <div class="row">
+    <p class="readout" data-readout aria-live="polite">Left half: …</p>
+    <div class="buttons">
+      <button type="button" data-n="20" class="is-on">20 balls</button>
+      <button type="button" data-n="500">500 balls</button>
+    </div>
+  </div>
+  <p class="strip-label">share of balls in the left half, last 60 seconds</p>
+  <canvas class="strip" width="640" height="90" aria-label="Line chart of the measured share over time"></canvas>
+  <figcaption>
+    Nothing pushes the balls left or right, so the true share in the shaded half is 50 percent.
+    Everything the counter does around 50 is noise. Ball simulation adapted from a physics toy by Darshan Acharya.
+  </figcaption>
+</figure>
+
+<style>
+  .box,
+  .strip {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid #e1e0d9;
+    border-radius: 6px;
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px 16px;
+    margin: 10px 0 14px;
+  }
+
+  .readout {
+    margin: 0;
+    font-size: 0.95rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .buttons {
+    display: flex;
+    gap: 8px;
+  }
+
+  button {
+    padding: 3px 10px;
+    border: 1px solid #adb5bd;
+    border-radius: 4px;
+    background: #fff;
+    color: #495057;
+    font: inherit;
+    font-size: 0.875rem;
+    cursor: pointer;
+  }
+
+  button.is-on {
+    border-color: #212529;
+    color: #212529;
+  }
+
+  .strip-label {
+    margin: 0 0 6px;
+    color: var(--muted);
+    font-size: 0.8rem;
+  }
+</style>
+
+<script>
+  const W = 640;
+  const H = 300;
+  const SAMPLE_MS = 250;
+  const KEEP = 240; // 60 seconds of samples
+
+  type Ball = { x: number; y: number; vx: number; vy: number; r: number };
+
+  function makeBalls(n: number): Ball[] {
+    const r = n > 100 ? 4 : 7;
+    return Array.from({ length: n }, () => {
+      const a = Math.random() * Math.PI * 2;
+      const s = 1 + Math.random() * 1.5;
+      return {
+        x: r + Math.random() * (W - 2 * r),
+        y: r + Math.random() * (H - 2 * r),
+        vx: Math.cos(a) * s,
+        vy: Math.sin(a) * s,
+        r,
+      };
+    });
+  }
+
+  // move, bounce off walls, then equal-mass elastic collisions along the line between centres
+  function step(balls: Ball[]) {
+    for (const b of balls) {
+      b.x += b.vx;
+      b.y += b.vy;
+      if (b.x < b.r) { b.x = b.r; b.vx = -b.vx; }
+      if (b.x > W - b.r) { b.x = W - b.r; b.vx = -b.vx; }
+      if (b.y < b.r) { b.y = b.r; b.vy = -b.vy; }
+      if (b.y > H - b.r) { b.y = H - b.r; b.vy = -b.vy; }
+    }
+    // ponytail: n² pair check, fine up to 500 balls. a grid if it ever needs more.
+    for (let i = 0; i < balls.length; i++) {
+      const a = balls[i];
+      for (let j = i + 1; j < balls.length; j++) {
+        const b = balls[j];
+        const dx = b.x - a.x;
+        const dy = b.y - a.y;
+        const min = a.r + b.r;
+        const d2 = dx * dx + dy * dy;
+        if (d2 >= min * min || d2 === 0) continue;
+        const d = Math.sqrt(d2);
+        const nx = dx / d;
+        const ny = dy / d;
+        const rel = (a.vx - b.vx) * nx + (a.vy - b.vy) * ny;
+        if (rel > 0) {
+          a.vx -= rel * nx; a.vy -= rel * ny;
+          b.vx += rel * nx; b.vy += rel * ny;
+        }
+        const push = (min - d) / 2;
+        a.x -= nx * push; a.y -= ny * push;
+        b.x += nx * push; b.y += ny * push;
+      }
+    }
+  }
+
+  function setup(root: HTMLElement) {
+    const box = root.querySelector<HTMLCanvasElement>(".box")!;
+    const strip = root.querySelector<HTMLCanvasElement>(".strip")!;
+    const readout = root.querySelector<HTMLElement>("[data-readout]")!;
+    const buttons = root.querySelectorAll<HTMLButtonElement>("button[data-n]");
+    const dpr = window.devicePixelRatio || 1;
+    for (const c of [box, strip]) {
+      const h = Number(c.getAttribute("height"));
+      c.width = W * dpr;
+      c.height = h * dpr;
+      c.getContext("2d")!.scale(dpr, dpr);
+    }
+    const ctx = box.getContext("2d")!;
+    const sctx = strip.getContext("2d")!;
+    const SH = 90;
+
+    let balls = makeBalls(20);
+    let samples: number[] = [];
+    let lastSample = 0;
+    let visible = true;
+    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    function share() {
+      const left = balls.filter((b) => b.x < W / 2).length;
+      return { left, share: left / balls.length };
+    }
+
+    function drawBox() {
+      ctx.clearRect(0, 0, W, H);
+      ctx.fillStyle = "#f1f3f5";
+      ctx.fillRect(0, 0, W / 2, H);
+      for (const b of balls) {
+        ctx.beginPath();
+        ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
+        ctx.fillStyle = b.x < W / 2 ? "#2a78d6" : "#898781";
+        ctx.fill();
+      }
+    }
+
+    function drawStrip() {
+      sctx.clearRect(0, 0, W, SH);
+      const y = (v: number) => SH - 8 - v * (SH - 16);
+      sctx.strokeStyle = "#e1e0d9";
+      sctx.lineWidth = 1;
+      sctx.beginPath();
+      sctx.moveTo(0, y(0.5));
+      sctx.lineTo(W, y(0.5));
+      sctx.stroke();
+      sctx.fillStyle = "#898781";
+      sctx.font = "11px system-ui, sans-serif";
+      sctx.fillText("50%", 6, y(0.5) - 4);
+      if (samples.length < 2) return;
+      sctx.strokeStyle = "#2a78d6";
+      sctx.lineWidth = 2;
+      sctx.lineJoin = "round";
+      sctx.beginPath();
+      samples.forEach((v, i) => {
+        const x = (i / (KEEP - 1)) * W;
+        i === 0 ? sctx.moveTo(x, y(v)) : sctx.lineTo(x, y(v));
+      });
+      sctx.stroke();
+    }
+
+    function updateReadout() {
+      const s = share();
+      readout.textContent = `Left half: ${s.left} of ${balls.length} balls, ${Math.round(s.share * 100)}%`;
+    }
+
+    function frame(t: number) {
+      if (!still) step(balls);
+      drawBox();
+      if (t - lastSample > SAMPLE_MS) {
+        lastSample = t;
+        samples.push(share().share);
+        if (samples.length > KEEP) samples.shift();
+        drawStrip();
+        updateReadout();
+      }
+      if (visible && !still) requestAnimationFrame(frame);
+    }
+
+    function start() {
+      lastSample = 0;
+      requestAnimationFrame(frame);
+    }
+
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        balls = makeBalls(Number(btn.dataset.n));
+        samples = [];
+        buttons.forEach((b) => b.classList.toggle("is-on", b === btn));
+        drawStrip();
+        updateReadout();
+        if (still) drawBox();
+      });
+    });
+
+    // only burn cpu while the box is on screen
+    new IntersectionObserver((entries) => {
+      const was = visible;
+      visible = entries[0].isIntersecting;
+      if (visible && !was) start();
+    }).observe(box);
+
+    drawBox();
+    drawStrip();
+    updateReadout();
+    start();
+  }
+
+  document.querySelectorAll<HTMLElement>("[data-ball-box]").forEach(setup);
+</script>

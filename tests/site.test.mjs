@@ -53,6 +53,14 @@ test("average post has six questions, code, and two figures", async () => {
   assert.equal(html.match(/<figure/g).length, 2);
 });
 
+test("sample size post has the ball box, code, and two figures", async () => {
+  const html = await page("blog/you-could-have-invented-the-sample-size-formula/index.html");
+  assert.match(html, /data-ball-box/);
+  assert.match(html, /users_per_arm/);
+  assert.equal(html.match(/<figure/g).length, 2);
+  assert.equal(html.match(/<button[^>]*data-n=/g).length, 2);
+});
+
 test("simpson post has two figures, 40 dots each, and a table", async () => {
   const html = await page("blog/simpsons-paradox-drawn/index.html");
   assert.equal(html.match(/data-simpson="/g).length, 2);

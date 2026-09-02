@@ -1,0 +1,68 @@
+---
+// how far a measured share wanders around 50% for three sample sizes. one bracket per size.
+const rows = [
+  { n: "20", pts: 11 },
+  { n: "200", pts: 3.5 },
+  { n: "2,000", pts: 1.1 },
+];
+const X = (pct: number) => 120 + (pct - 30) * 12; // 30% .. 70% across 480px
+---
+
+<figure>
+  <svg viewBox="0 0 640 190" role="img" aria-label="Three brackets centred on 50 percent. With 20 balls the bracket spans plus or minus 11 points, with 200 balls plus or minus 3.5, with 2,000 balls plus or minus 1.1.">
+    <line x1={X(30)} x2={X(70)} y1="150" y2="150" class="axis"></line>
+    {[30, 40, 50, 60, 70].map((p) => (
+      <>
+        <line x1={X(p)} x2={X(p)} y1="150" y2="155" class="axis"></line>
+        <text x={X(p)} y="170" text-anchor="middle" class="tick">{p}%</text>
+      </>
+    ))}
+    <line x1={X(50)} x2={X(50)} y1="24" y2="150" class="mid"></line>
+    {rows.map((r, i) => {
+      const y = 44 + i * 38;
+      return (
+        <>
+          <text x="20" y={y + 4} class="label">{r.n} balls</text>
+          <line x1={X(50 - r.pts)} x2={X(50 + r.pts)} y1={y} y2={y} class="bracket"></line>
+          <line x1={X(50 - r.pts)} x2={X(50 - r.pts)} y1={y - 6} y2={y + 6} class="bracket"></line>
+          <line x1={X(50 + r.pts)} x2={X(50 + r.pts)} y1={y - 6} y2={y + 6} class="bracket"></line>
+          <text x={X(50 + r.pts) + 10} y={y + 4} class="value">±{r.pts} points</text>
+        </>
+      );
+    })}
+  </svg>
+  <figcaption>The usual wobble of a share around its true value, for three counts. Ten times more balls, only about three times less wobble.</figcaption>
+</figure>
+
+<style>
+  .axis {
+    stroke: #c3c2b7;
+    stroke-width: 1;
+  }
+
+  .mid {
+    stroke: #e1e0d9;
+    stroke-width: 1;
+  }
+
+  .tick,
+  .label {
+    font-size: 11px;
+    fill: #898781;
+  }
+
+  .label {
+    font-size: 12px;
+  }
+
+  .bracket {
+    stroke: #2a78d6;
+    stroke-width: 2;
+    stroke-linecap: round;
+  }
+
+  .value {
+    font-size: 12px;
+    fill: #212529;
+  }
+</style>
