@@ -1,15 +1,15 @@
-# Manisha Subedi portfolio
+# Manisha Subedi's portfolio
 
-Manisha Subedi's public data analyst portfolio. Built with Astro and MDX,
-published to GitHub Pages at `https://manisha-subedi.github.io/`.
+This is the source code for my portfolio website. I share data projects and
+short articles about data analysis.
 
-## Content rules
+[Visit the website](https://manisha-subedi.github.io/)
 
-- Use only facts that Manisha approved. Placeholders are marked "(placeholder)".
-- Label planned projects as in development.
-- Add a result only when a source supports it.
+The site is built with Astro and MDX.
 
-## Local development
+## Run the site locally
+
+You need Node.js 22 or newer.
 
 ```bash
 npm install
@@ -18,19 +18,19 @@ npm run dev
 
 Open `http://localhost:4321/`.
 
-## Tests
+## Run the tests
 
 ```bash
 npm test
 ```
 
-## Publication
+## Publishing
 
-GitHub Actions builds and publishes `dist/` after each push to `main`.
+GitHub Actions builds and publishes the site after each push to `main`.
 
-## Where things live
+## Main files
 
-- `src/data/site.ts`: profile, experience, education, projects.
-- `src/content/blog/*.mdx`: posts. Frontmatter: `title`, `date`, `summary`, `readTime`.
-- `src/styles/global.css`: all styling.
-- `docs/superpowers/specs/`: design notes.
+- `src/pages/`: site pages
+- `src/content/blog/`: articles
+- `src/data/site.ts`: profile and project information
+- `src/styles/global.css`: global styles

@@ -12,7 +12,7 @@ const L = lines(data);
 const colored = mode === "gap";
 const xTicks = [0, 25, 50, 75, 100];
 const yTicks = [0, 2, 4, 6];
-const label = (c: { big: boolean }) => (c.big ? "Big city" : "Small city");
+const label = (c: { big: boolean }) => (c.big ? "Large city" : "Small city");
 ---
 
 <figure class:list={["simpson", { "is-colored": colored }]} data-simpson={mode}>
@@ -20,24 +20,24 @@ const label = (c: { big: boolean }) => (c.big ? "Big city" : "Small city");
     {
       mode === "toggle" ? (
         <label>
-          <input type="checkbox" data-role="color" /> Color the dots by city size
+          <input type="checkbox" data-role="color" /> Group the cities by size
         </label>
       ) : (
         <label>
-          Gap between the two groups
+          Difference between small and large cities
           <input type="range" min="0" max="100" value="100" data-role="gap" />
         </label>
       )
     }
     <p class="readout">
-      All cities together: trend <strong data-role="dir">{L.allSlope < 0 ? "down" : "up"}</strong>
+      Overall line slopes <strong data-role="dir">{L.allSlope < 0 ? "down" : "up"}</strong>
     </p>
   </div>
 
   <svg
     viewBox="0 0 640 400"
     role="img"
-    aria-label="Scatter plot of marketing spend per person against sales growth for 40 simulated cities"
+    aria-label="Scatter plot of marketing spend per person and sales growth for 40 simulated cities"
   >
     <g class="grid">
       {yTicks.map((t) => <line x1={sx(0)} x2={sx(X_MAX)} y1={sy(t)} y2={sy(t)} />)}
@@ -76,7 +76,7 @@ const label = (c: { big: boolean }) => (c.big ? "Big city" : "Small city");
       mode === "toggle" && (
         <g class="labels">
           <text class="lbl" x={L.small.x2} y={L.small.y2 - 12} text-anchor="end">Small cities</text>
-          <text class="lbl" x={L.big.x2} y={L.big.y2 - 12} text-anchor="end">Big cities</text>
+          <text class="lbl" x={L.big.x2} y={L.big.y2 - 12} text-anchor="end">Large cities</text>
         </g>
       )
     }
@@ -84,17 +84,17 @@ const label = (c: { big: boolean }) => (c.big ? "Big city" : "Small city");
 
   <ul class="legend">
     <li><span class="key key-small"></span>Small cities</li>
-    <li><span class="key key-big"></span>Big cities</li>
-    <li><span class="key key-all"></span>All cities together</li>
+    <li><span class="key key-big"></span>Large cities</li>
+    <li><span class="key key-all"></span>Overall trend line</li>
   </ul>
 
   <div class="tip" hidden></div>
 
   <details>
-    <summary>Data table</summary>
+    <summary>Show data table</summary>
     <table>
       <thead>
-        <tr><th>City</th><th>Spend (€)</th><th>Growth (%)</th></tr>
+        <tr><th>City group</th><th>Marketing spend per person (€)</th><th>Sales growth (%)</th></tr>
       </thead>
       <tbody>
         {data.map((c) => (
@@ -359,7 +359,7 @@ const label = (c: { big: boolean }) => (c.big ? "Big city" : "Small city");
     svg.addEventListener("pointerover", (e) => {
       const g = (e.target as Element).closest<HTMLElement>(".city");
       if (!g) return;
-      const kind = g.dataset.group === "big" ? "Big city" : "Small city";
+      const kind = g.dataset.group === "big" ? "Large city" : "Small city";
       tip.textContent = `${kind}: €${g.dataset.x} per person, ${g.dataset.y}% growth`;
       const r = fig.getBoundingClientRect();
       tip.style.left = `${e.clientX - r.left + 14}px`;

@@ -11,27 +11,30 @@ const rowB = cluster(210);
 ---
 
 <figure>
-  <svg viewBox="0 0 640 260" role="img" aria-label="Two number lines from 0 to 1,000. On the first, 29 dots sit at 10 and one dot at 1,000, and the balance point, the mean, is at 43. On the second, without the dot at 1,000, the balance point is at 10.">
-    <text x="60" y="30" class="label">with the wholesale buyer</text>
+  <svg viewBox="0 0 640 260" role="img" aria-label="Two number lines compare 29 customers at 10 euros with and without one customer at 1,000 euros. The mean is 43 euros with that customer and 10 euros without that customer.">
+    <text x="60" y="30" class="label">With the €1,000 customer</text>
     <line x1={X(0)} x2={X(1000)} y1="90" y2="90" class="axis"></line>
-    <text x={X(0)} y="106" class="tick" text-anchor="middle">0</text>
-    <text x={X(1000)} y="106" class="tick" text-anchor="middle">1,000</text>
+    <text x={X(0)} y="106" class="tick" text-anchor="middle">€0</text>
+    <text x={X(1000)} y="106" class="tick" text-anchor="middle">€1,000</text>
     {rowA.map((p) => <circle cx={p.x} cy={p.y} r="2.6" class="dot"></circle>)}
     <circle cx={X(1000)} cy="84" r="3.5" class="dot whale"></circle>
     <text x={X(1000)} y="72" class="tick" text-anchor="middle">1 customer</text>
-    <text x={X(10)} y="44" class="tick" text-anchor="middle">29 customers</text>
+    <text x={X(10)} y="44" class="tick" text-anchor="middle">29 customers at €10</text>
     <path d={`M${X(43)} 91 L${X(43) - 6} 102 L${X(43) + 6} 102 Z`} class="fulcrum"></path>
-    <text x={X(43)} y="118" class="value" text-anchor="middle">mean 43</text>
+    <text x={X(43)} y="118" class="value" text-anchor="middle">Mean: €43</text>
 
-    <text x="60" y="150" class="label">without the wholesale buyer</text>
+    <text x="60" y="150" class="label">Without the €1,000 customer</text>
     <line x1={X(0)} x2={X(1000)} y1="210" y2="210" class="axis"></line>
-    <text x={X(0)} y="226" class="tick" text-anchor="middle">0</text>
-    <text x={X(1000)} y="226" class="tick" text-anchor="middle">1,000</text>
+    <text x={X(0)} y="226" class="tick" text-anchor="middle">€0</text>
+    <text x={X(1000)} y="226" class="tick" text-anchor="middle">€1,000</text>
     {rowB.map((p) => <circle cx={p.x} cy={p.y} r="2.6" class="dot"></circle>)}
     <path d={`M${X(10)} 211 L${X(10) - 6} 222 L${X(10) + 6} 222 Z`} class="fulcrum"></path>
-    <text x={X(10)} y="238" class="value" text-anchor="middle">mean 10</text>
+    <text x={X(10)} y="238" class="value" text-anchor="middle">Mean: €10</text>
   </svg>
-  <figcaption>The mean is where the line balances. One customer far to the right moves the balance point, even though nobody else moved.</figcaption>
+  <figcaption>
+    The mean is the balance point. One value at €1,000 moves it from €10 to €43
+    while the other 29 values remain at €10.
+  </figcaption>
 </figure>
 
 <style>

@@ -1,36 +1,40 @@
 ---
-title: An agent, a warehouse, and one duplicated file
+title: How a data agent finds a duplicated file
 date: 2026-03-09
-summary: Watch an AI agent answer one question, step by step, and find the fault in the data on the way.
+summary: A simple example of an agent that checks an August revenue total and finds a duplicated file.
 readTime: 5 min read
 ---
 
 import AgentLoop from "../../components/AgentLoop.astro";
 
-People talk about AI agents as magic. An agent is a loop. It looks at
-something, it does something, and it examines the result. Then it repeats.
-This post shows one loop from start to end. The warehouse is small, the fault
-is real, and every step is drawn.
+This is a small example with made-up warehouse data. The agent reads the
+available information, runs a query, checks the result, and tries again when
+the check fails.
 
-The question is simple. What was the revenue in August? The warehouse has
-three tables and one problem. The August order file was loaded twice.
+The question is: What was the revenue in August? The warehouse has three
+tables. Its August order file was loaded twice, so adding all the amounts
+gives the wrong total.
 
-Scroll through the seven steps. The scene at the top changes with each one.
+The seven steps below are fixed. No model runs on this website.
 
 <AgentLoop />
 
-## The step that matters
+## Why the check matters
 
-Every step in the loop is ordinary. The value is in the fourth step. Without
-a check, the agent returns 84,000 with full confidence, and the number goes
-into a presentation. With the check, the agent finds the fault and reports
-it.
+The first query returns 84,000. Before answering, the agent compares the
+August order count with earlier months. August has 2,480 orders, while the
+earlier months had about 1,200. It then checks the order IDs and finds that
+each one appears twice.
 
-Two lessons come from this. First, an agent needs a way to examine its own
-result. A row count, a comparison with last month, a known total. Second,
-an agent needs permission to change data, and it must say what it changed.
-An agent that fixes data in silence is worse than one that only reports.
+The agent excludes the second load from this calculation and runs the query
+again. The result is 42,000 from 1,240 orders. It reports the duplicated file
+and explains what it excluded.
 
-The steps on this page are written by hand. No model runs on this site. The
-loop is the same in a real system, only slower and with more mistakes on the
-way.
+The check must match the data. A row count is useful in this example. Other
+systems may need a comparison with last month or a known total. An agent needs
+permission before it changes source data. If it excludes rows from a result,
+it should record what it excluded.
+
+This is a small example. A real implementation would need more checks and
+would have more possible failure points, but it would still need to check and
+report its result.

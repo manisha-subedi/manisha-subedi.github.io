@@ -1,68 +1,63 @@
 ---
-title: Simpson's paradox, drawn
+title: Simpson's paradox in one chart
 date: 2026-01-18
-summary: Forty cities, one chart, and a trend line that points down. Colour the dots by city size and both lines point up. Same dots.
+summary: The overall line for 40 simulated cities slopes down, while the lines for small and large cities both slope up.
 readTime: 4 min read
 ---
 
 import SimpsonScatter from "../../components/SimpsonScatter.astro";
 
-Picture this. You have a chart of 40 cities. On the x-axis, how much each
-city spends on marketing per person. On the y-axis, how much its sales grew
-this year. You draw the trend line and it points down. More marketing, less
-growth. Your manager is going to love this.
+This chart uses simulated data for 40 cities. The x-axis shows marketing
+spend per person. The y-axis shows sales growth for the year. When all cities
+are combined, the trend line slopes down. Cities with higher marketing spend
+tend to have lower sales growth in the combined data.
 
-Then a colleague asks: are these cities all the same size? They are not.
-Twenty are big, twenty are small. So you colour the dots by size, draw one
-line per group, and both lines point up.
+There are 20 small cities and 20 large cities. Select the checkbox to show
+the two groups. Within each group, the trend line slopes up. Higher marketing
+spend is associated with higher growth in both groups.
 
 <SimpsonScatter
   mode="toggle"
-  caption="Simulated data. Each dot is one city. Tick the box to colour the dots by city size."
+  caption="Simulated data for 40 cities. Select the checkbox to show separate lines for small and large cities."
 />
 
-Same 40 dots. Nothing changed except the colour. And the story flipped from
-"marketing hurts" to "marketing helps". This is Simpson's paradox, and once
-you have seen it once, you will look for it in every chart that has a hidden
-group inside.
+The chart still contains the same 40 dots. Only the grouping is now visible.
+The overall association is negative, but the association within each group is
+positive. This reversal is called Simpson's paradox.
 
-## Why the line flips
+## Why the overall line slopes down
 
-Let me explain it the way I would to a friend, with numbers you can do in
-your head.
+Small cities spend about 30 euros per person and grow by about 3.5 percent.
+Large cities spend about 75 euros per person and grow by less than 2 percent.
+The simulation also gives large cities a lower starting growth rate.
 
-Small cities spend about 30 euros per person and grow about 3.5 percent. Big
-cities spend about 75 euros per person and grow under 2 percent. Big cities
-spend more and grow less, simply because their market is already full.
+A single line through all 40 cities mainly separates the two groups. Small
+cities are on the left with higher growth. Large cities are on the right with
+lower growth. The line therefore slopes down. It is comparing the small-city
+cluster with the large-city cluster, not only comparing different levels of
+marketing spend.
 
-Now put all 40 on one chart and ask for one line. What does that line see? On
-the left, small cities with high growth. On the right, big cities with low
-growth. So the line goes down. But it is not comparing "spend more" with
-"spend less". It is comparing small cities with big cities. Size is doing all
-the work, and spend is just along for the ride.
+Within each group, the city-size difference is held fixed. The remaining
+relationship is between spend and growth, and both group lines slope up.
 
-Inside each group, the cities are about the same size, so size is out of the
-picture. What is left is spend against growth. And within each group, the
-cities that spend more do grow more.
+The grey line answers one question: how are spend and growth associated
+across all cities? The coloured lines answer another: how are they associated
+within each city-size group? The answers have opposite directions because the
+questions are different.
 
-So both lines are right. The grey line answers "do the high spenders grow
-faster?" No, because the high spenders are big cities. The coloured lines
-answer "if a city spends more, does it grow more?" Yes. Different question,
-different line.
+## Change the gap between the groups
 
-## Play with it
-
-The paradox needs a third thing that pushes on both axes at once. Here, city
-size pushes spend up and growth down. Take that away and the paradox goes
-with it. Move the slider to make the two groups more alike and watch the grey
-line turn around.
+The reversal depends on a third variable that is related to both axes. In
+this example, city size is associated with higher marketing spend and lower
+sales growth. Use the slider to make the two groups more similar. As they
+overlap, the overall line changes direction.
 
 <SimpsonScatter
   mode="gap"
-  caption="Move the slider to make the two groups more similar. When they overlap, the line for all cities agrees with the group lines."
+  caption="Move the slider to reduce the difference between the two city groups. When the groups overlap, the overall line slopes up like the two group lines."
 />
 
-## The same thing in code
+## Reproduce the example in Python
 
 ```python
 import numpy as np
@@ -80,17 +75,18 @@ slope(np.concatenate([small_spend, big_spend]),
       np.concatenate([small_growth, big_growth]))   # negative
 ```
 
-Two groups with the same positive slope, and the line through all of them
-points the other way. That is the whole trick.
+Both groups have a positive slope of about +0.05. The line through the
+combined data has a negative slope because the groups start in different
+places.
 
-## Where this bites you
+## Check grouped results before interpreting a trend
 
-Any time your data has groups inside it. Customer segments, countries,
-device types, old customers versus new ones, weekdays versus weekends. The
-habit that saves you is cheap: before you trust a trend line, colour the dots
-by the most obvious group. If the group lines agree with the overall line,
-fine. If they flip, you just found the real story, and that group belongs in
-the chart, not in a footnote.
+The same pattern can appear when data combine customer segments, countries,
+device types, old and new customers, or weekdays and weekends.
 
-And the next time a chart tells you marketing hurts sales, ask who the dots
-are before you ask what the line says.
+Before interpreting one trend line, calculate or plot the relationship within
+relevant groups. If the direction changes, report both the overall result and
+the grouped results. The grouping variable belongs in the explanation.
+
+A trend line describes an association between the plotted values. On its own,
+it does not show whether marketing caused sales growth to rise or fall.

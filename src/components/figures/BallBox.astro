@@ -4,19 +4,20 @@
 ---
 
 <figure class="ballbox" data-ball-box>
-  <canvas class="box" width="640" height="300" aria-label="Balls bouncing in a box whose left half is shaded"></canvas>
+  <canvas class="box" width="640" height="300" aria-label="Balls moving inside a box with the left half shaded"></canvas>
   <div class="row">
-    <p class="readout" data-readout aria-live="polite">Left half: …</p>
+    <p class="readout" data-readout aria-live="polite">Balls in shaded half: …</p>
     <div class="buttons">
       <button type="button" data-n="20" class="is-on">20 balls</button>
       <button type="button" data-n="500">500 balls</button>
     </div>
   </div>
-  <p class="strip-label">share of balls in the left half, last 60 seconds</p>
-  <canvas class="strip" width="640" height="90" aria-label="Line chart of the measured share over time"></canvas>
+  <p class="strip-label">Measured share in the shaded half over the last 60 seconds</p>
+  <canvas class="strip" width="640" height="90" aria-label="Line chart of the share of balls in the shaded half over the last 60 seconds"></canvas>
   <figcaption>
-    Nothing pushes the balls left or right, so the true share in the shaded half is 50 percent.
-    Everything the counter does around 50 is noise.
+    Both halves are equally likely, so the expected share is 50 percent. The
+    measured share moves around 50 percent because the box contains a finite
+    number of balls.
   </figcaption>
 </figure>
 
@@ -196,7 +197,7 @@
 
     function updateReadout() {
       const s = share();
-      readout.textContent = `Left half: ${s.left} of ${balls.length} balls, ${Math.round(s.share * 100)}%`;
+      readout.textContent = `Balls in shaded half: ${s.left} of ${balls.length}, ${Math.round(s.share * 100)}%`;
     }
 
     function frame(t: number) {

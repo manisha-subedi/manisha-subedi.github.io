@@ -3,7 +3,7 @@
 ---
 
 <figure>
-  <svg viewBox="0 0 640 300" role="img" aria-label="Left: a script goes question, SQL, number in a straight line. Right: an agent goes look, act, check, and on failure learns and acts again, up to three tries, then answers or stops.">
+  <svg viewBox="0 0 640 300" role="img" aria-label="A script prints a number without checking it. The agent checks the result, retries after a failed check, and stops after three attempts.">
     <defs>
       <marker id="arrowhead" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
         <path d="M0 0 L8 4 L0 8 Z" fill="#898781"></path>
@@ -15,8 +15,8 @@
     <g class="box" transform="translate(30 104)"><rect width="120" height="32" rx="6"></rect><text x="60" y="21" text-anchor="middle">SQL</text></g>
     <path class="arrow" d="M90 136 V160"></path>
     <g class="box" transform="translate(30 164)"><rect width="120" height="32" rx="6"></rect><text x="60" y="21" text-anchor="middle">number</text></g>
-    <text x="90" y="226" text-anchor="middle" class="note">right or wrong,</text>
-    <text x="90" y="242" text-anchor="middle" class="note">it prints</text>
+    <text x="90" y="226" text-anchor="middle" class="note">prints without</text>
+    <text x="90" y="242" text-anchor="middle" class="note">a check</text>
 
     <line x1="210" x2="210" y1="30" y2="280" class="divider"></line>
 
@@ -36,16 +36,16 @@
     <g class="box" transform="translate(300 236)"><rect width="110" height="32" rx="6"></rect><text x="55" y="21" text-anchor="middle">learn</text></g>
 
     <path class="arrow" d="M300 252 H270 V124 H296"></path>
-    <text x="262" y="192" text-anchor="end" class="note">again,</text>
-    <text x="262" y="206" text-anchor="end" class="note">3 tries</text>
+    <text x="262" y="192" text-anchor="end" class="note">retry, up to</text>
+    <text x="262" y="206" text-anchor="end" class="note">3 attempts</text>
 
     <path class="arrow" d="M410 252 H478"></path>
-    <text x="444" y="246" text-anchor="middle" class="note">after 3</text>
-    <g class="box stop" transform="translate(482 236)"><rect width="110" height="32" rx="6"></rect><text x="55" y="21" text-anchor="middle">stop, say why</text></g>
+    <text x="444" y="246" text-anchor="middle" class="note">limit reached</text>
+    <g class="box stop" transform="translate(482 236)"><rect width="110" height="32" rx="6"></rect><text x="55" y="21" text-anchor="middle">stop and report</text></g>
 
     <circle class="dot" r="4"></circle>
   </svg>
-  <figcaption>A script is a line. An agent is a loop with a check in it and a limit on how many times it goes around.</figcaption>
+  <figcaption>The agent checks each result. After a failed check, it can try again, up to three times.</figcaption>
 </figure>
 
 <style>

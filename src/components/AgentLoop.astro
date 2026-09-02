@@ -2,13 +2,13 @@
 // scroll-driven scene: one agent, three tables, one duplicated file.
 // every element carries data-from (and optional data-until); the script turns them on per step.
 const steps = [
-  "The agent gets the question. It does not know the tables yet. It does not know about the problem.",
-  "It reads the schema. Three tables: files, orders, and customers. Each order row has an amount, a month, and the file it came from.",
-  "It writes one query and runs it. Sum the amounts for August. The warehouse returns 84,000.",
-  "A careless agent stops here. A careful one examines the number. August has 2,480 orders. The months before had about 1,200. Something is wrong.",
-  "It looks for duplicates. Each order ID appears twice. The files table shows why. The August file was loaded two times.",
-  "It removes the second copy and runs the query again. 42,000. The order count is 1,240, close to the other months.",
-  "It answers. Revenue in August was 42,000. It also reports what it found and what it changed. The report is part of the answer.",
+  "The agent receives the question. It has not read the warehouse schema yet and does not know that the August file was loaded twice.",
+  "The agent reads the schema. The warehouse has three tables: files, orders, and customers. Each order includes an amount, a month, and a file ID.",
+  "The agent writes and runs a query that adds the August amounts. The result is 84,000.",
+  "Before answering, the agent checks the result. August has 2,480 orders, compared with about 1,200 in earlier months, so it investigates.",
+  "The agent checks the order IDs and finds that each one appears twice. The files table shows that the August file was loaded twice.",
+  "The agent excludes the second load from the calculation and runs the query again. The result is 42,000 from 1,240 orders.",
+  "The agent reports revenue of 42,000. It also reports the duplicated file and explains that it excluded the second load from this calculation.",
 ];
 const on = (from: number, until?: number) => ({
   "data-from": from,
@@ -22,7 +22,7 @@ const on = (from: number, until?: number) => ({
       class="scene"
       viewBox="0 0 640 360"
       role="img"
-      aria-label="An agent moves between a question, a query, a result, and three warehouse tables while it finds a duplicated file"
+      aria-label="Seven fixed steps showing an agent checking an August revenue query and finding a duplicated file in three warehouse tables"
     >
       <!-- left: question and answer -->
       <g transform="translate(20 96)" class="bubble on" {...on(1, 6)}>
@@ -34,8 +34,8 @@ const on = (from: number, until?: number) => ({
         <rect width="200" height="90" rx="8"></rect>
         <text x="12" y="22" class="big">42,000</text>
         <text x="12" y="44">The August file was loaded</text>
-        <text x="12" y="60">twice. I removed the second</text>
-        <text x="12" y="76">copy and ran the query again.</text>
+        <text x="12" y="60">twice. I excluded that load</text>
+        <text x="12" y="76">from this calculation.</text>
       </g>
 
       <!-- middle: result, orders per month, query -->
@@ -72,7 +72,7 @@ const on = (from: number, until?: number) => ({
         <text x="12" y="20" class="mono">SELECT SUM(amount)</text>
         <text x="12" y="36" class="mono">FROM orders</text>
         <text x="12" y="52" class="mono">WHERE month = '2026-08'</text>
-        <text x="12" y="72" class="mono note" {...on(6)}>-- second load removed</text>
+        <text x="12" y="72" class="mono note" {...on(6)}>-- second load excluded</text>
       </g>
 
       <path class="flow" d="M400 288 C 424 288, 416 200, 440 200" {...on(3, 3)}></path>

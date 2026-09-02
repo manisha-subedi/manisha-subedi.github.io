@@ -3,14 +3,14 @@
 // one card per stop; the chip on the rail is the row itself.
 const stops = ["Checkout", "Database", "Export", "Landing", "Raw table", "Clean table", "Monthly", "Power BI"];
 const steps = [
-  "00:30 on September 1, in Lisbon. A customer pays 120 euros. The checkout app makes one order.",
-  "The app writes one row to its database. The amount is stored in cents: 12000. The time keeps its offset: 00:30 +01:00.",
-  "At 02:00 a nightly job exports the day. It converts times to UTC. 00:30 in Lisbon is 23:30 the day before. The row now says August 31.",
-  "The row lands in a CSV file in cloud storage. It is text now. 12000 is a string. The date is a string. The types are gone.",
-  "A loader copies the file into a raw table, as is. Two columns are added: the file the row came from and the time it was loaded.",
-  "A clean step gives the types back. Cents become 120.00. The month comes from the UTC time: August. A join with the customer table adds the country: PT.",
-  "A monthly table sums the clean rows. The row disappears into one line: August, PT, 1,240 orders, 42,000. It is one of the 1,240.",
-  "Power BI reads the monthly table and shows a tile. Revenue, August: 42,000. A September purchase is inside that number, and nobody decided that.",
+  "A customer in Lisbon pays 120 euros at 00:30 on September 1. The checkout app creates order 5011.",
+  "The app writes one database row. It stores the amount as 12000 cents and keeps the time-zone offset: 00:30 +01:00.",
+  "At 02:00, the nightly export converts the time to UTC. In UTC, the order time is 23:30 on August 31.",
+  "The export writes the row to a CSV file in cloud storage. The amount and date are now text, without database types.",
+  "The loader copies the text into a raw table. It also records the source file and the load time.",
+  "The clean step restores the data types. It converts 12000 cents to 120.00 euros and assigns the UTC month, August. A join with the customer table adds the country code PT.",
+  "The monthly table adds this row to the other clean rows for August and PT. The result contains 1,240 orders and revenue of 42,000.",
+  "Power BI reads the monthly table and displays August revenue of 42,000. The total includes this order, although the customer placed it on September 1 in Lisbon local time.",
 ];
 const X = (k: number) => 60 + (k - 1) * 74;
 const on = (from: number, until?: number) => ({ "data-from": from, "data-until": until });
@@ -85,7 +85,7 @@ const cards: { title: string; fields: Field[] }[] = [
       class="scene"
       viewBox="0 0 640 360"
       role="img"
-      aria-label="One order row travels through eight stops from a checkout app to a Power BI tile"
+      aria-label="Eight fixed stages showing one order moving from a checkout app to an August revenue tile in Power BI"
     >
       <line class="rail" x1={X(1)} x2={X(8)} y1="40" y2="40"></line>
       {stops.map((s, i) => (

@@ -10,8 +10,10 @@ test("home page", async () => {
   assert.match(html, /<title>Manisha Subedi<\/title>/);
   assert.match(html, /data engineer at Leapfrog Technology/);
   assert.match(html, /Bengen/);
+  assert.match(html, /Company C \(placeholder\)/);
   assert.match(html, /manisha-subedi\.jpg/);
   assert.match(html, /pt\.linkedin\.com\/in\/manisubedi/);
+  assert.doesNotMatch(html, /property="og:image"/);
   assert.doesNotMatch(html, /chemical/i);
   for (const href of ["/projects/", "/blog/", "/about/"]) {
     assert.match(html, new RegExp(`href="${href}"`));
@@ -29,7 +31,7 @@ test("about is short and has the illustration", async () => {
 test("writing index and projects", async () => {
   const index = await page("blog/index.html");
   assert.match(index, /Simpson/);
-  assert.match(index, /You could have invented the data agent/);
+  assert.match(index, /href="\/blog\/you-could-have-invented-the-data-agent\/"/);
   assert.doesNotMatch(index, /Before opening Power BI|Before lab data/);
   const projects = await page("projects/index.html");
   assert.doesNotMatch(projects, /in development/);
@@ -63,7 +65,8 @@ test("simpson post has two figures, 40 dots each, and a table", async () => {
   const html = await page("blog/simpsons-paradox-drawn/index.html");
   assert.equal(html.match(/data-simpson="/g).length, 2);
   assert.equal(html.match(/class="city"/g).length, 80);
-  assert.match(html, /<summary[^>]*>Data table<\/summary>/);
+  assert.match(html, /<details(?:\s|>)/);
+  assert.match(html, /<table(?:\s|>)/);
   assert.match(html, /data-role="dir"[^>]*>down</);
 });
 
