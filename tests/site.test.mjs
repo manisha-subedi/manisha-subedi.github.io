@@ -8,7 +8,7 @@ const page = (p) => readFile(new URL(p, dist), "utf8");
 test("home page", async () => {
   const html = await page("index.html");
   assert.match(html, /<title>Manisha Subedi<\/title>/);
-  assert.match(html, /data engineer at Company A/);
+  assert.match(html, /data engineer at Leapfrog Technology/);
   assert.match(html, /Bengen/);
   assert.match(html, /manisha-subedi\.jpg/);
   assert.match(html, /pt\.linkedin\.com\/in\/manisubedi/);
@@ -18,14 +18,15 @@ test("home page", async () => {
   }
 });
 
-test("about lists experience and education", async () => {
+test("about lists work and the illustration", async () => {
   const html = await page("about/index.html");
   for (const s of [
     "Data Engineer I",
     "Data Engineering Intern",
     "Junior Data Analyst Intern",
-    "Scientific Initiation Intern",
-    "FCT NOVA",
+    "Research Intern",
+    "Leapfrog Technology",
+    "lisboa-illustration.svg",
   ]) {
     assert.match(html, new RegExp(s));
   }

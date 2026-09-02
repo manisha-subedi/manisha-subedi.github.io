@@ -7,44 +7,31 @@ export const site = {
     "The portfolio of Manisha Subedi, a data analyst based near Lisbon, Portugal.",
 };
 
-// placeholder: Company A, Company C and every date are unconfirmed. only Bengen and CIMO are real.
+// placeholder: Company C and every date are unconfirmed.
 export const experience = [
   {
     role: "Data Engineer I",
-    company: "Company A (placeholder)",
+    company: "Leapfrog Technology",
     dates: "2025 – present",
-    text: "Build and maintain the pipelines that load, check, and model the data behind reports and analysis.",
+    text: "Pipelines that load, check, and model data for reports and analysis.",
   },
   {
     role: "Data Engineering Intern",
     company: "Bengen",
     dates: "2025",
-    text: "Wrote SQL transformations and tests. Tracked data quality problems from source to report.",
+    text: "SQL transformations and tests. Chasing data quality problems from source to report.",
   },
   {
     role: "Junior Data Analyst Intern",
     company: "Company C (placeholder)",
     dates: "2024",
-    text: "Built dashboards in Power BI and answered ad hoc questions with SQL and Excel.",
+    text: "Power BI dashboards and ad hoc questions in SQL and Excel.",
   },
   {
-    role: "Scientific Initiation Intern",
+    role: "Research Intern",
     company: "Centro de Investigação de Montanha (CIMO)",
     dates: "Sep 2023 – Feb 2024",
-    text: "Measured physicochemical properties, analyzed phenolic compounds with HPLC, assessed antioxidant activity with OxHLIA and TBARS, and processed the experimental data for the final report.",
-  },
-];
-
-export const education = [
-  {
-    degree: "MSc Food Science and Technology",
-    school: "FCT NOVA, Lisbon",
-    dates: "2025 – 2027",
-  },
-  {
-    degree: "BSc Chemical Engineering",
-    school: "Instituto Politécnico de Bragança",
-    dates: "2021 – 2024",
+    text: "Lab measurements, HPLC, antioxidant assays, and the data work behind the final report.",
   },
 ];
 

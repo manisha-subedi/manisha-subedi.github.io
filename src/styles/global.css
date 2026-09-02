@@ -184,7 +184,33 @@ p {
   font-weight: 700;
 }
 
-/* experience, education, projects */
+.content-section ul {
+  margin: 0;
+  padding-left: 22px;
+}
+
+.content-section li {
+  margin-bottom: 4px;
+}
+
+.about-figure {
+  margin: 28px 0 32px;
+}
+
+.about-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+
+.about-figure figcaption {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+/* experience, projects */
 
 .entry {
   margin: 0 0 20px;

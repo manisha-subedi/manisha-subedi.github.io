@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="800" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg" font-family="Baskerville, 'Libre Baskerville', Georgia, serif">
+  <defs>
+    <filter id="paper" x="0" y="0" width="1" height="1">
+      <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="4" seed="3" result="fine"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".012" numOctaves="2" seed="7" result="mottle"/>
+      <feBlend in="fine" in2="mottle" mode="multiply" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 .88  0 0 0 0 .89  0 0 0 0 .87  .09 .09 .09 0 .86"/>
+    </filter>
+    <!-- acrylic block: ragged edge + soft tonal patches + faint dry streaks -->
+    <filter id="brush" x="-15%" y="-15%" width="130%" height="130%">
+      <feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="3" seed="11" result="t"/>
+      <feDisplacementMap in="SourceGraphic" in2="t" scale="4" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="5" result="n1"/>
+      <feColorMatrix in="n1" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  1.1 0 0 0 .42" result="m1"/>
+      <feComposite in="d" in2="m1" operator="in" result="d1"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".03 .5" numOctaves="2" seed="9" result="n2"/>
+      <feColorMatrix in="n2" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  .6 0 0 0 .72" result="m2"/>
+      <feComposite in="d1" in2="m2" operator="in"/>
+    </filter>
+    <!-- dry brush: one dragged stroke, breaks where the paint ran out -->
+    <filter id="dry" x="-15%" y="-40%" width="130%" height="180%">
+      <feTurbulence type="fractalNoise" baseFrequency=".04" numOctaves="2" seed="13" result="t"/>
+      <feDisplacementMap in="SourceGraphic" in2="t" scale="6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".012 .45" numOctaves="3" seed="17" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  2.6 0 0 0 -.55" result="m"/>
+      <feComposite in="d" in2="m" operator="in"/>
+    </filter>
+    <filter id="rough" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="3" seed="11" result="t"/>
+      <feDisplacementMap in="SourceGraphic" in2="t" scale="3.5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="ink" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency=".08" numOctaves="2" seed="21" result="t"/>
+      <feDisplacementMap in="SourceGraphic" in2="t" scale="2.6" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="800" fill="#e4e6e1"/>
+  <rect width="1200" height="800" filter="url(#paper)" style="mix-blend-mode:multiply"/>
+
+  <!-- palette: ochre #d7b36a  terracotta #b9532f  olive #4d6042  slate #55667a -->
+  <g transform="translate(244,100) scale(1.25)">
+
+    <!-- the storm band: one dragged stroke -->
+    <path filter="url(#dry)" fill="#55667a" opacity=".9"
+      d="M118 128 C170 118 250 122 320 120 C360 119 392 122 404 128 C398 138 360 140 320 141 C250 142 170 144 122 140 C112 137 110 131 118 128 Z"/>
+
+    <!-- wooded slope under the castle -->
+    <path filter="url(#brush)" fill="#4d6042"
+      d="M132 300 C150 262 190 226 236 212 L420 214 C450 238 470 270 478 300 Z"/>
+
+    <!-- castle -->
+    <g filter="url(#brush)" fill="#d7b36a">
+      <path d="M150 210 L150 176 L162 176 L162 184 L172 184 L172 176 L184 176 L184 184 L194 184 L194 176 L206 176 L206 210 Z"/>
+      <path d="M206 212 L206 190 L216 190 L216 196 L226 196 L226 190 L236 190 L236 196 L246 196 L246 190 L256 190 L256 196 L266 196 L266 190 L276 190 L276 212 Z"/>
+      <path d="M276 214 L276 168 L288 168 L288 176 L298 176 L298 168 L310 168 L310 176 L320 176 L320 168 L332 168 L332 214 Z"/>
+      <path d="M332 214 L332 190 L342 190 L342 196 L352 196 L352 190 L362 190 L362 196 L372 196 L372 190 L382 190 L382 214 Z"/>
+      <path d="M382 216 L382 180 L394 180 L394 188 L404 188 L404 180 L416 180 L416 188 L426 188 L426 180 L438 180 L438 216 Z"/>
+    </g>
+    <path filter="url(#rough)" fill="#b9532f" d="M305 147 L323 152 L305 158 Z"/>
+
+    <!-- one tall pine at the foot of the hill, like the photo -->
+    <path filter="url(#brush)" fill="#4d6042" d="M96 262 C92 246 104 236 112 246 C120 238 130 250 124 264 C118 274 100 274 96 262 Z"/>
+
+    <!-- houses in front of the slope -->
+    <g filter="url(#rough)">
+      <path fill="#e4e6e1" d="M176 304 L176 272 L230 272 L230 304 Z"/>
+      <path fill="#b9532f" d="M170 274 L203 258 L236 274 Z"/>
+      <path fill="#e4e6e1" d="M258 308 L258 266 L300 266 L300 308 Z"/>
+      <path fill="#b9532f" d="M253 268 L279 254 L305 268 Z"/>
+      <path fill="#e4e6e1" d="M338 306 L338 278 L404 278 L404 306 Z"/>
+      <path fill="#b9532f" d="M332 280 L371 262 L410 280 Z"/>
+    </g>
+
+    <!-- ink, a few lines only, pen lifting here and there -->
+    <g filter="url(#ink)" fill="none" stroke="#2b2a28" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M150 210 L150 176 L162 176 L162 184 L172 184 L172 176 L184 176 L184 184 L194 184 L194 176 L206 176 L206 190"/>
+      <path d="M216 190 L216 196 L226 196 L226 190 L236 190 L236 196 L246 196 L246 190 L256 190 L256 196 L266 196 L266 190 L276 190"/>
+      <path d="M276 190 L276 168 L288 168 L288 176 L298 176 L298 168 L310 168 L310 176 L320 176 L320 168 L332 168 L332 190"/>
+      <path d="M342 190 L342 196 L352 196 L352 190 L362 190 L362 196 L372 196 L372 190 L382 190"/>
+      <path d="M382 190 L382 180 L394 180 L394 188 L404 188 L404 180 L416 180 L416 188 L426 188 L426 180 L438 180 L438 216"/>
+      <path d="M304 168 L304 146"/>
+      <!-- the old wall stepping down the hillside -->
+      <path d="M150 214 C140 232 124 246 112 262 C104 272 96 284 90 296"/>
+      <!-- pine trunk -->
+      <path d="M110 272 L110 300"/>
+      <!-- house outlines, partial -->
+      <path d="M176 304 L176 274 M170 274 L203 258 L236 274"/>
+      <path d="M253 268 L279 254 L305 268 M300 268 L300 308"/>
+      <path d="M332 280 L371 262 L410 280 M338 306 L404 306"/>
+      <path d="M192 288 L192 296 M274 284 L274 294 M360 290 L360 298 M382 290 L382 298"/>
+      <!-- ground -->
+      <path d="M60 314 C200 310 340 312 500 314" stroke-width="1.4"/>
+    </g>
+  </g>
+
+  <g fill="#2b2a28">
+    <text x="600" y="640" text-anchor="middle" font-size="26" letter-spacing="9">LISBOA</text>
+    <text x="600" y="676" text-anchor="middle" font-size="14" font-style="italic" letter-spacing="1" fill="#55667a">Castelo de São Jorge</text>
+    <text x="76" y="86" font-size="13" letter-spacing="3">N° 01</text>
+    <text x="1124" y="86" text-anchor="end" font-size="13" letter-spacing="3">MMXXVI</text>
+  </g>
+</svg>

@@ -1,23 +1,45 @@
 ---
 import Base from "../layouts/Base.astro";
-import { experience, education } from "../data/site";
+import { experience } from "../data/site";
 ---
 
 <Base title="About" description="About Manisha Subedi.">
   <h1 class="small-page-title">About</h1>
   <div class="about-copy">
     <p>
-      I live in Amadora, near Lisbon. I studied chemical engineering, and I am
-      now studying food science and technology at FCT NOVA.
+      I'm Manisha, a data analyst living in Amadora, just outside Lisbon. I
+      grew up in Nepal and moved to Portugal to study. I started in chemical
+      engineering, and somewhere between the lab notebook and the spreadsheet
+      I noticed that the data was the part I liked most.
     </p>
     <p>
-      I am looking for an entry-level data analyst role where I can keep
-      learning and work on real business problems.
+      Now I work on data pipelines and reports, and I write short illustrated
+      posts here about the ideas behind them.
     </p>
   </div>
 
+  <figure class="about-figure">
+    <img
+      src="/lisboa-illustration.svg"
+      alt="A painted illustration of Lisbon"
+      width="1200"
+      height="800"
+      loading="lazy"
+    />
+    <figcaption>Lisbon, where I ended up.</figcaption>
+  </figure>
+
   <section class="content-section">
-    <h2>Experience</h2>
+    <h2>A few things about me</h2>
+    <ul>
+      <li>(placeholder) something I do outside work</li>
+      <li>(placeholder) a place I keep going back to</li>
+      <li>(placeholder) one small surprising fact</li>
+    </ul>
+  </section>
+
+  <section class="content-section">
+    <h2>Work</h2>
     {
       experience.map((e) => (
         <article class="entry">
@@ -29,23 +51,6 @@ import { experience, education } from "../data/site";
             <p class="entry-date">{e.dates}</p>
           </div>
           <p>{e.text}</p>
-        </article>
-      ))
-    }
-  </section>
-
-  <section class="content-section">
-    <h2>Education</h2>
-    {
-      education.map((e) => (
-        <article class="entry">
-          <div class="entry-heading">
-            <div>
-              <h3>{e.degree}</h3>
-              <p class="entry-company">{e.school}</p>
-            </div>
-            <p class="entry-date">{e.dates}</p>
-          </div>
         </article>
       ))
     }
