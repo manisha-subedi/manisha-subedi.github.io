@@ -276,6 +276,13 @@ p {
   margin: 12px 0 8px;
 }
 
+.project-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 12px 0 10px;
+}
+
 .project .install {
   margin: 0;
   font-size: 0.9rem;

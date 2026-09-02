@@ -33,7 +33,17 @@ Warnings:
   },
   {
     title: "A warehouse on a laptop",
-    status: "in development",
-    text: "Monthly files into DuckDB with dbt, tests, a loader that refuses a file it already has, and one Power BI page on top.",
+    status: "v0.1",
+    url: "https://github.com/manisha-subedi/laptop-warehouse",
+    text: "Monthly files from Chicago's bike share go into DuckDB, dbt gives the types back and builds the tables a report reads, and the loader refuses a file it already has. 2.3 million real rides, 25 seconds to load.",
+    example: `$ python load.py 202605 202606 202607
+202605-divvy-tripdata.zip: loaded 653704 rows
+202606-divvy-tripdata.zip: loaded 762550 rows
+202607-divvy-tripdata.zip: loaded 869051 rows
+
+$ python load.py 202606
+202606-divvy-tripdata.zip: already loaded, skipped`,
+    image: "/laptop-warehouse-rides.svg",
+    install: "dbt build --project-dir warehouse --profiles-dir warehouse",
   },
 ];

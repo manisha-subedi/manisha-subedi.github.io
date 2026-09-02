@@ -14,6 +14,7 @@ import { projects } from "../data/site";
         </div>
         <p>{p.text}</p>
         {p.example && <pre class="example">{p.example}</pre>}
+        {p.image && <img class="project-image" src={p.image} alt={`${p.title}, result chart`} loading="lazy" />}
         {p.install && (
           <p class="install">
             Try it: <code>{p.install}</code>
