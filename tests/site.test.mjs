@@ -18,18 +18,12 @@ test("home page", async () => {
   }
 });
 
-test("about lists work and the illustration", async () => {
+test("about is short and has the illustration", async () => {
   const html = await page("about/index.html");
-  for (const s of [
-    "Data Engineer I",
-    "Data Engineering Intern",
-    "Junior Data Analyst Intern",
-    "Research Intern",
-    "Leapfrog Technology",
-    "lisboa-illustration.svg",
-  ]) {
+  for (const s of ["grew up in Nepal", "hike", "lisboa-illustration.svg"]) {
     assert.match(html, new RegExp(s));
   }
+  assert.doesNotMatch(html, /Data Engineer I|placeholder|where I ended up/);
 });
 
 test("writing index and projects", async () => {

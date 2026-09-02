@@ -1,6 +1,5 @@
 ---
 import Base from "../layouts/Base.astro";
-import { experience } from "../data/site";
 ---
 
 <Base title="About" description="About Manisha Subedi.">
@@ -8,14 +7,10 @@ import { experience } from "../data/site";
   <div class="about-copy">
     <p>
       I'm Manisha, a data analyst living in Amadora, just outside Lisbon. I
-      grew up in Nepal and moved to Portugal to study. I started in chemical
-      engineering, and somewhere between the lab notebook and the spreadsheet
-      I noticed that the data was the part I liked most.
+      grew up in Nepal and moved to Portugal to study. I studied chemical
+      engineering, and now I work with data.
     </p>
-    <p>
-      Now I work on data pipelines and reports, and I write short illustrated
-      posts here about the ideas behind them.
-    </p>
+    <p>Outside work I hike, listen to music, and draw.</p>
   </div>
 
   <figure class="about-figure">
@@ -26,33 +21,5 @@ import { experience } from "../data/site";
       height="800"
       loading="lazy"
     />
-    <figcaption>Lisbon, where I ended up.</figcaption>
   </figure>
-
-  <section class="content-section">
-    <h2>A few things about me</h2>
-    <ul>
-      <li>(placeholder) something I do outside work</li>
-      <li>(placeholder) a place I keep going back to</li>
-      <li>(placeholder) one small surprising fact</li>
-    </ul>
-  </section>
-
-  <section class="content-section">
-    <h2>Work</h2>
-    {
-      experience.map((e) => (
-        <article class="entry">
-          <div class="entry-heading">
-            <div>
-              <h3>{e.role}</h3>
-              <p class="entry-company">{e.company}</p>
-            </div>
-            <p class="entry-date">{e.dates}</p>
-          </div>
-          <p>{e.text}</p>
-        </article>
-      ))
-    }
-  </section>
 </Base>
