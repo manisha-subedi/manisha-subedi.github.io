@@ -12,7 +12,7 @@ export const projects = [
     title: "recount",
     status: "v0.1",
     url: "https://github.com/manisha-subedi/recount",
-    text: "An MCP server that never hands the model a number without the checks. Point it at a folder of CSV files, ask Claude for last month's revenue, and the number comes back with the warnings attached: duplicate rows, a month that doubled, stale data.",
+    text: "An MCP server for your data. Claude asks for a number, recount runs the SQL, checks the tables, and returns the number with warnings: duplicate rows, a month that doubled, old data.",
     example: `revenue = sum(amount) from orders where status in ('paid', 'fulfilled')
 
 month    revenue
@@ -29,13 +29,13 @@ Warnings:
   {
     title: "Late deliveries and bad reviews",
     status: "in development",
-    text: "100,000 real orders from a Brazilian online shop. How much does a late delivery cost in review score, and which sellers drive it?",
+    text: "100,000 real orders from a Brazilian online shop. How much does a late delivery cost in review score, and which sellers cause the most late ones?",
   },
   {
     title: "A warehouse on a laptop",
     status: "v0.1",
     url: "https://github.com/manisha-subedi/laptop-warehouse",
-    text: "Monthly files from Chicago's bike share go into DuckDB, dbt gives the types back and builds the tables a report reads, and the loader refuses a file it already has. 2.3 million real rides, 25 seconds to load.",
+    text: "Monthly CSV files from Chicago's bike share go into DuckDB, dbt cleans them and builds the tables for a report. A file is loaded only once. 2.3 million real rides, 25 seconds to load.",
     example: `$ python load.py 202605 202606 202607
 202605-divvy-tripdata.zip: loaded 653704 rows
 202606-divvy-tripdata.zip: loaded 762550 rows
