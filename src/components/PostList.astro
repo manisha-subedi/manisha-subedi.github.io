@@ -17,7 +17,6 @@ const { posts } = Astro.props;
         <time datetime={p.data.date.toISOString().slice(0, 7)}>
           {monthYear(p.data.date)}
         </time>
-        <p class="post-summary">{p.data.summary}</p>
       </li>
     ))
   }
