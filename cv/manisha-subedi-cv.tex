@@ -1,0 +1,155 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage[margin=0.5in]{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{fontawesome5}
+\usepackage{parskip}
+
+\definecolor{linkblue}{RGB}{0,102,204}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=linkblue,
+    urlcolor=linkblue,
+    pdftitle={Manisha Subedi - CV},
+}
+
+\pagestyle{empty}
+
+\titleformat{\section}
+    {\Large\bfseries}
+    {}
+    {0em}
+    {}
+    [\titlerule]
+
+\titlespacing{\section}{0pt}{8pt}{4pt}
+
+\newcommand{\resumeSubheading}[4]{%
+    \noindent%
+    \begin{tabular*}{\textwidth}{@{}l@{\extracolsep{\fill}}r@{}}
+        \textbf{#1} & \textbf{#3} \\
+        \ifx&#2& \else #2 \fi & #4 \\
+    \end{tabular*}%
+    \vspace{-2pt}%
+}
+
+\setlist[itemize]{leftmargin=1.5em, label=\textbullet, nosep, topsep=1pt, parsep=0pt, itemsep=1pt}
+
+\begin{document}
+
+%----------HEADING----------
+\begin{center}
+    {\Huge\bfseries Manisha Subedi}\\[2pt]
+    {\large\bfseries Data Analyst}\\[8pt]
+    \faIcon{map-marker-alt} Amadora, Lisbon, Portugal \quad
+    \faIcon{globe} \href{https://manisha-subedi.github.io}{manisha-subedi.github.io} \\[4pt]
+    \faIcon{linkedin} \href{https://pt.linkedin.com/in/manisubedi}{manisubedi} \quad
+    \faIcon{github} \href{https://github.com/manisha-subedi}{manisha-subedi}
+\end{center}
+
+%----------EXPERIENCE----------
+\section{Experience}
+
+\resumeSubheading
+    {Data Engineer I}{\href{https://www.lftechnology.com}{\textcolor{linkblue}{Leapfrog Technology}}}
+    {Remote}{2025 -- Present}
+
+\begin{itemize}
+    \item Build and maintain data pipelines in Python and SQL that load daily files from client systems into a warehouse, with checks for duplicate rows, missing days, and late data.
+    \item Model clean tables with dbt for Power BI reports, with tests so a broken load fails before a report does.
+    \item Made loads idempotent with file hashes, so a rerun never doubles the numbers.
+    \item Work with analysts to define each metric once, in one place, so revenue means the same thing in every report.
+\end{itemize}
+
+\vspace{4pt}
+
+\resumeSubheading
+    {Data Engineering Intern}{Bengen}
+    {Lisbon, Portugal}{2025}
+
+\begin{itemize}
+    \item Wrote SQL transformations and tests for a client warehouse and tracked data quality problems from the source files to the final report.
+    \item Built a small monitor that compares each month's row count with the usual month and flags a jump.
+    \item Cleaned and typed raw CSV exports (dates, currencies, units) into staging tables.
+\end{itemize}
+
+\vspace{4pt}
+
+\resumeSubheading
+    {Junior Data Analyst Intern}{Company C (placeholder)}
+    {Lisbon, Portugal}{2024}
+
+\begin{itemize}
+    \item Built Power BI dashboards for weekly sales and stock reports.
+    \item Answered ad hoc questions with SQL and Excel, and kept each metric definition next to its query.
+    \item Checked report numbers against finance totals before they went out.
+\end{itemize}
+
+\vspace{4pt}
+
+\resumeSubheading
+    {Scientific Initiation Intern}{\href{https://cimo.ipb.pt}{\textcolor{linkblue}{Centro de Investiga\c{c}\~ao de Montanha (CIMO)}}}
+    {Bragan\c{c}a, Portugal}{September 2023 -- February 2024}
+
+\begin{itemize}
+    \item Measured physicochemical properties and analysed phenolic compounds with HPLC.
+    \item Assessed antioxidant activity in vitro with the OxHLIA and TBARS assays.
+    \item Processed the experimental data and wrote the final report.
+\end{itemize}
+
+%----------PROJECTS----------
+\section{Projects}
+
+\noindent\textbf{recount} \hfill \href{https://github.com/manisha-subedi/recount}{\textcolor{linkblue}{Link to project}}
+\begin{itemize}
+    \item An MCP server for data, in Python on DuckDB. When Claude asks for a number, it runs the SQL, checks the tables, and returns the number with warnings.
+    \item Four checks in one query each: duplicate ids, a month that doubled, old data, empty columns. Metrics defined once in a YAML file.
+\end{itemize}
+
+\vspace{4pt}
+
+\noindent\textbf{A warehouse on a laptop} \hfill \href{https://github.com/manisha-subedi/laptop-warehouse}{\textcolor{linkblue}{Link to project}}
+\begin{itemize}
+    \item Monthly files from Chicago's bike share into DuckDB, cleaned with dbt. 2.3 million real rides, 25 seconds to load.
+    \item The loader stores a hash of each file and refuses a file it already has. A dbt test fails the build if a file is double or half the usual size.
+\end{itemize}
+
+\vspace{4pt}
+
+\noindent\textbf{Late deliveries and bad reviews} \hfill \href{https://github.com/manisha-subedi/late-deliveries}{\textcolor{linkblue}{Link to project}}
+\begin{itemize}
+    \item 96,470 real orders from a Brazilian marketplace, SQL on DuckDB. Late deliveries are 7\% of orders and 37\% of one-star reviews.
+    \item Found that the cause is the promised date in some states and months, not the sellers. Three extra days on the promise cuts late orders from 6.8\% to 4.8\%.
+\end{itemize}
+
+%----------EDUCATION----------
+\section{Education}
+
+\resumeSubheading
+    {Master's degree in Food Science and Technology}{NOVA School of Science and Technology (FCT NOVA)}
+    {Lisbon, Portugal}{September 2025 -- September 2027}
+
+\vspace{4pt}
+
+\resumeSubheading
+    {Bachelor's degree in Chemical Engineering}{Instituto Polit\'ecnico de Bragan\c{c}a}
+    {Bragan\c{c}a, Portugal}{September 2021 -- September 2024}
+
+%----------TECHNICAL SKILLS----------
+\section{Technical Skills}
+
+\textbf{Languages:} SQL, Python
+
+\textbf{Tools:} DuckDB, dbt, Power BI, Tableau, Excel, Git/GitHub, pandas
+
+\textbf{Writing:} Short illustrated posts on data analysis at \href{https://manisha-subedi.github.io/blog/}{\textcolor{linkblue}{manisha-subedi.github.io/blog}}
+
+\end{document}

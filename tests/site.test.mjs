@@ -13,6 +13,7 @@ test("home page", async () => {
   assert.match(html, /Company C \(placeholder\)/);
   assert.match(html, /manisha-subedi\.jpg/);
   assert.match(html, /pt\.linkedin\.com\/in\/manisubedi/);
+  assert.match(html, /href="\/manisha-subedi-cv\.pdf"/);
   assert.doesNotMatch(html, /property="og:image"/);
   assert.doesNotMatch(html, /chemical/i);
   for (const href of ["/projects/", "/blog/", "/about/"]) {
