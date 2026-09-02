@@ -32,7 +32,8 @@ test("writing index and projects", async () => {
   assert.match(index, /You could have invented the data agent/);
   assert.doesNotMatch(index, /Before opening Power BI|Before lab data/);
   const projects = await page("projects/index.html");
-  assert.match(projects, /in development/);
+  assert.doesNotMatch(projects, /in development/);
+  assert.match(projects, /github\.com\/manisha-subedi\/late-deliveries/);
   assert.match(projects, /github\.com\/manisha-subedi\/recount/);
 });
 

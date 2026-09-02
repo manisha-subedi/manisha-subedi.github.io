@@ -28,8 +28,22 @@ Warnings:
   },
   {
     title: "Late deliveries and bad reviews",
-    status: "in development",
-    text: "100,000 real orders from a Brazilian online shop. How much does a late delivery cost in review score, and which sellers cause the most late ones?",
+    status: "v0.1",
+    url: "https://github.com/manisha-subedi/late-deliveries",
+    text: "100,000 real orders from a Brazilian online shop, 2016 to 2018. Late deliveries are 7 percent of orders and 37 percent of one star reviews. It is not the sellers. It is the promised date, in some states and some months.",
+    example: `96,470 delivered orders, 6,534 late (6.8%)
+36.7% of all one star reviews come from a late order
+
+bucket               orders  avg score  one star %
+-------------------  ------  ---------  ----------
+on time              89443   4.29       6.6
+1 to 3 days late     1852    3.29       25.1
+4 to 7 days late     1748    2.10       58.6
+8 or more days late  2781    1.70       69.8
+
+If the promised date had been 3 days later: 4.8% late`,
+    image: "/late-deliveries-score.svg",
+    install: "python analysis.py",
   },
   {
     title: "A warehouse on a laptop",
