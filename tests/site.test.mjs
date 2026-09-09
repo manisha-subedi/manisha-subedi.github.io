@@ -9,8 +9,8 @@ test("home page", async () => {
   const html = await page("index.html");
   assert.match(html, /<title>Manisha Subedi<\/title>/);
   assert.match(html, /data engineer at Leapfrog Technology/);
-  assert.match(html, /Bengen/);
-  assert.match(html, /Company C \(placeholder\)/);
+  assert.match(html, /BenGen/);
+  assert.doesNotMatch(html, /placeholder/);
   assert.match(html, /manisha-subedi\.jpg/);
   assert.match(html, /pt\.linkedin\.com\/in\/manisubedi/);
   assert.match(html, /href="\/manisha-subedi-cv\.pdf"/);

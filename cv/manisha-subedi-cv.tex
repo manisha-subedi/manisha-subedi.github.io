@@ -60,11 +60,11 @@
 
 \resumeSubheading
     {Data Engineer I}{\href{https://www.lftechnology.com}{\textcolor{linkblue}{Leapfrog Technology}}}
-    {Remote}{2025 -- Present}
+    {Remote}{December 2025 -- Present}
 
 \begin{itemize}
     \item Build and maintain Python and SQL pipelines that load daily client files into a data warehouse. Add checks for duplicate rows, missing days, and delayed data.
-    \item Use dbt to create clean tables for Power BI reports. Tests stop a failed load before it reaches a report.
+    \item Use dbt to build clean tables and prepare the datasets behind Power BI reports. Tests stop a failed load before it reaches a report.
     \item Use file hashes to keep loads idempotent, so rerunning a job does not load the same file twice.
     \item Work with analysts to keep each metric definition in one place, so revenue is calculated the same way in every report.
 \end{itemize}
@@ -72,23 +72,15 @@
 \vspace{2pt}
 
 \resumeSubheading
-    {Data Engineering Intern}{Bengen}
-    {Lisbon, Portugal}{2025}
+    {Data Analyst / Data Engineering Intern}{\href{https://bengen.com}{\textcolor{linkblue}{BenGen}}}
+    {Remote}{July -- November 2025}
 
 \begin{itemize}
-    \item Wrote SQL transformations and tests for a client data warehouse. Traced data quality problems from the source files to the final report.
-    \item Built a monitor that compares each month's row count with the usual monthly count and flags large increases.
-\end{itemize}
-
-\vspace{2pt}
-
-\resumeSubheading
-    {Junior Data Analyst Intern}{Company C (placeholder)}
-    {Lisbon, Portugal}{2024}
-
-\begin{itemize}
-    \item Built Power BI dashboards for weekly sales and stock reports.
-    \item Used SQL and Excel to answer ad hoc questions. Kept each metric definition with its query.
+    \item Prepared Power BI datasets by joining tables, mapping fields, and checking for missing or inconsistent data.
+    \item Built and updated Power BI dashboards for campaign activity, audience trends, and operational reporting.
+    \item Used SQL and Python to clean, combine, and validate consumer and campaign data from multiple sources.
+    \item Helped prepare Databricks pipelines that converted raw files into structured tables for analysis and reporting, including work for FastCube, an internal data platform.
+    \item Investigated differences between source data and reports and shared the findings with analysts and engineers.
 \end{itemize}
 
 \vspace{2pt}
@@ -106,18 +98,18 @@
 %----------PROJECTS----------
 \section{Projects}
 
-\noindent\textbf{recount} \hfill \href{https://github.com/manisha-subedi/recount}{\textcolor{linkblue}{Link to project}}
+\noindent\textbf{A warehouse on a laptop} \hfill \href{https://github.com/manisha-subedi/laptop-warehouse}{\textcolor{linkblue}{Link to project}}
 \begin{itemize}
-    \item Built an MCP server for data using Python and DuckDB. When Claude requests a number, it runs the SQL, checks the tables, and returns the result with warnings.
-    \item Checks for duplicate IDs, monthly row counts that are about twice the usual count, out-of-date data, and empty columns. Each check uses one query, and metric definitions are stored in YAML.
+    \item Loads monthly Chicago bike-share files into DuckDB and cleans the data with dbt, ready for Power BI. The loader processed 2.3 million real rides in 25 seconds.
+    \item Uses file hashes to identify files that have already been loaded. A dbt test fails the build when a file has twice or half the usual number of rows.
 \end{itemize}
 
 \vspace{2pt}
 
-\noindent\textbf{A warehouse on a laptop} \hfill \href{https://github.com/manisha-subedi/laptop-warehouse}{\textcolor{linkblue}{Link to project}}
+\noindent\textbf{recount} \hfill \href{https://github.com/manisha-subedi/recount}{\textcolor{linkblue}{Link to project}}
 \begin{itemize}
-    \item Loads monthly Chicago bike-share files into DuckDB and cleans the data with dbt. The loader processed 2.3 million real rides in 25 seconds.
-    \item Uses file hashes to identify files that have already been loaded. A dbt test fails the build when a file has twice or half the usual number of rows.
+    \item Built an MCP server for data using Python and DuckDB. When Claude requests a number, it runs the SQL, checks the tables, and returns the result with warnings.
+    \item Checks for duplicate IDs, monthly row counts that are about twice the usual count, out-of-date data, and empty columns. Each check uses one query, and metric definitions are stored in YAML.
 \end{itemize}
 
 %----------EDUCATION----------
@@ -136,6 +128,6 @@
 %----------TECHNICAL SKILLS----------
 \section{Technical skills}
 
-SQL, Python, Databricks, DuckDB, dbt, Power BI, Tableau, Excel, pandas, Git, GitHub
+Power BI, SQL, Python, Excel, Databricks, dbt, DuckDB, Tableau, pandas, Git, GitHub
 
 \end{document}
