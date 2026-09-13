@@ -1,13 +1,31 @@
 export const site = {
   name: "Manisha Subedi",
   role: "Data Analyst",
-  location: "Amadora, Lisbon, Portugal",
+  location: "Lisbon, Portugal",
   linkedin: "https://pt.linkedin.com/in/manisubedi",
   description:
     "Manisha Subedi is a data analyst based near Lisbon, Portugal.",
 };
 
 export const projects = [
+  {
+    title: "Hotel Revenue and Cancellation Analytics",
+    status: "Power BI, DAX",
+    text: "A four-page Power BI report for 119,390 hotel bookings at two hotels in Portugal. It covers revenue, demand, booking channels, customers, and cancellations. The flat booking file was reshaped into a star schema with a date table and four dimension tables, and the report uses 42 DAX measures. Occupancy, ADR, and RevPAR are calculated from the real room inventory, not from booked nights.",
+    example: `119,390 bookings, two hotels
+
+lost bookings                        37.0%
+cancelled, booked 181+ days ahead    56.7%
+cancelled, repeat bookings           13.3%`,
+  },
+  {
+    title: "Executive Sales Performance Dashboard",
+    status: "Tableau",
+    text: "An interactive Tableau dashboard built on more than 10,000 sales records. It shows sales, profit, orders, and customers, with views by customer, product, and region. The Consumer segment was the strongest.",
+    example: `sales growth, year over year     36.2%
+profit growth, year over year    30.9%
+customer growth                   6.0%`,
+  },
   {
     title: "recount",
     status: "v0.1",

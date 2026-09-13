@@ -8,7 +8,8 @@ const page = (p) => readFile(new URL(p, dist), "utf8");
 test("home page", async () => {
   const html = await page("index.html");
   assert.match(html, /<title>Manisha Subedi<\/title>/);
-  assert.match(html, /data engineer at Leapfrog Technology/);
+  assert.match(html, /BI intern at BenGen/);
+  assert.doesNotMatch(html, /Leapfrog/);
   assert.match(html, /BenGen/);
   assert.doesNotMatch(html, /placeholder/);
   assert.match(html, /manisha-subedi\.jpg/);
@@ -38,6 +39,8 @@ test("writing index and projects", async () => {
   assert.doesNotMatch(projects, /in development/);
   assert.match(projects, /github\.com\/manisha-subedi\/late-deliveries/);
   assert.match(projects, /github\.com\/manisha-subedi\/recount/);
+  assert.match(projects, /Hotel Revenue and Cancellation Analytics/);
+  assert.match(projects, /Executive Sales Performance Dashboard/);
 });
 
 test("data agent post has code and two figures", async () => {
