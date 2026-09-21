@@ -10,13 +10,18 @@ export const site = {
 export const projects = [
   {
     title: "Hotel Revenue and Cancellation Analytics",
-    status: "Power BI, DAX",
-    text: "A four-page Power BI report for 119,390 hotel bookings at two hotels in Portugal. It covers revenue, demand, booking channels, customers, and cancellations. The flat booking file was reshaped into a star schema with a date table and four dimension tables, and the report uses 42 DAX measures. Occupancy, ADR, and RevPAR are calculated from the real room inventory, not from booked nights.",
-    example: `119,390 bookings, two hotels
+    status: "live page",
+    url: "https://manisha-subedi.github.io/hotel-bookings/",
+    code: "https://github.com/manisha-subedi/hotel-bookings",
+    text: "119,390 real bookings from two hotels in Portugal, 2015 to 2017. The flat booking file becomes a star schema in DuckDB: one fact table of bookings, one of occupied room nights, four dimension tables, and a date table that serves both the arrival date and the cancellation date. The page shows occupancy, ADR, and RevPAR by month, computed from the room count and not from booked nights. It has a lookup for how often a booking like this one cancels, and a tool that says how many rooms to oversell on a night, using the rate of bookings still on the books a week before arrival.",
+    example: `119,390 bookings, 37.0% cancelled
+lead time 181+ days                    57.0% cancelled
+still on the books 7 days out, city     8.5% cancel or no-show
+still on the books 7 days out, resort   4.8% cancel or no-show
 
-lost bookings                        37.0%
-cancelled, booked 181+ days ahead    56.7%
-cancelled, repeat bookings           13.3%`,
+city hotel, 226 rooms, 8.5% late cancellation
+  sell 18 more than you have
+  expected cost €564 a night, against €2,055 with no overbooking`,
   },
   {
     title: "Executive Sales Performance Dashboard",

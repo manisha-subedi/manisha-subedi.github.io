@@ -20,6 +20,11 @@ import { projects } from "../data/site";
             Run: <code>{p.install}</code>
           </p>
         )}
+        {p.code && (
+          <p class="install">
+            Code: <a href={p.code}>{p.code.replace("https://", "")}</a>
+          </p>
+        )}
       </article>
     ))
   }
