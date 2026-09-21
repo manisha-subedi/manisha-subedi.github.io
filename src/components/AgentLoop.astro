@@ -2,13 +2,13 @@
 // scroll-driven scene: one agent, three tables, one duplicated file.
 // every element carries data-from (and optional data-until); the script turns them on per step.
 const steps = [
-  "The agent receives the question. It has not read the warehouse schema yet and does not know that the August file was loaded twice.",
-  "The agent reads the schema. The warehouse has three tables: files, orders, and customers. Each order includes an amount, a month, and a file ID.",
-  "The agent writes and runs a query that adds the August amounts. The result is 84,000.",
-  "Before answering, the agent checks the result. August has 2,480 orders, compared with about 1,200 in earlier months, so it investigates.",
-  "The agent checks the order IDs and finds that each one appears twice. The files table shows that the August file was loaded twice.",
-  "The agent excludes the second load from the calculation and runs the query again. The result is 42,000 from 1,240 orders.",
-  "The agent reports revenue of 42,000. It also reports the duplicated file and explains that it excluded the second load from this calculation.",
+  "The agent gets the question. It has not looked at the tables yet. It does not know about the problem.",
+  "It reads the tables. There are three: files, orders, and customers. Each order has an amount, a month, and the file it came from.",
+  "It writes one query and runs it. Add up the August amounts. The answer is 84,000.",
+  "A careless agent stops here. A careful one checks the number. August has 2,480 orders. The months before had about 1,200. Something is wrong.",
+  "It looks for duplicates. Every order ID is there two times. The files table shows why. The August file was loaded twice.",
+  "It leaves the second copy out and runs the query again. 42,000, from 1,240 orders. That is close to the other months.",
+  "It answers: revenue in August was 42,000. It also says what it found and what it left out. The report is part of the answer.",
 ];
 const on = (from: number, until?: number) => ({
   "data-from": from,

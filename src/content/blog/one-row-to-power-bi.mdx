@@ -1,39 +1,31 @@
 ---
 title: What happens to a number before Power BI shows it
 date: 2026-05-04
-summary: One example of a Lisbon order moving through eight data stages before it appears in an August Power BI total.
+summary: One order, eight stops, one tile. At every stop something about the row changes, and one change was never a decision.
 readTime: 4 min read
 ---
 
 import RowJourney from "../../components/RowJourney.astro";
 
-A Power BI tile shows August revenue of 42,000. This example uses made-up
-data and follows one 120-euro order in that total. The customer placed the
-order in Lisbon at 00:30 on September 1.
+A tile in Power BI says: August revenue, 42,000. It looks like a fact. But
+it is the end of a long trip. One row made that trip through eight stops. At
+every stop, something about the row changed. Some changes were decisions.
+Some were just defaults nobody looked at.
 
-The order passes through eight stages before Power BI reads it. Some stages
-change its format or data type. The export also converts the time to UTC,
-which changes the displayed calendar date from September 1 to August 31.
-
-Scroll through the eight stages below. The highlighted row is the same order
-at each stage.
+This post follows one order from the checkout to the tile. The data is made
+up. Scroll through the eight stops. The blue chip on the line is the order.
 
 <RowJourney />
 
-## Compare the same row
+## Walk one row back
 
-When two dashboards disagree, select one row that appears in both data paths
-and compare it at each stage. Find the first place where the values or rules
-are different.
+When two dashboards do not agree, the cause is almost always one stop where
+they made a different choice. Local time or UTC. Cents or euros. Paid orders
+or all orders. The fastest way to find it is this: take one row, and walk it
+back, stop by stop, until the two paths split.
 
-A time zone can put the same event on a different calendar date. An amount
-may be stored in cents in one table and euros in another. One report may
-include only paid orders, while another includes all orders.
-
-In this example, the checkout uses Lisbon local time and calls the order a
-September purchase. The warehouse uses UTC, where the time is 23:30 on
-August 31. Both timestamps describe the same purchase.
-
-The report must state which time zone defines the month. Without that
-information, a reader cannot know why a purchase made on September 1 in
-Lisbon appears in the August total.
+The month of this order is a good example. The customer paid at 00:30 on
+September 1, in Lisbon. The export changed the time to UTC, and in UTC it
+was still August 31. So the warehouse says August. The app says September.
+Both are correct for their own clock. The report has to say which clock it
+uses. If it does not, the number is not wrong. But it is not a fact either.

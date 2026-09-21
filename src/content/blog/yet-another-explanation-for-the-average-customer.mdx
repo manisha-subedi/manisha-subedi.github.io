@@ -1,64 +1,63 @@
 ---
 title: Yet another explanation for the average customer
 date: 2026-08-23
-summary: Six questions show how one 1,000 euro purchase changes the mean for 30 customers while leaving the median unchanged.
+summary: Six small questions about 30 customers. At the end, you will not trust an average without looking behind it.
 readTime: 4 min read
 ---
 
 import MeanBalanceFigure from "../../components/figures/MeanBalanceFigure.astro";
 import MedianLineFigure from "../../components/figures/MedianLineFigure.astro";
 
-This example has 30 customers. Of these, 29 spend 10 euros and one wholesale
-buyer spends 1,000 euros. Six questions show what the mean and median tell us
-about these values.
+Everybody knows the average can lie. But when you try to explain why, it
+turns into a lecture, and people stop listening. So here is how I explain
+it. Six small questions, with numbers you can do in your head.
+
+Imagine you have a small online shop. Last month you had 30 customers. 29 of
+them bought for 10 euros. One of them, a wholesale buyer, bought for 1,000
+euros.
 
 **Q1. What is the total revenue?**
 
-29 times 10 is 290. Add 1,000 and the total is 1,290 euros.
+29 times 10 is 290. Plus 1,000. So 1,290 euros. Easy.
 
-**Q2. What is the mean spend per customer?**
+**Q2. Divide the total by the number of customers. What does the "average
+customer" spend?**
 
 1,290 divided by 30 is 43 euros.
 
-**Q3. How many of the 30 customers spent close to 43 euros?**
+**Q3. How many of the 30 customers spent around 43 euros?**
 
-None. The 29 customers who spent 10 euros each spent less than half of that
-amount. The wholesale buyer spent more than 23 times the mean of 43 euros.
-The mean is correct, but it is not an observed customer value. It is the
-total divided equally across all 30 customers.
+Zero. 29 of them spent less than half of that. One spent 23 times more. The
+average customer spends 43 euros, and does not exist.
 
-**Q4. In the next month, the wholesale buyer does not return. The other 29
-customers spend the same amount as before. What is the mean now?**
+**Q4. Next month the wholesale buyer does not come back. The other 29 do
+exactly the same as before. What is the average now?**
 
-The total is 290 euros. Dividing 290 by 29 gives a mean of 10 euros. The mean
-fell by 77 percent, although none of the remaining customers changed their
-spending. Only one customer left.
+290 divided by 29 is 10 euros. The average dropped by 77 percent. Not one
+customer changed anything. Only one customer left.
 
 <MeanBalanceFigure />
 
-**Q5. Sort the 30 customers from the smallest spend to the largest. What is
-the middle value?**
+**Q5. Put the 30 customers in a line, from smallest spend to biggest. Look at
+the one in the middle. What did they spend?**
 
-With 30 customers, the middle lies between positions 15 and 16. Both values
-are 10 euros, so the median is 10 euros. Remove the wholesale buyer and there
-are 29 customers. The middle value is still 10 euros.
-
-The median depends on the position of the middle value. It does not depend on
-how far the largest value is from the rest.
+10 euros. With 30 people, the middle is between number 15 and number 16, and
+both spent 10. Now take the wholesale buyer out of the line and look at the
+middle again. Still 10. This middle number is called the median. It does not
+care how big the biggest customer is.
 
 <MedianLineFigure />
 
-**Q6. Which number should a report use?**
+**Q6. Your manager wants one number for the slide. Which one do you give?**
 
-It depends on the question. The mean of 43 euros answers "How much revenue did
-we receive per customer?" because it divides total revenue by all customers.
-The median of 10 euros answers "What did a typical customer spend?"
+It depends on the question behind the slide. "How much money do we make per
+customer?" is a finance question. 43 is the honest answer, because it is the
+total spread over everyone. "What does a customer usually spend?" is a
+different question. The honest answer is 10. If you can only say one
+sentence, say this: "A typical customer spends 10 euros, one customer spent
+1,000, and revenue was 1,290." Three numbers, no surprise later.
 
-A short report could say: "A typical customer spent 10 euros. One customer
-spent 1,000 euros. Total revenue was 1,290 euros." These three numbers show
-both the usual purchase and the large order.
-
-## Calculate both measures in Python
+## The same thing in code
 
 ```python
 spend = [10] * 29 + [1000]
@@ -71,20 +70,19 @@ sum(without_whale) / len(without_whale)   # 10.0
 sorted(without_whale)[len(without_whale) // 2]   # 10
 ```
 
-## Other data with very large values
+## Where this can catch you
 
-This issue can appear in any measure without a fixed upper limit. In salary
-data, one director can raise the mean. In session data, one person who leaves
-a tab open overnight can increase the mean session length. In delivery data,
-one parcel delayed for three weeks can increase the mean delivery time. File
-sizes, order values, and page load times can have the same pattern.
+This is not only about shops. It is about anything that has no top limit.
+Salaries, where one director pulls the average up. Time on a website, where
+one person left a tab open all night. Delivery time, where one parcel got
+lost for three weeks. File sizes, order values, page load times. When the
+biggest value can be a hundred times the normal one, the average follows the
+biggest value. The median stays with the crowd.
 
-When the largest value is 100 times the typical value, the mean moves towards
-that large value. The median remains near the middle of the observations.
+The habit is simple. Every time you compute an average, compute the median
+next to it. If the two are close, fine, the average tells the truth. If they
+are far apart, look at the top five values before you put the average on a
+slide. One of them is probably the whole story.
 
-Calculate the mean and median together. If they are far apart, inspect the
-distribution and the top five values before reporting the mean by itself.
-
-In this example, no customer spent 43 euros. Of the 30 customers, 29 spent
-10 euros and one spent 1,000 euros. The mean of 43 euros and the median of
-10 euros are both correct, but they answer different questions.
+So the average customer spends 43 euros and does not exist. The median
+customer spends 10 euros and is real. Show your manager the real one.

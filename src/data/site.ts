@@ -26,7 +26,7 @@ city hotel, 226 rooms, 8.5% late cancellation
   {
     title: "Executive Sales Performance Dashboard",
     status: "Tableau",
-    text: "An interactive Tableau dashboard built on more than 10,000 sales records. It shows sales, profit, orders, and customers, with views by customer, product, and region. The Consumer segment was the strongest.",
+    text: "A Tableau dashboard built on more than 10,000 sales records. It shows sales, profit, orders, and customers. You can look at it by customer, by product, or by region. The Consumer segment was the strongest one.",
     example: `sales growth, year over year     36.2%
 profit growth, year over year    30.9%
 customer growth                   6.0%`,
@@ -35,7 +35,7 @@ customer growth                   6.0%`,
     title: "recount",
     status: "v0.1",
     url: "https://github.com/manisha-subedi/recount",
-    text: "recount is an MCP server for data. Claude asks for a number. recount runs the SQL, checks the tables, and returns the number with warnings about duplicate rows, a monthly row count that is about twice the usual count, and data that may be out of date.",
+    text: "recount is a small tool for Claude, or any AI that uses MCP. When you ask Claude a question about your data, recount runs the SQL. But before it gives back the number, it checks the tables. If some rows are in twice, or one month has double the usual rows, or the data is old, it says so next to the number. I built it because a number with no warning is easy to trust and easy to get wrong.",
     example: `revenue = sum(amount) from orders where status in ('paid', 'fulfilled')
 
 month    revenue
@@ -53,7 +53,7 @@ Warnings:
     title: "Late deliveries and bad reviews",
     status: "v0.1",
     url: "https://github.com/manisha-subedi/late-deliveries",
-    text: "This project looks at 100,000 real orders from a Brazilian online shop between 2016 and 2018. Late orders were 7 percent of all orders, but they accounted for 37 percent of one-star reviews. The analysis does not point to sellers as the main problem. In some states and months, it points instead to the promised delivery date.",
+    text: "This project looks at 100,000 real orders from a Brazilian online shop, from 2016 to 2018. I wanted to know one thing. When a parcel comes late, how much does the review drop? Late orders are only 7 percent of all orders, but they make 37 percent of the one-star reviews. The surprise was that it is not the sellers. It is the promised delivery date. In some states and some months, the shop promises a date it cannot keep.",
     example: `96,470 delivered orders, 6,534 late (6.8%)
 36.7% of all one-star reviews are for late orders
 
@@ -72,7 +72,7 @@ If each promised date were 3 days later, 4.8% of orders would be late`,
     title: "A warehouse on a laptop",
     status: "v0.1",
     url: "https://github.com/manisha-subedi/laptop-warehouse",
-    text: "This project loads monthly CSV files from Chicago's bike-share system into DuckDB. dbt cleans the data and builds tables for reporting. Each file is loaded only once. The project loaded 2.3 million real rides in 25 seconds.",
+    text: "This is a small data warehouse that runs on a laptop. Every month, Chicago's bike share publishes a file of rides. My script downloads it and loads it into DuckDB. Then dbt cleans the data and builds the tables for a report. If you run the load twice by mistake, nothing happens. Each file is loaded only one time. It loaded 2.3 million real rides in 25 seconds.",
     example: `$ python load.py 202605 202606 202607
 202605-divvy-tripdata.zip: loaded 653704 rows
 202606-divvy-tripdata.zip: loaded 762550 rows

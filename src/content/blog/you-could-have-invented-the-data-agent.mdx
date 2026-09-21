@@ -1,35 +1,36 @@
 ---
 title: You could have invented the data agent
 date: 2026-07-12
-summary: A simple example that adds schema inspection, data checks, retries, and a stop rule to a SQL script.
+summary: Start with a script that runs one query. Add a look, a check, and a limit. That is the whole idea.
 readTime: 6 min read
 ---
 
 import LoopFigure from "../../components/figures/LoopFigure.astro";
 import CheckFigure from "../../components/figures/CheckFigure.astro";
 
-This example starts with a script that answers one question:
-"What was revenue last week?" The script runs a SQL query and prints the
-result.
+Let's say your manager asks you: what was revenue last week? You have a
+database and you know SQL. So you write a script.
 
 ```python
 answer = run_sql("SELECT SUM(amount) FROM orders WHERE week = '2026-W35'")
 print(answer)
 ```
 
-The result may still be wrong. If last week's order file was loaded twice,
-the script adds the same orders twice. It has no check that can detect this
-from the total alone.
+It works. It prints a number. But there is a problem. It prints a number
+even when the number is wrong. If somebody loaded last week's order file two
+times, the script counts every order twice. It does not know. It cannot know.
 
-The version below adds a loop around the script. It reads information about
-the table before writing SQL, checks the data, and stops after three failed
-attempts.
+People say the answer to this is an "AI data agent". That sounds big. But I
+think you can build one yourself, with the script you already have. There
+are only three ideas in it.
 
-## Read the table before writing SQL
+## 1. Look at the table first
 
-The program first reads the table schema. The model needs to know whether the
-amount is stored as `amount` or `amount_cents`. It also needs to know whether
-the table has a `status` column that should be filtered.
+A good analyst does not start with the query. She starts by looking at the
+table. What columns are there? Is the money in `amount` or in `amount_cents`?
+Is there a `status` column I should filter on?
+
+So the agent looks first.
 
 ```python
 columns = run_sql("""
@@ -39,18 +40,16 @@ columns = run_sql("""
 query = ask_model("What was revenue last week?", columns)
 ```
 
-The `ask_model` line receives the question and the column names, then writes
-SQL. It is the only language-model call in this example. The other steps use
-ordinary code.
+The `ask_model` line is the only place where a language model is used. It
+gets the question and the column names, and it writes the SQL. Everything
+else is normal code that you write one time.
 
-## Check the data before returning the answer
+## 2. Check the answer
 
-A model can write valid SQL and still use duplicated data. Before returning
-the result, the program compares the total row count with the number of
-distinct order IDs.
-
-In this example, each order should have one row. The two
-counts should therefore match.
+Now we have a query written by a model. Let's not trust it. And let's not
+trust the data either. The cheapest check I know is this: count the rows,
+and count the different order IDs. In a clean orders table, these two numbers
+are the same.
 
 ```python
 def check(week):
@@ -65,16 +64,19 @@ def check(week):
 
 <CheckFigure />
 
-This rule belongs to this particular table. A generic type check would not
-find the duplicated load. Other checks can compare the row count with last
-week or compare the result with the payment provider's total. Each check
-should represent a rule that is valid for the data.
+Notice that the check has nothing to do with the model. It is plain SQL
+about your data. You can add more checks like this. Compare the row count
+with last week. Compare the total with the payment provider. Each one is a
+few lines. Each one catches something a type check never will.
 
-## Retry with a limit
+## 3. Try again, but not forever
 
-If the check fails, the function adds the problem to its notes and asks the
-model for another query. It allows up to three attempts. After that, it
-stops and returns the notes instead of an unverified number.
+What happens when the check fails? A normal script crashes, or prints the
+wrong number with full confidence. An agent takes the problem, adds it to
+its notes, and tries again. But not forever. Three tries, then it stops and
+says why.
+
+Put the three ideas together and you get this:
 
 ```python
 def data_agent(question, week, tries=3):
@@ -89,25 +91,22 @@ def data_agent(question, week, tries=3):
     return None, notes                          # 5. stop, and say why
 ```
 
-In the intended second attempt, the model sees the note
-`orders has duplicates` and writes a query with one row per order ID. The
-check then runs again. A real model is not guaranteed to make the correct
-revision, so the function keeps the attempt limit and returns its notes when
-the checks continue to fail.
+That's it. That is the agent. On the second try, the model sees the note
+"orders has duplicates" and writes the query with one row per order. On the
+third try it either passes the check, or it gives you the notes instead of a
+number.
 
 <LoopFigure />
 
-## Keep data changes separate
+## What you just built
 
-Many agent frameworks arrange work around a similar loop and add features
-such as logging and retry budgets. The framework does not know which checks
-are correct for a warehouse. Those rules come from the data model. In this
-example, one row should represent one order.
+Look at the loop one more time. Look, act, check, learn, stop. Every agent
+framework you can buy is this loop, with more logging and a nicer logo. That
+is fine. But the useful part is not the model call. It is the `check`
+function. Nobody can sell you that one, because it is about your data. Only
+you know what normal looks like in your tables.
 
-The agent does not delete duplicated rows or change the source table. It
-changes only the query used for this answer and records the duplicate it
-found. Repairing the data load is a separate action that requires the right
-permission.
-
-Before using this pattern, define the checks and the failure limit. Without
-a check, a program can return a plausible total from incorrect data.
+Also notice what the agent does not do. It does not delete the duplicate
+rows. It does not fix the table. It works around the problem and tells you
+what it found. Fixing the data is a job for a person with permission, not
+for a loop with three tries.
