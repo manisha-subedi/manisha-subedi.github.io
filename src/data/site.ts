@@ -13,7 +13,7 @@ export const projects = [
     status: "live page",
     url: "https://manisha-subedi.github.io/hotel-bookings/",
     code: "https://github.com/manisha-subedi/hotel-bookings",
-    text: "119,390 real bookings from two hotels in Portugal, 2015 to 2017. The flat booking file becomes a star schema in DuckDB: one fact table of bookings, one of occupied room nights, four dimension tables, and a date table that serves both the arrival date and the cancellation date. The page shows occupancy, ADR, and RevPAR by month, computed from the room count and not from booked nights. It has a lookup for how often a booking like this one cancels, and a tool that says how many rooms to oversell on a night, using the rate of bookings still on the books a week before arrival.",
+    text: "Real booking data from two hotels in Portugal, 2015 to 2017. I turned the flat booking file into a star schema in DuckDB. The page shows the numbers a hotel manager checks every month: occupancy, ADR, and RevPAR. It has a small tool that tells you how often a booking like yours gets cancelled, and a tool that tells the hotel how many extra rooms it can sell. The room counts are not in the data, so I estimated them from the busiest night.",
     example: `119,390 bookings, 37.0% cancelled
 lead time 181+ days                    57.0% cancelled
 still on the books 7 days out, city     8.5% cancel or no-show
