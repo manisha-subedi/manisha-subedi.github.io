@@ -35,7 +35,7 @@ customer growth                   6.0%`,
     title: "recount",
     status: "v0.1",
     url: "https://github.com/manisha-subedi/recount",
-    text: "recount is a small tool for Claude, or any AI that uses MCP. When you ask Claude a question about your data, recount runs the SQL. But before it gives back the number, it checks the tables. If some rows are in twice, or one month has double the usual rows, or the data is old, it says so next to the number. I built it because a number with no warning is easy to trust and easy to get wrong.",
+    text: "recount is a small tool for Claude, or any AI that uses MCP. When you ask Claude a question about your data, recount runs the SQL. But before it gives back the number, it checks the tables. If some rows are in twice, or one month has double the usual rows, or the data is old, it says so next to the number.",
     example: `revenue = sum(amount) from orders where status in ('paid', 'fulfilled')
 
 month    revenue
