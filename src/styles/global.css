@@ -268,24 +268,16 @@ p {
 }
 
 .project {
-  margin-bottom: 32px;
+  margin-bottom: 26px;
 }
 
-.project .example {
-  margin: 12px 0 8px;
+.project .project-links {
+  margin: 4px 0 0;
+  font-size: 0.88rem;
 }
 
-.project-image {
-  display: block;
-  width: 100%;
-  height: auto;
-  margin: 12px 0 10px;
-}
-
-.project .install {
-  margin: 0;
-  font-size: 0.9rem;
-  color: #555;
+.project-links a + a {
+  margin-left: 12px;
 }
 
 .post-header {

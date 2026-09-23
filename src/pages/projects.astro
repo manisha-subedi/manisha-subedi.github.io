@@ -10,19 +10,13 @@ import { projects } from "../data/site";
       <article class="entry project">
         <div class="entry-heading">
           <h3>{p.url ? <a href={p.url}>{p.title}</a> : p.title}</h3>
-          <p class="entry-date">{p.status}</p>
+          <p class="entry-date">{p.tools}</p>
         </div>
         <p>{p.text}</p>
-        {p.example && <pre class="example">{p.example}</pre>}
-        {p.image && <img class="project-image" src={p.image} alt={`Chart from the ${p.title} project`} loading="lazy" />}
-        {p.install && (
-          <p class="install">
-            Run: <code>{p.install}</code>
-          </p>
-        )}
-        {p.code && (
-          <p class="install">
-            Code: <a href={p.code}>{p.code.replace("https://", "")}</a>
+        {(p.live || p.code) && (
+          <p class="project-links">
+            {p.live && <a href={p.live}>Project</a>}
+            {p.code && <a href={p.code}>Code</a>}
           </p>
         )}
       </article>

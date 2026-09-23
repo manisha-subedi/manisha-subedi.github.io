@@ -58,6 +58,7 @@ test("writing index and projects", async () => {
   assert.match(projects, /href="https:\/\/manisha-subedi\.github\.io\/hotel-bookings\/"/);
   assert.match(projects, /github\.com\/manisha-subedi\/hotel-bookings/);
   assert.match(projects, /Executive Sales Performance Dashboard/);
+  assert.doesNotMatch(projects, /<pre|<img|v0\.1|Run:/);
 });
 
 test("data agent post has code and two figures", async () => {
