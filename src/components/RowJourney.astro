@@ -3,14 +3,14 @@
 // one card per stop; the chip on the rail is the row itself.
 const stops = ["Checkout", "Database", "Export", "Landing", "Raw table", "Clean table", "Monthly", "Power BI"];
 const steps = [
-  "It is 00:30 on September 1, in Lisbon. A customer pays 120 euros. The checkout app makes one order.",
-  "The app writes one row to its database. The amount is stored in cents: 12000. The time keeps its time zone: 00:30 +01:00.",
-  "At 02:00, a night job exports the day. It changes all times to UTC. 00:30 in Lisbon is 23:30 the day before. The row now says August 31.",
-  "The row lands in a CSV file in cloud storage. Now it is only text. 12000 is text. The date is text. The types are gone.",
-  "A loader copies the file into a raw table, as it is. Two columns are added: which file the row came from, and when it was loaded.",
-  "A clean step gives the types back. 12000 cents becomes 120.00 euros. The month comes from the UTC time: August. A join with the customer table adds the country: PT.",
-  "A monthly table adds up the clean rows. The row disappears into one line: August, PT, 1,240 orders, 42,000. It is one of the 1,240.",
-  "Power BI reads the monthly table and shows a tile. Revenue, August: 42,000. A September purchase is inside that number, and nobody decided that.",
+  "A customer pays 120 euros at 00:30 on September 1 in Lisbon. The checkout app records the order.",
+  "The app stores a database row with the amount in cents, 12000, and the timestamp's time-zone offset, +01:00.",
+  "The scheduled export runs at 02:00 and converts timestamps to UTC. The purchase is now dated August 31 at 23:30 UTC, the same moment as September 1 at 00:30 in Lisbon.",
+  "The order is saved in a CSV file in cloud storage. CSV stores the values as text without database type definitions.",
+  "The loader copies those values into a raw table as text and adds the source file ID and load time.",
+  "The cleaning step assigns data types and converts 12000 cents to 120.00 euros. It takes the month from the UTC timestamp and adds the customer's country, PT, through a join.",
+  "The monthly table groups the order with 1,239 others: August, PT, 1,240 orders, and revenue of 42,000.",
+  "Power BI displays August revenue of 42,000. The total includes this purchase because the reporting month is based on UTC, rather than Lisbon time.",
 ];
 const X = (k: number) => 60 + (k - 1) * 74;
 const on = (from: number, until?: number) => ({ "data-from": from, "data-until": until });

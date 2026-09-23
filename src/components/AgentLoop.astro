@@ -2,13 +2,13 @@
 // scroll-driven scene: one agent, three tables, one duplicated file.
 // every element carries data-from (and optional data-until); the script turns them on per step.
 const steps = [
-  "The agent gets the question. It has not looked at the tables yet. It does not know about the problem.",
-  "It reads the tables. There are three: files, orders, and customers. Each order has an amount, a month, and the file it came from.",
-  "It writes one query and runs it. Add up the August amounts. The answer is 84,000.",
-  "A careless agent stops here. A careful one checks the number. August has 2,480 orders. The months before had about 1,200. Something is wrong.",
-  "It looks for duplicates. Every order ID is there two times. The files table shows why. The August file was loaded twice.",
-  "It leaves the second copy out and runs the query again. 42,000, from 1,240 orders. That is close to the other months.",
-  "It answers: revenue in August was 42,000. It also says what it found and what it left out. The report is part of the answer.",
+  "The agent receives a question about August revenue. It has not inspected the data yet.",
+  "It inspects the files, orders, and customers tables. Each order records an amount, a month, and its source file.",
+  "It runs a query that sums the August order amounts and returns 84,000.",
+  "Before returning the total, it compares monthly row counts. August has 2,480 orders, compared with about 1,200 in earlier months. The increase needs checking.",
+  "Each order ID appears twice. The load records confirm that the August file was imported twice.",
+  "It excludes the second load from the calculation and runs the query again, returning 42,000 from 1,240 orders.",
+  "It returns August revenue of 42,000 with a note explaining the duplicate load and its exclusion from the calculation.",
 ];
 const on = (from: number, until?: number) => ({
   "data-from": from,
