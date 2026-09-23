@@ -1,67 +1,54 @@
 ---
 title: Simpson's paradox, drawn
 date: 2026-01-18
-summary: Forty cities, one chart, one line that goes down. Color the dots by city size, and both lines go up. Same dots.
+summary: See how a trend across 40 simulated cities reverses when the cities are grouped by size.
 readTime: 4 min read
 ---
 
 import SimpsonScatter from "../../components/SimpsonScatter.astro";
 
-Let's say you have a chart of 40 cities. On the x-axis, how much each city
-spends on marketing per person. On the y-axis, how much its sales grew this
-year. You draw a trend line, and it points down. More marketing, less growth.
-That is a strange result.
+This chart compares marketing spend per person with sales growth in
+40 simulated cities. The overall trend slopes down: cities with higher
+spending tend to have lower growth.
 
-Then a colleague asks: are these cities all the same size? They are not.
-Twenty are small and twenty are large. So you color the dots by size and
-draw one line for each group. Now both lines point up.
+The data contains 20 small cities and 20 large ones. Group them by size
+and both trend lines slope up.
 
 <SimpsonScatter
   mode="toggle"
   caption="Simulated data for 40 cities. Tick the box to color the dots by city size."
 />
 
-Same 40 dots. Nothing changed except the color. And the story turned around,
-from "marketing hurts" to "marketing helps". This is called Simpson's
-paradox. After you see it one time, you will look for it in every chart that
-has hidden groups inside.
+The observations have not changed. Within each group, higher spending is
+associated with higher growth, even though the combined trend points the
+other way. This reversal is an example of Simpson's paradox.
 
-## Why the line turns around
+## Why the trend reverses
 
-Let me explain it with numbers you can do in your head.
+In this example, small cities spend about 30 euros per person and grow
+about 3.5 percent. Large cities spend about 75 euros per person and grow
+less than 2 percent.
 
-Small cities spend about 30 euros per person and grow about 3.5 percent.
-Large cities spend about 75 euros per person and grow less than 2 percent.
-Large cities spend more and grow less, because their market is already full.
+The overall line reflects this difference between groups. The small
+cities sit towards the upper left of the chart, while the large cities
+sit towards the lower right.
 
-Now put all 40 cities on one chart and ask for one line. What does that line
-see? On the left, small cities with high growth. On the right, large cities
-with low growth. So the line goes down. But it is not comparing "spend more"
-with "spend less". It is comparing small cities with large cities. City size
-does all the work.
+Within each group, spending and growth have a positive relationship.
+The combined line and group lines describe different comparisons; neither
+one alone explains what would happen if a city increased its spending.
 
-Inside each group, the cities are about the same size. So size does not
-matter anymore. What is left is spend against growth. And inside each group,
-the cities that spend more do grow more.
+## Adjusting the groups
 
-So both lines are right. The grey line answers "do the high spenders grow
-faster?" No, because the high spenders are the large cities. The colored
-lines answer "if a city spends more, does it grow more?" Yes. Different
-question, different line.
-
-## Play with it
-
-The paradox needs a third thing that pushes on both axes at the same time.
-Here, city size pushes spend up and growth down. Take that away, and the
-paradox goes away too. Move the slider to make the two groups more similar,
-and watch the grey line turn.
+Move the slider to reduce the difference between small and large cities.
+As the groups become more similar, the overall trend moves closer to the
+trends within each group.
 
 <SimpsonScatter
   mode="gap"
-  caption="Move the slider to make the two groups more similar. When they overlap, the grey line agrees with the group lines."
+  caption="Move the slider to make the two groups more similar and see how the overall trend changes."
 />
 
-## The same thing in Python
+## The same example in Python
 
 ```python
 import numpy as np
@@ -79,17 +66,15 @@ slope(np.concatenate([small_spend, big_spend]),
       np.concatenate([small_growth, big_growth]))   # negative
 ```
 
-Two groups with the same positive slope, and the line through all of them
-points the other way. That is the whole trick.
+Both groups use the same positive slope, but different starting levels.
+The combined data can therefore have a negative slope.
 
-## Where this can catch you
+## Checking grouped data
 
-Any time your data has groups inside it. Customer segments, countries, phone
-or desktop, old customers and new customers, weekdays and weekends. The habit
-that saves you is cheap. Before you trust a trend line, color the dots by the
-most obvious group. If the group lines agree with the overall line, fine. If
-they turn around, you just found the real story. Put that group in the chart,
-not in a footnote.
+When analysing a trend, look for groups that may affect the comparison:
+customer segments, countries, device types, or new and returning customers.
+Plotting those groups separately can reveal a pattern that the overall
+line hides.
 
-One more thing. A trend line shows that two things move together. It does
-not show that one causes the other.
+A reversal is a reason to investigate the groups and how the data was
+collected. It does not, by itself, show which relationship is causal.

@@ -1,38 +1,32 @@
 ---
 title: An agent, a warehouse, and one duplicated file
 date: 2026-03-09
-summary: Watch an AI agent answer one question, step by step, and find a problem in the data on the way.
+summary: A visual example of an agent checking a revenue query and finding a duplicated file.
 readTime: 5 min read
 ---
 
 import AgentLoop from "../../components/AgentLoop.astro";
 
-People talk about AI agents like they are magic. They are not. An agent is a
-loop. It looks at something, it does something, and it checks the result.
-Then it does it again. This post shows one loop from start to end. The data
-is made up, but the problem is real.
+What happens when an AI agent queries a table with duplicate data? In this
+example, the August order file has been loaded twice. A revenue query returns
+84,000, but the total should be 42,000.
 
-The question is simple. What was the revenue in August? The warehouse has
-three tables and one problem. The August order file was loaded two times.
-
-Scroll through the seven steps. The picture at the top changes with each
-one.
+The agent inspects the tables, runs a query, and checks the result before
+answering. Scroll through the seven steps to follow the process. The data
+and sequence are written for this demonstration; no AI model runs on the page.
 
 <AgentLoop />
 
-## The step that matters
+## Checking the result
 
-Every step in the loop is ordinary. The important one is step four. Without
-that check, the agent returns 84,000 with full confidence, and the number
-goes into a presentation. With the check, the agent finds the problem and
-reports it.
+The row-count check in step four prompts the agent to investigate. An unusual
+count does not prove that data is wrong, but it gives the agent a reason to
+look for duplicates. The order IDs and load records then explain the increase.
 
-Two things to learn from this. First, an agent needs a way to check its own
-result. A row count, a comparison with last month, a known total. Second, an
-agent should not change data on its own. Here it only leaves the second copy
-out of the calculation, and it says so. Fixing the load is a job for a person
-with permission.
+Here, the agent excludes the second load from its calculation and reports
+that choice with the answer. It does not change the source tables. Fixing
+the underlying load still requires someone with the right permissions.
 
-The steps on this page are written by hand. No model runs on this site. In a
-real system the loop is the same, only slower and with more mistakes on the
-way.
+A real implementation needs checks that suit the data, such as unique order
+IDs or a total reconciled with another system. It also needs a way to stop
+and report a problem when those checks cannot be satisfied.

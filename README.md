@@ -1,7 +1,7 @@
 # Manisha Subedi's portfolio
 
 This is the source code for my portfolio website. I share data projects and
-short articles about data analysis.
+articles about data analysis, with visual examples.
 
 [Visit the website](https://manisha-subedi.github.io/)
 

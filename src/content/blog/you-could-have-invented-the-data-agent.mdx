@@ -1,36 +1,34 @@
 ---
 title: You could have invented the data agent
 date: 2026-07-12
-summary: Start with a script that runs one query. Add a look, a check, and a limit. That is the whole idea.
+summary: Build up a small data-agent example with table inspection, SQL checks, and a retry limit.
 readTime: 6 min read
 ---
 
 import LoopFigure from "../../components/figures/LoopFigure.astro";
 import CheckFigure from "../../components/figures/CheckFigure.astro";
 
-Let's say your manager asks you: what was revenue last week? You have a
-database and you know SQL. So you write a script.
+Suppose your manager asks for last week's revenue. You could answer with
+a short SQL query:
 
 ```python
 answer = run_sql("SELECT SUM(amount) FROM orders WHERE week = '2026-W35'")
 print(answer)
 ```
 
-It works. It prints a number. But there is a problem. It prints a number
-even when the number is wrong. If somebody loaded last week's order file two
-times, the script counts every order twice. It does not know. It cannot know.
+The query can run successfully and still return the wrong total. If the
+order file was loaded twice, it counts every order twice. Nothing in this
+script checks for that.
 
-People say the answer to this is an "AI data agent". That sounds big. But I
-think you can build one yourself, with the script you already have. There
-are only three ideas in it.
+A data agent can inspect the tables, write a query, and use checks to
+decide whether to return a result or investigate further. The following
+examples outline that process; they are not a complete application.
 
-## 1. Look at the table first
+## 1. Inspect the table
 
-A good analyst does not start with the query. She starts by looking at the
-table. What columns are there? Is the money in `amount` or in `amount_cents`?
-Is there a `status` column I should filter on?
-
-So the agent looks first.
+Before writing SQL, check the columns and their meaning. Is the amount
+stored in euros or cents? Does revenue include every order status, or
+only paid orders?
 
 ```python
 columns = run_sql("""
@@ -40,16 +38,15 @@ columns = run_sql("""
 query = ask_model("What was revenue last week?", columns)
 ```
 
-The `ask_model` line is the only place where a language model is used. It
-gets the question and the column names, and it writes the SQL. Everything
-else is normal code that you write one time.
+Here, `ask_model` receives the question and column names and generates
+SQL. Table inspection and query execution are ordinary code. In practice,
+column names alone may not explain the business definition of revenue.
 
-## 2. Check the answer
+## 2. Check the data
 
-Now we have a query written by a model. Let's not trust it. And let's not
-trust the data either. The cheapest check I know is this: count the rows,
-and count the different order IDs. In a clean orders table, these two numbers
-are the same.
+For a table with one row per order, compare the row count with the number
+of distinct order IDs. A mismatch is a reason to investigate before using
+the total.
 
 ```python
 def check(week):
@@ -64,19 +61,15 @@ def check(week):
 
 <CheckFigure />
 
-Notice that the check has nothing to do with the model. It is plain SQL
-about your data. You can add more checks like this. Compare the row count
-with last week. Compare the total with the payment provider. Each one is a
-few lines. Each one catches something a type check never will.
+This check does not use a language model. Other useful checks might compare
+row counts with the previous week or reconcile revenue with a payment
+provider. The right checks depend on what each table represents.
 
-## 3. Try again, but not forever
+## 3. Limit retries and report failures
 
-What happens when the check fails? A normal script crashes, or prints the
-wrong number with full confidence. An agent takes the problem, adds it to
-its notes, and tries again. But not forever. Three tries, then it stops and
-says why.
-
-Put the three ideas together and you get this:
+An agent can pass a failed check back to the model as context for another
+attempt. The loop also needs a limit so it can stop and explain what went
+wrong.
 
 ```python
 def data_agent(question, week, tries=3):
@@ -91,22 +84,23 @@ def data_agent(question, week, tries=3):
     return None, notes                          # 5. stop, and say why
 ```
 
-That's it. That is the agent. On the second try, the model sees the note
-"orders has duplicates" and writes the query with one row per order. On the
-third try it either passes the check, or it gives you the notes instead of a
-number.
+There is an important limit in this example: `check(week)` examines the
+source table, not the query result. If the source still has duplicate
+orders, changing the query will not make this check pass. The loop will
+stop after three attempts and return its notes.
+
+A result-level check or an approved correction to the source would be
+needed to resolve that problem. Retrying alone does not repair data.
 
 <LoopFigure />
 
-## What you just built
+## What this example covers
 
-Look at the loop one more time. Look, act, check, learn, stop. Every agent
-framework you can buy is this loop, with more logging and a nicer logo. That
-is fine. But the useful part is not the model call. It is the `check`
-function. Nobody can sell you that one, because it is about your data. Only
-you know what normal looks like in your tables.
+The example shows how a model call can sit inside a controlled process.
+The model proposes SQL; code runs the query, performs checks, and decides
+whether to continue.
 
-Also notice what the agent does not do. It does not delete the duplicate
-rows. It does not fix the table. It works around the problem and tells you
-what it found. Fixing the data is a job for a person with permission, not
-for a loop with three tries.
+The duplicate check covers one specific problem. Passing it does not prove
+that the query uses the right dates, filters, or revenue definition. Those
+need their own checks. The loop also has no permission to change the source
+tables, so any data repair remains a separate task.

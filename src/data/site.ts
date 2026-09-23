@@ -13,20 +13,20 @@ export const projects = [
     status: "Power BI, DAX, DuckDB",
     url: "https://manisha-subedi.github.io/hotel-bookings/",
     code: "https://github.com/manisha-subedi/hotel-bookings",
-    text: "Real booking data from two hotels in Portugal, 2015 to 2017. I built a five-page Power BI report on it: overview, demand and channels, customers, cancellations, and a booking detail page you can drill into. The model is a star schema with six tables, seven relationships, and 43 DAX measures. I also made a web page from the same data. It shows the monthly numbers, has a tool that tells you how often a booking like yours gets cancelled, and a tool that tells the hotel how many extra rooms it can sell.",
+    text: "I used booking data from two hotels in Portugal, from 2015 to 2017, to build a five-page Power BI report. It covers revenue, occupancy, booking patterns, and cancellations, with a drill-through page for individual bookings. The model has six tables and seven relationships. The web version includes monthly charts, a historical cancellation lookup, and an overbooking calculator based on adjustable assumptions.",
     example: `119,390 bookings, 37.0% cancelled
 lead time 181+ days                    57.0% cancelled
-still on the books 7 days out, city     8.5% cancel or no-show
-still on the books 7 days out, resort   4.8% cancel or no-show
+active 7 days before arrival, city     8.5% cancel or no-show
+active 7 days before arrival, resort   4.8% cancel or no-show
 
-city hotel, 226 rooms, 8.5% late cancellation
-  sell 18 more than you have
-  expected cost €564 a night, against €2,055 with no overbooking`,
+city hotel, 226 estimated rooms, 8.5% late cancellation
+  model's lowest-cost option: 18 extra bookings
+  expected cost €564 a night, compared with €2,055 without overbooking`,
   },
   {
     title: "Executive Sales Performance Dashboard",
     status: "Tableau",
-    text: "A Tableau dashboard built on more than 10,000 sales records. It shows sales, profit, orders, and customers. You can look at it by customer, by product, or by region. The Consumer segment was the strongest one.",
+    text: "A Tableau dashboard with more than 10,000 sales records, covering sales, profit, orders, and customers. The views compare performance by customer, product, and region. The Consumer segment performed best in this analysis.",
     example: `sales growth, year over year     36.2%
 profit growth, year over year    30.9%
 customer growth                   6.0%`,
@@ -35,7 +35,7 @@ customer growth                   6.0%`,
     title: "recount",
     status: "v0.1",
     url: "https://github.com/manisha-subedi/recount",
-    text: "recount is a small tool for Claude, or any AI that uses MCP. When you ask Claude a question about your data, recount runs the SQL. But before it gives back the number, it checks the tables. If some rows are in twice, or one month has double the usual rows, or the data is old, it says so next to the number.",
+    text: "recount lets Claude and other MCP-compatible assistants query data with SQL. It checks the tables for duplicate rows, unusual monthly row counts, and outdated data, then returns any warnings alongside the result.",
     example: `revenue = sum(amount) from orders where status in ('paid', 'fulfilled')
 
 month    revenue
@@ -53,7 +53,7 @@ Warnings:
     title: "Late deliveries and bad reviews",
     status: "v0.1",
     url: "https://github.com/manisha-subedi/late-deliveries",
-    text: "This project looks at 100,000 real orders from a Brazilian online shop, from 2016 to 2018. I wanted to know one thing. When a parcel comes late, how much does the review drop? Late orders are only 7 percent of all orders, but they make 37 percent of the one-star reviews. The surprise was that it is not the sellers. It is the promised delivery date. In some states and some months, the shop promises a date it cannot keep.",
+    text: "I analysed about 100,000 orders from a Brazilian online marketplace to compare delivery delays and customer reviews. Late orders accounted for 7 percent of orders but 37 percent of one-star reviews. The analysis also looks at differences by seller, destination, and month, and how allowing more time in the promised delivery date would change the late-order rate.",
     example: `96,470 delivered orders, 6,534 late (6.8%)
 36.7% of all one-star reviews are for late orders
 
@@ -72,7 +72,7 @@ If each promised date were 3 days later, 4.8% of orders would be late`,
     title: "A warehouse on a laptop",
     status: "v0.1",
     url: "https://github.com/manisha-subedi/laptop-warehouse",
-    text: "This is a small data warehouse that runs on a laptop. Every month, Chicago's bike share publishes a file of rides. My script downloads it and loads it into DuckDB. Then dbt cleans the data and builds the tables for a report. If you run the load twice by mistake, nothing happens. Each file is loaded only one time. It loaded 2.3 million real rides in 25 seconds.",
+    text: "A local data warehouse for Chicago's Divvy bike-share data. A Python script downloads monthly ride files and loads them into DuckDB, then dbt cleans the data and prepares reporting tables. File hashes prevent the same file from loading twice. The test run loaded 2.3 million rides in 25 seconds.",
     example: `$ python load.py 202605 202606 202607
 202605-divvy-tripdata.zip: loaded 653704 rows
 202606-divvy-tripdata.zip: loaded 762550 rows

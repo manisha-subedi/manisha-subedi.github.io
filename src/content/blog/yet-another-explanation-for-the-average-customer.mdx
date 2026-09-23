@@ -1,63 +1,60 @@
 ---
 title: Yet another explanation for the average customer
 date: 2026-08-23
-summary: Six small questions about 30 customers. At the end, you will not trust an average without looking behind it.
+summary: A simple example of how one large purchase affects the mean, and when the median is more useful.
 readTime: 4 min read
 ---
 
 import MeanBalanceFigure from "../../components/figures/MeanBalanceFigure.astro";
 import MedianLineFigure from "../../components/figures/MedianLineFigure.astro";
 
-Everybody knows the average can lie. But when you try to explain why, it
-turns into a lecture, and people stop listening. So here is how I explain
-it. Six small questions, with numbers you can do in your head.
-
-Imagine you have a small online shop. Last month you had 30 customers. 29 of
-them bought for 10 euros. One of them, a wholesale buyer, bought for 1,000
-euros.
+Average spending can be useful without describing what most customers
+spend. Consider a small online shop with 30 customers: 29 spent 10 euros
+each, and one wholesale buyer spent 1,000 euros.
 
 **Q1. What is the total revenue?**
 
-29 times 10 is 290. Plus 1,000. So 1,290 euros. Easy.
+The 29 smaller purchases add up to 290 euros. Including the wholesale
+order, revenue is 1,290 euros.
 
-**Q2. Divide the total by the number of customers. What does the "average
-customer" spend?**
+**Q2. What does the average customer spend?**
 
-1,290 divided by 30 is 43 euros.
+Divide 1,290 by 30 customers to get a mean of 43 euros.
 
-**Q3. How many of the 30 customers spent around 43 euros?**
+**Q3. How many customers spent around 43 euros?**
 
-Zero. 29 of them spent less than half of that. One spent 23 times more. The
-average customer spends 43 euros, and does not exist.
+None. Most spent 10 euros, while one spent 1,000. The mean is correct, but
+it does not describe a typical purchase in this example.
 
-**Q4. Next month the wholesale buyer does not come back. The other 29 do
-exactly the same as before. What is the average now?**
+**Q4. Next month, the wholesale buyer does not return. The other 29
+customers spend the same amount. What is the average now?**
 
-290 divided by 29 is 10 euros. The average dropped by 77 percent. Not one
-customer changed anything. Only one customer left.
+Revenue is 290 euros across 29 customers, so the mean falls to 10 euros.
+That is a drop of about 77 percent, even though the remaining customers
+have not changed their spending.
 
 <MeanBalanceFigure />
 
-**Q5. Put the 30 customers in a line, from smallest spend to biggest. Look at
-the one in the middle. What did they spend?**
+**Q5. What happens if we use the middle value instead?**
 
-10 euros. With 30 people, the middle is between number 15 and number 16, and
-both spent 10. Now take the wholesale buyer out of the line and look at the
-middle again. Still 10. This middle number is called the median. It does not
-care how big the biggest customer is.
+Sort the 30 customers by spending. The middle two values, at positions 15
+and 16, are both 10 euros, so the median is 10 euros. Remove the wholesale
+buyer and the median remains 10 euros. Unlike the mean, it is not pulled
+up by the size of that one purchase.
 
 <MedianLineFigure />
 
 **Q6. Your manager wants one number for the slide. Which one do you give?**
 
-It depends on the question behind the slide. "How much money do we make per
-customer?" is a finance question. 43 is the honest answer, because it is the
-total spread over everyone. "What does a customer usually spend?" is a
-different question. The honest answer is 10. If you can only say one
-sentence, say this: "A typical customer spends 10 euros, one customer spent
-1,000, and revenue was 1,290." Three numbers, no surprise later.
+It depends on the question. For revenue per customer, use the mean of
+43 euros. For typical customer spending, the median of 10 euros is more
+helpful here.
 
-## The same thing in code
+If there is room for context, report both and explain the difference:
+most customers spent 10 euros, while one wholesale order brought total
+revenue to 1,290 euros.
+
+## The same calculation in code
 
 ```python
 spend = [10] * 29 + [1000]
@@ -70,19 +67,13 @@ sum(without_whale) / len(without_whale)   # 10.0
 sorted(without_whale)[len(without_whale) // 2]   # 10
 ```
 
-## Where this can catch you
+## Using this in an analysis
 
-This is not only about shops. It is about anything that has no top limit.
-Salaries, where one director pulls the average up. Time on a website, where
-one person left a tab open all night. Delivery time, where one parcel got
-lost for three weeks. File sizes, order values, page load times. When the
-biggest value can be a hundred times the normal one, the average follows the
-biggest value. The median stays with the crowd.
+Large values can have the same effect on salaries, delivery times, or page
+load times. A few unusually high observations can pull the mean away from
+what most people experience.
 
-The habit is simple. Every time you compute an average, compute the median
-next to it. If the two are close, fine, the average tells the truth. If they
-are far apart, look at the top five values before you put the average on a
-slide. One of them is probably the whole story.
-
-So the average customer spends 43 euros and does not exist. The median
-customer spends 10 euros and is real. Show your manager the real one.
+I would compare the mean and median before choosing a summary for a report.
+If they differ substantially, it is worth looking at the distribution and
+the largest values. Neither measure is automatically better; the choice
+depends on what the report needs to explain.
