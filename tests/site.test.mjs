@@ -22,6 +22,21 @@ test("home page", async () => {
   }
 });
 
+test("home page garden", async () => {
+  const html = await page("index.html");
+  assert.match(html, /<canvas class="garden/);
+  const { makeFlower } = await import("../src/lib/garden.js");
+  for (const kind of ["daisy", "bud", "puff"]) {
+    const strokes = makeFlower({ x: 100, ground: 200, height: 120, lean: 5, kind, seed: 7, color: "#000" });
+    assert.ok(strokes.length > 3);
+    assert.deepEqual(strokes[0].points[0], { x: 100, y: 200 });
+    for (const s of strokes) {
+      assert.ok(s.end > s.start);
+      for (const p of s.points) assert.ok(Number.isFinite(p.x) && Number.isFinite(p.y));
+    }
+  }
+});
+
 test("about is short and has the illustration", async () => {
   const html = await page("about/index.html");
   for (const s of ["grew up in Nepal", "hike", "lisboa-illustration.svg"]) {

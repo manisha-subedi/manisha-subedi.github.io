@@ -1,0 +1,143 @@
+---
+---
+
+<canvas class="garden" width="730" height="240" aria-hidden="true"></canvas>
+<p class="garden-note">Click anywhere in the garden to plant a flower.</p>
+
+<style>
+  .garden {
+    display: block;
+    width: 100%;
+    height: 240px;
+    margin-top: 1.5rem;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  .garden-note {
+    margin: 0.3rem 0 0;
+    color: #888;
+    font-size: 0.85em;
+  }
+</style>
+
+<script>
+  import { makeFlower, PETAL_COLORS } from "../lib/garden.js";
+
+  const canvas = document.querySelector("canvas.garden");
+  const ctx = canvas.getContext("2d");
+  const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const kinds = ["daisy", "daisy", "daisy", "bud", "puff"];
+  const flowers = [];
+  let width = 0, height = 0, ground = 0;
+
+  function plant(f) {
+    f.seed = Math.floor(Math.random() * 1e9);
+    f.kind = kinds[Math.floor(Math.random() * kinds.length)];
+    f.color = PETAL_COLORS[Math.floor(Math.random() * PETAL_COLORS.length)];
+    f.lean = (Math.random() - 0.5) * 30;
+    f.strokes = makeFlower({ ...f, x: f.at * width, ground });
+    flowers.push(f);
+    if (flowers.length > 30) flowers.shift();
+  }
+
+  function layout() {
+    const dpr = window.devicePixelRatio || 1;
+    width = canvas.clientWidth;
+    height = canvas.clientHeight;
+    ground = height - 14;
+    canvas.width = width * dpr;
+    canvas.height = height * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    for (const f of flowers) f.strokes = makeFlower({ ...f, x: f.at * width, ground });
+  }
+
+  function seed() {
+    const count = Math.round(width / 70);
+    const order = Array.from({ length: count }, (_, i) => i).sort(() => Math.random() - 0.5);
+    const start = performance.now() + 300;
+    order.forEach((slot, i) => {
+      plant({
+        at: (slot + 0.2 + Math.random() * 0.6) / count,
+        height: 60 + Math.random() * (ground - 90),
+        born: start + i * 220,
+      });
+    });
+  }
+
+  // bend each point sideways, more the higher it sits on the stem
+  function sway(f, points, now) {
+    if (still) return points;
+    const wind = Math.sin(now / 1600 + f.at * 6) * 0.7 + Math.sin(now / 620 + f.at * 11) * 0.3;
+    return points.map((p) => {
+      const up = Math.min(1, Math.max(0, (ground - p.y) / f.height));
+      return { x: p.x + wind * 5 * up * up, y: p.y };
+    });
+  }
+
+  function trace(points, lengths, distance) {
+    ctx.beginPath();
+    ctx.moveTo(points[0].x, points[0].y);
+    for (let i = 1; i < points.length; i++) {
+      if (lengths[i] <= distance) {
+        ctx.lineTo(points[i].x, points[i].y);
+        continue;
+      }
+      const k = (distance - lengths[i - 1]) / (lengths[i] - lengths[i - 1]);
+      ctx.lineTo(
+        points[i - 1].x + (points[i].x - points[i - 1].x) * k,
+        points[i - 1].y + (points[i].y - points[i - 1].y) * k,
+      );
+      break;
+    }
+  }
+
+  function draw(now) {
+    ctx.clearRect(0, 0, width, height);
+    ctx.lineWidth = 1.4;
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    for (const f of flowers) {
+      const age = now - f.born;
+      for (const s of f.strokes) {
+        const t = still ? 1 : Math.min(1, (age - s.start) / (s.end - s.start));
+        if (t <= 0) continue;
+        const points = sway(f, s.points, now);
+        if (s.fill) {
+          const alpha = still ? 1 : Math.min(1, (age - s.end) / 300);
+          if (alpha > 0) {
+            trace(points, s.lengths, Infinity);
+            ctx.globalAlpha = alpha * 0.25;
+            ctx.fillStyle = s.fill;
+            ctx.fill();
+            ctx.globalAlpha = 1;
+          }
+        }
+        trace(points, s.lengths, t * s.lengths[s.lengths.length - 1]);
+        ctx.strokeStyle = s.color;
+        ctx.stroke();
+      }
+    }
+    if (!still) requestAnimationFrame(draw);
+  }
+
+  canvas.addEventListener("pointerdown", (event) => {
+    const box = canvas.getBoundingClientRect();
+    const y = event.clientY - box.top;
+    plant({
+      at: (event.clientX - box.left) / box.width,
+      height: Math.min(ground - 30, Math.max(40, ground - y)),
+      born: performance.now(),
+    });
+    if (still) draw(performance.now());
+  });
+
+  window.addEventListener("resize", () => {
+    layout();
+    if (still) draw(performance.now());
+  });
+
+  layout();
+  seed();
+  draw(performance.now());
+</script>
