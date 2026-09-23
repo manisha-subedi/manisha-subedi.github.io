@@ -10,10 +10,10 @@ export const site = {
 export const projects = [
   {
     title: "Hotel Revenue and Cancellation Analytics",
-    status: "live page",
+    status: "Power BI, DAX, DuckDB",
     url: "https://manisha-subedi.github.io/hotel-bookings/",
     code: "https://github.com/manisha-subedi/hotel-bookings",
-    text: "Real booking data from two hotels in Portugal, 2015 to 2017. I turned the flat booking file into a star schema in DuckDB. The page shows the numbers a hotel manager checks every month: occupancy, ADR, and RevPAR. It has a small tool that tells you how often a booking like yours gets cancelled, and a tool that tells the hotel how many extra rooms it can sell. The room counts are not in the data, so I estimated them from the busiest night.",
+    text: "Real booking data from two hotels in Portugal, 2015 to 2017. I built a five-page Power BI report on it: overview, demand and channels, customers, cancellations, and a booking detail page you can drill into. The model is a star schema with six tables, seven relationships, and 43 DAX measures. I also made a web page from the same data. It shows the monthly numbers, has a tool that tells you how often a booking like yours gets cancelled, and a tool that tells the hotel how many extra rooms it can sell.",
     example: `119,390 bookings, 37.0% cancelled
 lead time 181+ days                    57.0% cancelled
 still on the books 7 days out, city     8.5% cancel or no-show
