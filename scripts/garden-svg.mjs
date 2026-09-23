@@ -28,17 +28,18 @@ slots.forEach((slot, i) => {
     const length = round(s.lengths[s.lengths.length - 1]);
     const delay = round(born + s.start / 1000);
     const time = round((s.end - s.start) / 1000);
+    // SMIL, not CSS: GitHub shows the SVG as an image and CSS animations do not run there
     if (s.fill) {
-      paths += `<path d="${d}" fill="${s.fill}" stroke="none" opacity="0" style="animation:show .3s ${round(delay + time)}s forwards"/>\n`;
+      paths += `<path d="${d}" fill="${s.fill}" stroke="none" opacity="0">` +
+        `<animate attributeName="opacity" from="0" to="0.25" begin="${round(delay + time)}s" dur="0.3s" fill="freeze"/></path>\n`;
     }
-    paths += `<path d="${d}" stroke="${s.color}" stroke-dasharray="${length}" stroke-dashoffset="${length}" style="animation:draw ${time}s ${delay}s linear forwards"/>\n`;
+    paths += `<path d="${d}" stroke="${s.color}" stroke-dasharray="${length}" stroke-dashoffset="${length}" opacity="0">` +
+      `<set attributeName="opacity" to="1" begin="${delay}s" fill="freeze"/>` +
+      `<animate attributeName="stroke-dashoffset" from="${length}" to="0" begin="${delay}s" dur="${time}s" fill="freeze"/></path>\n`;
   }
 });
 
 console.log(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="${width}" height="${height}">
-<style>
-@keyframes draw { from { opacity: 1; } to { opacity: 1; stroke-dashoffset: 0; } }
-@keyframes show { to { opacity: 0.25; } }
-path { fill: none; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; opacity: 0; }
-</style>
-${paths}</svg>`);
+<g fill="none" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+${paths}</g>
+</svg>`);
