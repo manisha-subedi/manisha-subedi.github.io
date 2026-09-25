@@ -19,8 +19,11 @@ export const projects = [
   },
   {
     title: "Executive Sales Performance Dashboard",
-    tools: "Tableau",
-    text: "An executive dashboard built on more than 10,000 sales records. It compares sales, profit, orders, and customers by segment, product, and region.",
+    tools: "Tableau · DuckDB · SQL",
+    url: "https://manisha-subedi.github.io/sales-dashboard/",
+    live: "https://manisha-subedi.github.io/sales-dashboard/",
+    code: "https://github.com/manisha-subedi/sales-dashboard",
+    text: "A Tableau dashboard on four years of Superstore sales, 10,194 order lines. The web version shows the same numbers and lets you try a cap on discounts.",
   },
   {
     title: "recount",
