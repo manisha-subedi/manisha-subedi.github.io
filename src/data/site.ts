@@ -23,7 +23,7 @@ export const projects = [
     url: "https://manisha-subedi.github.io/sales-dashboard/",
     live: "https://manisha-subedi.github.io/sales-dashboard/",
     code: "https://github.com/manisha-subedi/sales-dashboard",
-    text: "A Tableau dashboard for executives on four years of sales at a European tech company, 10,000 order lines. The web version shows the same numbers and where each year's growth came from.",
+    text: "A Tableau dashboard on four years of Superstore sales, 10,194 order lines. The web version shows the same numbers and lets you try a cap on discounts.",
   },
   {
     title: "recount",
