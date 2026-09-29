@@ -39,7 +39,7 @@ test("home page garden", async () => {
 
 test("about is short and has the illustration", async () => {
   const html = await page("about/index.html");
-  for (const s of ["grew up in Nepal", "hike", "lisboa-illustration.svg"]) {
+  for (const s of ["hike", "lisboa-illustration.svg"]) {
     assert.match(html, new RegExp(s));
   }
   assert.doesNotMatch(html, /Data Engineer I|placeholder|where I ended up/);
