@@ -1,8 +1,8 @@
 import { getCollection } from "astro:content";
 
-// newest first
+// newest first. hidden posts keep their page but stay off the list
 export async function getPosts() {
-  const posts = await getCollection("blog");
+  const posts = (await getCollection("blog")).filter((p) => !p.data.hidden);
   return posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 }
 
