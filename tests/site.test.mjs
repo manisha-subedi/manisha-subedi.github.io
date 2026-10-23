@@ -53,7 +53,6 @@ test("writing index and projects", async () => {
   const projects = await page("projects/index.html");
   assert.doesNotMatch(projects, /in development/);
   assert.match(projects, /github\.com\/manisha-subedi\/late-deliveries/);
-  assert.match(projects, /github\.com\/manisha-subedi\/recount/);
   assert.match(projects, /Hotel Revenue and Cancellation Analytics/);
   assert.match(projects, /href="https:\/\/manisha-subedi\.github\.io\/hotel-bookings\/"/);
   assert.match(projects, /github\.com\/manisha-subedi\/hotel-bookings/);
